@@ -1,0 +1,33 @@
+GMAIL
+nombre 		sasm
+apellido 	di1819
+correo 		sasmdi1819@gmail.com
+pass		ct1819ijjcm
+
+
+TWITTER
+user		sasmdi1819
+mail		sasmdi1819@gmail.com
+pass		ct1819ijjcm
+appname		TTCSASM
+https://developer.twitter.com/en/apps/16061242
+
+Consumer API keys
+HkM0LS2MQLnh2c4ECo40HHYmP (API key)
+uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG (API secret key)
+
+1083393956451442688-PkSdwCWSYN3k8DG26ROC5nJyXAmUNJ (Access token)
+pdyxQHkDtjonuLaUu4qZkuNmC8Nq3Jk8E4EH7n1sIThV6 (Access token secret)
+Read and write (Access level)
+
+FREEHOSTINGEU
+https://cp1.freehostingeu.com/login.html
+Client ID: 2930301
+pass	ct1819ijjcm
+Login email: sasmdi1819@gmail.com
+http://ttcsasm.eu5.net
+
+FTP
+server	ttcsasm.eu5.net, f23-preview.freehostingeu.com
+user	2930301_sasm
+pass	ct1819ijjcm
