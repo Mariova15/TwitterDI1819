@@ -16,9 +16,9 @@ Consumer API keys
 HkM0LS2MQLnh2c4ECo40HHYmP (API key)
 uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG (API secret key)
 
-1083393956451442688-PkSdwCWSYN3k8DG26ROC5nJyXAmUNJ (Access token)
-pdyxQHkDtjonuLaUu4qZkuNmC8Nq3Jk8E4EH7n1sIThV6 (Access token secret)
-Read and write (Access level)
+1083393956451442688-4lNpd2utRv8Apkm71YhISNdV9Vc9Yy (Access token)
+B2h9hqkIQQmfK59VGYoYibxazp8JD9SeKXCU2Ycq7mb2A (Access token secret)
+Read, write, and direct messages (Access level)
 
 FREEHOSTINGEU
 https://cp1.freehostingeu.com/login.html
