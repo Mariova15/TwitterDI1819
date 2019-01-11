@@ -5,5 +5,9 @@
         <group name="Twitter">
             <file>file:/D:/Proyectos/Code/Git/TwitterDI1819/src/logica/Test.java</file>
         </group>
+        <group name="DI">
+            <file>jar:file:/home/adan/Documentos/TwitterDI1819/lib/scribejava-scribejava-6.2.0.zip!/scribejava-scribejava-6.2.0/scribejava-core/src/test/java/com/github/scribejava/core/oauth/OAuth20ApiUnit.java</file>
+            <file>file:/home/adan/Documentos/TwitterDI1819/src/logica/Test.java</file>
+        </group>
     </open-files>
 </project-private>
