@@ -1,0 +1,16 @@
+Interfaz
+Login
+	user	(Validación)
+	pass	(encriptado)
+	guardar datos
+
+Principal
+	ultimos tuits seguidos	(Time line)
+	Todas las acciones Twits	
+	10 trending topics
+
+Logica
+	Login
+	refrescar time line cada 10seg
+	
+
