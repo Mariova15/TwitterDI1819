@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import twitter4j.Paging;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -52,9 +53,12 @@ public class PruebaAutentificacion {
 
         twitter.setOAuthAccessToken(access); //añadimos el access token a la aplicacion
 
+        
+       
+        
         //Actualizar tu estado
         Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito.");
-        
+         //Recuperar listado de ultimos tweets escritos
         while (true) {
             for (Status status : twitter.getHomeTimeline()) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
