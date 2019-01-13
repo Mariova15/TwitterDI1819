@@ -59,12 +59,16 @@ public class PruebaAutentificacion {
 
         //Actualizar tu estado
         //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico con poner un getText
-        Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito bis.");
+        Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito aaaa.");
         /*//para el usuario
         status.getUser().getScreenName(); */
         //Recuperar listado de ultimos tweets escritos
+
+        //Publicar los últimos 10 tweets
+        Paging pagina = new Paging();
+        pagina.setCount(10);
         while (true) {
-            for (Status status : twitter.getHomeTimeline()) {
+            for (Status status : twitter.getHomeTimeline(pagina)) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
 
                 /*//Para grafico para mostrar foto del usuario que publica el tweet
@@ -78,6 +82,7 @@ public class PruebaAutentificacion {
                  */
             }
             Thread.sleep(10000); //cada 10 segundos se recarga
+            System.out.println("");
         }
 
     }
