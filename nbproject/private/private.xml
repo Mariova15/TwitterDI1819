@@ -2,15 +2,16 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group name="Twitter">
-            <file>file:/D:/Proyectos/Code/Git/TwitterDI1819/src/logica/Test.java</file>
-        </group>
         <group name="DI">
             <file>jar:file:/home/adan/Documentos/TwitterDI1819/lib/scribejava-scribejava-6.2.0.zip!/scribejava-scribejava-6.2.0/scribejava-core/src/test/java/com/github/scribejava/core/oauth/OAuth20ApiUnit.java</file>
             <file>file:/home/adan/Documentos/TwitterDI1819/src/logica/Test.java</file>
         </group>
         <group name="DESARROLLO DE INTERFACES">
             <file>file:/C:/Users/Shaila/Documents/DAM/2%20DAM/DI/DI1819/DI1819/TwitterDI1819/src/logica/PruebaAutentificacion.java</file>
+        </group>
+        <group name="Twitter">
+            <file>file:/D:/Proyectos/Code/Git/TwitterDI1819/src/logica/GestionClienteTwitter.java</file>
+            <file>file:/D:/Proyectos/Code/Git/TwitterDI1819/src/logica/Test.java</file>
         </group>
     </open-files>
 </project-private>

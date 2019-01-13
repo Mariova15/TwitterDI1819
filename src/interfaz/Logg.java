@@ -193,7 +193,7 @@ public class Logg extends javax.swing.JFrame {
         botonCerrarSesion.setVisible(true);
         botonAniadirCuenta.setVisible(false);
         jTextFieldUsuario.setVisible(false);
-        jTextFieldContrasenia.setVisible(false);
+        jPasswordField.setVisible(false);
         DialogTwitter gestorClienteTwitter
         = new DialogTwitter(this, true);
         gestorClienteTwitter.setVisible(true);
@@ -214,7 +214,7 @@ public class Logg extends javax.swing.JFrame {
         botonCerrarSesion.setVisible(false);
         botonAniadirCuenta.setVisible(true);
         jTextFieldUsuario.setVisible(true);
-        jTextFieldContrasenia.setVisible(true);
+        jPasswordField.setVisible(true);
         jLabelConectado.setText("");
     }//GEN-LAST:event_botonCerrarSesionActionPerformed
 

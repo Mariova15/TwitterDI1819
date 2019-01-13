@@ -102,9 +102,8 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         botonBusquedaUsuarios.setBackground(new java.awt.Color(56, 161, 243));
         botonBusquedaUsuarios.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("interfaz/Bundle"); // NOI18N
-        botonBusquedaUsuarios.setText(bundle.getString("DialogTwitter.botonBusquedaUsuarios.text")); // NOI18N
-        botonBusquedaUsuarios.setToolTipText(bundle.getString("DialogTwitter.botonBusquedaUsuarios.toolTipText")); // NOI18N
+        botonBusquedaUsuarios.setText("SEARCH");
+        botonBusquedaUsuarios.setToolTipText("PIEDARA");
         botonBusquedaUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonBusquedaUsuariosActionPerformed(evt);
@@ -121,8 +120,8 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         botonBusquedaHastag.setBackground(new java.awt.Color(56, 161, 243));
         botonBusquedaHastag.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonBusquedaHastag.setText(bundle.getString("DialogTwitter.botonBusquedaHastag.text")); // NOI18N
-        botonBusquedaHastag.setToolTipText(bundle.getString("DialogTwitter.botonBusquedaHastag.toolTipText")); // NOI18N
+        botonBusquedaHastag.setText("SEARCH");
+        botonBusquedaHastag.setToolTipText("PIEDARA");
         botonBusquedaHastag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonBusquedaHastagActionPerformed(evt);
@@ -180,8 +179,8 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         botonTwitear.setBackground(new java.awt.Color(56, 161, 243));
         botonTwitear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonTwitear.setText(bundle.getString("DialogTwitter.botonTwitear.text")); // NOI18N
-        botonTwitear.setToolTipText(bundle.getString("DialogTwitter.botonTwitear.toolTipText")); // NOI18N
+        botonTwitear.setText("TWEET");
+        botonTwitear.setToolTipText("PIEDARA");
         botonTwitear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonTwitearActionPerformed(evt);
