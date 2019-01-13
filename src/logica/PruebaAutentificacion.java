@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import twitter4j.Paging;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -39,6 +41,8 @@ public class PruebaAutentificacion {
         RequestToken request = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(request.getAuthorizationURL())); //esto lanza el navegador por defecto con la pagina de login
 
+        
+        
         System.out.println("Introduce el pin: "); //se introduce el pin
         String pin = new Scanner(System.in).nextLine();
         AccessToken access = null;
@@ -46,7 +50,7 @@ public class PruebaAutentificacion {
             access = twitter.getOAuthAccessToken(request, pin);
         } catch (TwitterException te) { //comprobamos errores
             if (te.getStatusCode() == 401) {
-                System.out.println("Unable to get the access token");
+                System.out.println("Unable to get the access token.");
             } else {
                 te.printStackTrace();
             }
@@ -54,20 +58,19 @@ public class PruebaAutentificacion {
         }
 
         System.out.println("acceso con éxito");
-
         twitter.setOAuthAccessToken(access); //añadimos el access token a la aplicacion
 
         //Actualizar tu estado
-        //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico con poner un getText
+        //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico 
+        //con poner un getText serviría
         Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito aaaa.");
         /*//para el usuario
-        status.getUser().getScreenName(); */
-        //Recuperar listado de ultimos tweets escritos
-
-        //Publicar los últimos 10 tweets
-        Paging pagina = new Paging();
+        status.getUser().getScreenName();*/
         
+        //Recuperar listado de ultimos tweets escritos y publicar los últimos 10 tweets
+        Paging pagina = new Paging();
         pagina.setCount(10);
+        
         while (true) {
             for (Status status : twitter.getHomeTimeline(pagina)) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
@@ -79,7 +82,6 @@ public class PruebaAutentificacion {
                 ImageIcon img = new ImageIcon(url);
                 jLabelImagenUsuario.setTcon(img);
                 actualizar();//llevaria el método que muestra el timeline
-     
                  */
             }
             Thread.sleep(10000); //cada 10 segundos se recarga

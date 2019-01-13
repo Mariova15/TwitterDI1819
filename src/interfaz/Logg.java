@@ -2,6 +2,7 @@
 package interfaz;
 
 import java.io.File;
+import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
 
 
@@ -16,6 +17,7 @@ public class Logg extends javax.swing.JFrame {
     public Logg() {
         initComponents();
         setLocationRelativeTo(null);
+
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
          //Establecer una imagen en una label
