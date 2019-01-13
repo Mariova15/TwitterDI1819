@@ -66,6 +66,7 @@ public class PruebaAutentificacion {
 
         //Publicar los últimos 10 tweets
         Paging pagina = new Paging();
+        
         pagina.setCount(10);
         while (true) {
             for (Status status : twitter.getHomeTimeline(pagina)) {
@@ -78,7 +79,7 @@ public class PruebaAutentificacion {
                 ImageIcon img = new ImageIcon(url);
                 jLabelImagenUsuario.setTcon(img);
                 actualizar();//llevaria el método que muestra el timeline
-      
+     
                  */
             }
             Thread.sleep(10000); //cada 10 segundos se recarga
