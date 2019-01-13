@@ -39,12 +39,12 @@ public class Logg extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         botonLogin = new javax.swing.JButton();
         jTextFieldUsuario = new javax.swing.JTextField();
-        jTextFieldContrasenia = new javax.swing.JTextField();
         botonAniadirCuenta = new javax.swing.JButton();
         jLabelLogo = new javax.swing.JLabel();
         botonCerrarSesion = new javax.swing.JButton();
         jLabelConectado = new javax.swing.JLabel();
         jCheckBoxRemember = new javax.swing.JCheckBox();
+        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,15 +72,6 @@ public class Logg extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldContrasenia.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jTextFieldContrasenia.setText("Contraseña");
-        jTextFieldContrasenia.setName("DNI"); // NOI18N
-        jTextFieldContrasenia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldContraseniaActionPerformed(evt);
-            }
-        });
-
         botonAniadirCuenta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         botonAniadirCuenta.setText("Añadir Cuenta");
         botonAniadirCuenta.setToolTipText("PIEDARA");
@@ -105,22 +96,27 @@ public class Logg extends javax.swing.JFrame {
 
         jCheckBoxRemember.setText("Remember");
 
+        jPasswordField.setText("jPasswordField1");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addGap(56, 56, 56)
                         .addComponent(jCheckBoxRemember)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(botonLogin)
                         .addGap(5, 5, 5))
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextFieldContrasenia)
-                        .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jPasswordField)
+                                .addGap(5, 5, 5)))))
                 .addComponent(jLabelConectado, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                 .addGap(25, 25, 25))
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -147,9 +143,9 @@ public class Logg extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextFieldContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(23, 23, 23)
+                        .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jCheckBoxRemember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonLogin))
@@ -207,10 +203,6 @@ public class Logg extends javax.swing.JFrame {
     private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
-
-    private void jTextFieldContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldContraseniaActionPerformed
-
-    }//GEN-LAST:event_jTextFieldContraseniaActionPerformed
 
     private void botonAniadirCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAniadirCuentaActionPerformed
 
@@ -270,7 +262,7 @@ public class Logg extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextFieldContrasenia;
+    private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
 }
