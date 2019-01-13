@@ -4,9 +4,11 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import twitter4j.Paging;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -17,6 +19,8 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
+import twitter4j.User;
+import twitter4j.api.FavoritesResources;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
@@ -53,16 +57,25 @@ public class PruebaAutentificacion {
 
         twitter.setOAuthAccessToken(access); //añadimos el access token a la aplicacion
 
-        
-       
-        
         //Actualizar tu estado
-        Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito.");
-         //Recuperar listado de ultimos tweets escritos
+        //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico con poner un getText
+        Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito bis.");
+        /*//para el usuario
+        status.getUser().getScreenName(); */
+        //Recuperar listado de ultimos tweets escritos
         while (true) {
             for (Status status : twitter.getHomeTimeline()) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
 
+                /*//Para grafico para mostrar foto del usuario que publica el tweet
+          
+                User usuario = twitter.showUser(twitter.getId());
+                URL url = new URL(usuario.getProfileImageURL());
+                ImageIcon img = new ImageIcon(url);
+                jLabelImagenUsuario.setTcon(img);
+                actualizar();//llevaria el método que muestra el timeline
+      
+                 */
             }
             Thread.sleep(10000); //cada 10 segundos se recarga
         }
