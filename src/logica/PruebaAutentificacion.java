@@ -84,7 +84,13 @@ public class PruebaAutentificacion {
                 //log.error(e.getMessage());
                 }
                 }*/
-                /*//Para grafico para mostrar foto del usuario que publica el tweet
+                /*//Para borrar un retweet
+                    List<Status> retweets = twitter.getRetweets(statusID);
+                for (Status retweet : retweets)
+                        if (retweet.getUser().getId() == twitter.getId())
+                        twitter.destroyStatus(retweet.getId());
+                 */
+ /*//Para grafico para mostrar foto del usuario que publica el tweet
                 User usuario = twitter.showUser(twitter.getId());
                 URL url = new URL(usuario.getProfileImageURL());
                 ImageIcon img = new ImageIcon(url);
