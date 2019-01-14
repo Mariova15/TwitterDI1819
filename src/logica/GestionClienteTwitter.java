@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.PagableResponseList;
+import twitter4j.ResponseList;
+import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -19,6 +21,14 @@ import twitter4j.User;
  * @author Mario
  */
 public class GestionClienteTwitter {
+
+    /*public static void verTwitsUser(Twitter twitter) {
+    ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getScreenName());
+    
+    for (Status status : userTimeline) {
+    System.out.println(status.getId());
+    }
+    }*/
 
     /**
      * Metodo que twittea un mensaje.
@@ -36,7 +46,7 @@ public class GestionClienteTwitter {
 
     /**
      * Método que borra un twit por su ID.
-     * 
+     *
      * @param twitter con la información de usuario.
      * @param statusID ID del twit a borrar.
      */

@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.FilterQuery;
 import twitter4j.PagableResponseList;
+import twitter4j.ResponseList;
 import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
@@ -114,7 +115,14 @@ public class Test {
             System.out.println("acceso con éxito");
             twitter.setOAuthAccessToken(access);
 
-            GestionClienteTwitter.publicarTwit(twitter, "TEST");
+            //GestionClienteTwitter.publicarTwit(twitter, "TEST");
+            GestionClienteTwitter.borrarTwit(twitter, 1084806660240084993L);
+            
+            ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getScreenName());
+            
+            for (Status status : userTimeline) {
+                System.out.println(status.getId());
+            }
 
         } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
