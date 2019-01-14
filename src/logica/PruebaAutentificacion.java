@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -61,7 +62,7 @@ public class PruebaAutentificacion {
         //Actualizar tu estado
         //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico 
         //con poner un getText serviría
-        Status tweetEscrito = twitter.updateStatus("Prueba tweet Escrito bbbbb.");
+        Status tweetEscrito = twitter.updateStatus("Prueba tweet Escrito 13.");
         /*//para el usuario
         status.getUser().getScreenName();*/
 
@@ -69,9 +70,20 @@ public class PruebaAutentificacion {
         //Para publicar más de 20 tweets
         Paging pagina = new Paging(1, 100);//page number, number per page
 
+        //ConcurrentLinkedQueue<Long> retweetsQueue = new ConcurrentLinkedQueue<>(); Para retweetear
         while (true) {
             for (Status status : twitter.getHomeTimeline(pagina)) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
+                /*//Para retweetear
+                Long toRetweetId = retweetsQueue.poll();
+                if (toRetweetId != null) {
+                try {
+                Status retweetStatus = twitter.retweetStatus(toRetweetId);
+                System.out.println("retweetStatus "+retweetStatus);
+                } catch (TwitterException e) {
+                //log.error(e.getMessage());
+                }
+                }*/
                 /*//Para grafico para mostrar foto del usuario que publica el tweet
                 User usuario = twitter.showUser(twitter.getId());
                 URL url = new URL(usuario.getProfileImageURL());
