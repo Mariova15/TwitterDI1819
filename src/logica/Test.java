@@ -15,6 +15,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.FilterQuery;
 import twitter4j.PagableResponseList;
+import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -120,13 +122,26 @@ public class Test {
             
             //GestionClienteTwitter.retwitear(twitter, 1084744008398557184L);
             
+            /*Query usuarioBuscar = new Query("dinocazares");
             
+            QueryResult search = twitter.search(usuarioBuscar);*/
             
-            ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
+            List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
             
-            for (Status status : userTimeline) {
-                System.out.println(status.getId()+" "+status.getUser().getName());
+            for (Status tweet : tweets) {
+                System.out.println(tweet.getText());
             }
+            
+            ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
+            
+            for (User searchUser : searchUsers) {
+            System.out.println(searchUser.toString());
+            }
+            
+            /*ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
+            for (Status status : userTimeline) {
+            System.out.println(status.getId()+" "+status.getUser().getName());
+            }*/
 
         } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
