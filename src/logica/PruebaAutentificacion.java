@@ -41,8 +41,6 @@ public class PruebaAutentificacion {
         RequestToken request = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(request.getAuthorizationURL())); //esto lanza el navegador por defecto con la pagina de login
 
-        
-        
         System.out.println("Introduce el pin: "); //se introduce el pin
         String pin = new Scanner(System.in).nextLine();
         AccessToken access = null;
@@ -63,20 +61,18 @@ public class PruebaAutentificacion {
         //Actualizar tu estado
         //OJO HAY QUE CAMBIARLO CADA VEZ QUE SE EJECUTE PORQUE CASCA en gráfico 
         //con poner un getText serviría
-        Status tweetEscrito = twitter.updateStatus("Prueba tweetEscrito aaaa.");
+        Status tweetEscrito = twitter.updateStatus("Prueba tweet Escrito bbbbb.");
         /*//para el usuario
         status.getUser().getScreenName();*/
-        
-        //Recuperar listado de ultimos tweets escritos y publicar los últimos 10 tweets
-        Paging pagina = new Paging();
-        pagina.setCount(10);
-        
+
+        //Recuperar listado de ultimos tweets escritos y publicar los últimos tweets
+        //Para publicar más de 20 tweets
+        Paging pagina = new Paging(1, 100);//page number, number per page
+
         while (true) {
             for (Status status : twitter.getHomeTimeline(pagina)) {
                 System.out.println(status.getUser().getName() + " : " + status.getText()); //timeline
-
                 /*//Para grafico para mostrar foto del usuario que publica el tweet
-          
                 User usuario = twitter.showUser(twitter.getId());
                 URL url = new URL(usuario.getProfileImageURL());
                 ImageIcon img = new ImageIcon(url);
