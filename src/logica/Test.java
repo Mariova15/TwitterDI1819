@@ -116,12 +116,16 @@ public class Test {
             twitter.setOAuthAccessToken(access);
 
             //GestionClienteTwitter.publicarTwit(twitter, "TEST");
-            GestionClienteTwitter.borrarTwit(twitter, 1084806660240084993L);
+            //GestionClienteTwitter.borrarTwitRetweet(twitter, 1084859566444199938L);
             
-            ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getScreenName());
+            //GestionClienteTwitter.retwitear(twitter, 1084744008398557184L);
+            
+            
+            
+            ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
             
             for (Status status : userTimeline) {
-                System.out.println(status.getId());
+                System.out.println(status.getId()+" "+status.getUser().getName());
             }
 
         } catch (TwitterException ex) {

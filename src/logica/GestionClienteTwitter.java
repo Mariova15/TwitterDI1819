@@ -22,14 +22,6 @@ import twitter4j.User;
  */
 public class GestionClienteTwitter {
 
-    /*public static void verTwitsUser(Twitter twitter) {
-    ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getScreenName());
-    
-    for (Status status : userTimeline) {
-    System.out.println(status.getId());
-    }
-    }*/
-
     /**
      * Metodo que twittea un mensaje.
      *
@@ -45,14 +37,28 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que borra un twit por su ID.
+     * Método que borra un twit o un retweet por su ID.
      *
      * @param twitter con la información de usuario.
      * @param statusID ID del twit a borrar.
      */
-    public static void borrarTwit(Twitter twitter, long statusID) {
+    public static void borrarTwitRetweet(Twitter twitter, long statusID) {
         try {
             twitter.destroyStatus(statusID);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Método que que retwitea un twit por su ID.
+     *
+     * @param twitter con la información de usuario.
+     * @param statusID ID del twit a retwitear.
+     */
+    public static void retwitear(Twitter twitter, long statusID) {
+        try {
+            twitter.retweetStatus(statusID);
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
