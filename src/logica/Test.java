@@ -114,9 +114,7 @@ public class Test {
             System.out.println("acceso con éxito");
             twitter.setOAuthAccessToken(access);
 
-            List<User> ListaFollowers = GestionClienteTwitter.ListaFollowers(twitter);
-
-            System.out.println("FOLLOWERS" + ListaFollowers.size());
+            GestionClienteTwitter.publicarTwit(twitter, "TEST");
 
         } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
