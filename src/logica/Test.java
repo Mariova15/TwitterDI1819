@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import twitter4j.AccountSettings;
 import twitter4j.FilterQuery;
+import twitter4j.Location;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -119,29 +121,24 @@ public class Test {
 
             //GestionClienteTwitter.publicarTwit(twitter, "TEST");
             //GestionClienteTwitter.borrarTwitRetweet(twitter, 1084859566444199938L);
-            
             //GestionClienteTwitter.retwitear(twitter, 1084744008398557184L);
-            
             /*Query usuarioBuscar = new Query("dinocazares");
-            
             QueryResult search = twitter.search(usuarioBuscar);*/
-            
-            List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
-            
+            /*List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
             for (Status tweet : tweets) {
-                System.out.println(tweet.getText());
-            }
+            System.out.println(tweet.getText());
+            }*/
             
             ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
-            
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
-            }
+            }           
             
-            /*ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
+            
+            ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
             for (Status status : userTimeline) {
             System.out.println(status.getId()+" "+status.getUser().getName());
-            }*/
+            }
 
         } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);

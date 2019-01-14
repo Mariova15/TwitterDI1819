@@ -158,5 +158,14 @@ public class GestionClienteTwitter {
         }
         return usuariosEncontrados;
     }
+    
+    public static void mostrarTrendingTopic (Twitter twitter){
+        /*try {
+        twitter.getAvailableTrends();
+        twitter.getPlaceTrends();
+        } catch (TwitterException ex) {
+        Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }
 
 }
