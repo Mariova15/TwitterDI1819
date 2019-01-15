@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.GeoLocation;
+import twitter4j.Location;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.ResponseList;
 import twitter4j.Status;
+import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.User;
@@ -69,7 +71,7 @@ public class GestionClienteTwitter {
 
     /**
      * Método que hace un twit favorito por su ID.
-     * 
+     *
      * @param twitter con la información de usuario.
      * @param statusID ID del twit a hacer favorito.
      */
@@ -80,8 +82,8 @@ public class GestionClienteTwitter {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void borrarFavorito(Twitter twitter, long statusID){
+
+    public static void borrarFavorito(Twitter twitter, long statusID) {
         try {
             twitter.destroyFavorite(statusID);
         } catch (TwitterException ex) {
@@ -183,14 +185,30 @@ public class GestionClienteTwitter {
         return usuariosEncontrados;
     }
 
-    public static void mostrarTrendingTopic(Twitter twitter) {
-        /*try {
-        twitter.getAvailableTrends();
-        twitter.getPlaceTrends();
+    public static void mostrarTrendingTopic(Twitter twitter,int place) {
+        try {
+            /*try {
+            twitter.getAvailableTrends();
+            twitter.getPlaceTrends();
+            } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
+            //Returns the top 10 trending topics for a specific WOEID
+            ResponseList<Location> locations;
+            locations = twitter.getAvailableTrends();
+            System.out.println("Showing available trends");
+            for (Location location : locations) {
+                System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");
+            }
+            
+            //get the present trends of a specific location using it's WOEID like below
+            Trends trends = twitter.getPlaceTrends(place);
+            for (int i = 0; i < trends.getTrends().length; i++) {
+                System.out.println(trends.getTrends()[i].getName());
+            }
         } catch (TwitterException ex) {
-        Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
-
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
