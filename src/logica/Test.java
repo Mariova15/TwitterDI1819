@@ -132,12 +132,14 @@ public class Test {
             System.out.println(tweet.getId());
             }*/
             
-            GestionClienteTwitter.borrarFavorito(twitter, 1085153926914166784L);
+            GestionClienteTwitter.responderTwit(twitter, "RESPUESTA", 1085237281731104774L);
             
-            ResponseList<Status> favorites = twitter.getFavorites();
-            for (Status favorite : favorites) {
-                System.out.println(favorite.getId());
+            twitter.timelines().getUserTimeline();
+            
+            for (Status status : twitter.timelines().getUserTimeline()) {
+                System.out.println(status.getText());
             }
+            
             /*ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
