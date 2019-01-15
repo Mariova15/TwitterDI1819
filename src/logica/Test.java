@@ -24,6 +24,8 @@ import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.Trend;
+import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -127,18 +129,29 @@ public class Test {
             /*List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
             for (Status tweet : tweets) {
             System.out.println(tweet.getText());
+            System.out.println(tweet.getId());
             }*/
             
-            ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
+            GestionClienteTwitter.borrarFavorito(twitter, 1085153926914166784L);
+            
+            ResponseList<Status> favorites = twitter.getFavorites();
+            for (Status favorite : favorites) {
+                System.out.println(favorite.getId());
+            }
+            /*ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
-            }           
-            
-            
+            }
             ResponseList<Status> userTimeline = twitter.getUserTimeline(twitter.getId());
             for (Status status : userTimeline) {
             System.out.println(status.getId()+" "+status.getUser().getName());
-            }
+            }*/
+            /*Trends placeTrends = twitter.getPlaceTrends(1);
+            for (Trend trend : placeTrends.getTrends()) {
+            System.out.println(trend.getName());
+            }*/
+            
+            
 
         } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);

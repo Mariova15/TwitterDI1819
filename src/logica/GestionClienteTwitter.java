@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import twitter4j.GeoLocation;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -53,7 +54,7 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que que retwitea un twit por su ID.
+     * Método que retwitea un twit por su ID.
      *
      * @param twitter con la información de usuario.
      * @param statusID ID del twit a retwitear.
@@ -61,6 +62,28 @@ public class GestionClienteTwitter {
     public static void retwitear(Twitter twitter, long statusID) {
         try {
             twitter.retweetStatus(statusID);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Método que hace un twit favorito por su ID.
+     * 
+     * @param twitter con la información de usuario.
+     * @param statusID ID del twit a hacer favorito.
+     */
+    public static void hacerFavorito(Twitter twitter, long statusID) {
+        try {
+            twitter.createFavorite(statusID);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void borrarFavorito(Twitter twitter, long statusID){
+        try {
+            twitter.destroyFavorite(statusID);
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -143,11 +166,12 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que devuelve una lista de los usuarios que coinciden con la busqueda.
+     * Método que devuelve una lista de los usuarios que coinciden con la
+     * busqueda.
      *
      * @param twitter con la información de usuario.
      * @param usuario a buscar.
-     * @return 
+     * @return
      */
     public static ResponseList<User> buscarUsuario(Twitter twitter, String usuario) {
         ResponseList<User> usuariosEncontrados = null;
@@ -158,14 +182,15 @@ public class GestionClienteTwitter {
         }
         return usuariosEncontrados;
     }
-    
-    public static void mostrarTrendingTopic (Twitter twitter){
+
+    public static void mostrarTrendingTopic(Twitter twitter) {
         /*try {
         twitter.getAvailableTrends();
         twitter.getPlaceTrends();
         } catch (TwitterException ex) {
         Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }*/
+
     }
 
 }
