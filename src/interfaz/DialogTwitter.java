@@ -53,9 +53,9 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(56, 161, 243));
+        jPanel1.setBackground(new java.awt.Color(244, 244, 244));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 204));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jTextAreaMensajes.setColumns(20);
         jTextAreaMensajes.setRows(5);
@@ -86,7 +86,7 @@ public class DialogTwitter extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jTextAreaTrendingTopic.setColumns(20);
         jTextAreaTrendingTopic.setRows(5);
@@ -171,7 +171,7 @@ public class DialogTwitter extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel5.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         jTextAreaTweet140.setColumns(20);
         jTextAreaTweet140.setRows(5);
