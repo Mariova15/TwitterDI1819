@@ -14,9 +14,11 @@ import twitter4j.Location;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
+import twitter4j.RateLimitStatus;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
+import twitter4j.Trend;
 import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -86,9 +88,9 @@ public class GestionClienteTwitter {
 
     /**
      * Método que borra un twit de la lista de favoritos.
-     * 
-     * @param twitter con la información de usuario. 
-     * @param statusID ID del twit favorito borrar. 
+     *
+     * @param twitter con la información de usuario.
+     * @param statusID ID del twit favorito borrar.
      */
     public static void borrarFavorito(Twitter twitter, long statusID) {
         try {
@@ -99,11 +101,11 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que responde a un twit segun su status. 
-     * 
-     * @param twitter con la información de usuario. 
+     * Método que responde a un twit segun su status.
+     *
+     * @param twitter con la información de usuario.
      * @param respuesta cadena con el twit a responder.
-     * @param statusID ID del twit favorito borrar.  
+     * @param statusID ID del twit favorito borrar.
      */
     public static void responderTwit(Twitter twitter, String respuesta, long statusID) {
         try {
@@ -123,24 +125,22 @@ public class GestionClienteTwitter {
      * @return
      */
     public static List<User> listadoFollowers(Twitter twitter) {
-        List<User> followersList = new ArrayList<User>();
-        PagableResponseList<User> users;
+        List<User> followers = new ArrayList<User>();
+        PagableResponseList<User> page;
         long cursor = -1;
 
-        while (cursor != 0) {
-            try {
-                users = twitter.getFriendsList(twitter.getId(), cursor);
-                cursor = users.getNextCursor();
-                for (User user : users) {
-                    followersList.add(user);
-                }
-            } catch (TwitterException ex) {
-                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalStateException ex) {
-                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            while (cursor != 0) {
+                page = twitter.getFollowersList(twitter.getId(), cursor, 200);
+                followers.addAll(page);               
+                cursor = page.getNextCursor();
+                GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
             }
+        } catch (TwitterException e) {
+            e.printStackTrace();
         }
-        return followersList;
+
+        return followers;
     }
 
     /**
@@ -151,24 +151,39 @@ public class GestionClienteTwitter {
      * @return
      */
     public static List<User> listadoFollows(Twitter twitter) {
-        List<User> followsList = new ArrayList<User>();
-        PagableResponseList<User> users;
+        List<User> friends = new ArrayList<User>();
+        PagableResponseList<User> page;
         long cursor = -1;
 
-        while (cursor != 0) {
+        try {
+            while (cursor != 0) {
+                page = twitter.getFriendsList(twitter.getId(), cursor, 200);
+                friends.addAll(page);               
+                cursor = page.getNextCursor();
+                GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
+            }
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+
+        return friends;
+    }
+    
+    public static void handleRateLimit(RateLimitStatus rls) {
+        int remaining = rls.getRemaining();
+        System.out.println("Rate Limit Remaining: " + remaining);
+        if (remaining == 0) {
+            int resetTime = rls.getSecondsUntilReset() + 5;
+            int sleep = (resetTime * 1000);
             try {
-                users = twitter.getFriendsList(twitter.getId(), cursor);
-                cursor = users.getNextCursor();
-                for (User user : users) {
-                    followsList.add(user);
+                if (sleep > 0) {
+                    System.out.println("Rate Limit Exceeded. Sleep for " + (sleep / 1000) + " seconds..");
+                    Thread.sleep(sleep);
                 }
-            } catch (TwitterException ex) {
-                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IllegalStateException ex) {
-                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
-        return followsList;
     }
 
     /**
@@ -210,30 +225,15 @@ public class GestionClienteTwitter {
         return usuariosEncontrados;
     }
 
-    public static void mostrarTrendingTopic(Twitter twitter, int place) {
+    public static Trend[] mostrarTrendingTopic(Twitter twitter, int place) {
+        Trends placeTrends = null;
         try {
-            /*try {
-            twitter.getAvailableTrends();
-            twitter.getPlaceTrends();
-            } catch (TwitterException ex) {
-            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
-            //Returns the top 10 trending topics for a specific WOEID
-            ResponseList<Location> locations;
-            locations = twitter.getAvailableTrends();
-            System.out.println("Showing available trends");
-            for (Location location : locations) {
-                System.out.println(location.getName() + " (woeid:" + location.getWoeid() + ")");
-            }
-
-            //get the present trends of a specific location using it's WOEID like below
-            Trends trends = twitter.getPlaceTrends(place);
-            for (int i = 0; i < trends.getTrends().length; i++) {
-                System.out.println(trends.getTrends()[i].getName());
-            }
+            placeTrends = twitter.getPlaceTrends(1);
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        return placeTrends.getTrends();
     }
 
 }
