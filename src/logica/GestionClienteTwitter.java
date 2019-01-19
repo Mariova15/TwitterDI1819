@@ -132,7 +132,7 @@ public class GestionClienteTwitter {
         try {
             while (cursor != 0) {
                 page = twitter.getFollowersList(twitter.getId(), cursor, 200);
-                followers.addAll(page);               
+                followers.addAll(page);
                 cursor = page.getNextCursor();
                 GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
             }
@@ -158,7 +158,7 @@ public class GestionClienteTwitter {
         try {
             while (cursor != 0) {
                 page = twitter.getFriendsList(twitter.getId(), cursor, 200);
-                friends.addAll(page);               
+                friends.addAll(page);
                 cursor = page.getNextCursor();
                 GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
             }
@@ -168,7 +168,7 @@ public class GestionClienteTwitter {
 
         return friends;
     }
-    
+
     public static void handleRateLimit(RateLimitStatus rls) {
         int remaining = rls.getRemaining();
         System.out.println("Rate Limit Remaining: " + remaining);
@@ -225,10 +225,19 @@ public class GestionClienteTwitter {
         return usuariosEncontrados;
     }
 
-    public static Trend[] mostrarTrendingTopic(Twitter twitter, int place) {
+    /**
+     * Método que devuelve una lista de las tendencias mas populares de un lugar
+     * determinado.
+     *
+     * @param twitter con la información de usuario.
+     * @param place identificador WOEID para la zona (1 para sacar las
+     * tendencias generales).
+     * @return
+     */
+    public static Trend[] listarTrendingTopic(Twitter twitter, int place) {
         Trends placeTrends = null;
         try {
-            placeTrends = twitter.getPlaceTrends(1);
+            placeTrends = twitter.getPlaceTrends(place);
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -236,4 +245,36 @@ public class GestionClienteTwitter {
         return placeTrends.getTrends();
     }
 
+    /**
+     * Método que devuelve una lista de los últimos 20 twits de las personas que sigue el usuario.
+     * 
+     * @param twitter con la información de usuario.
+     * @return 
+     */
+    public static ResponseList<Status> listarTimeLineSeguidos(Twitter twitter) {
+        ResponseList<Status> timeLine = null ;
+        try {
+            timeLine = twitter.getHomeTimeline();
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return timeLine;
+    }
+
+    /**
+     * Método que devuelve una lista de los últimos 20 twits que ha realizado el usuario.
+     * 
+     * @param twitter con la información de usuario.
+     * @return 
+     */
+    public static ResponseList<Status> listarTimeLineUsuario(Twitter twitter){
+        ResponseList<Status> userTimeLine = null;
+        try {
+            userTimeLine = twitter.getHomeTimeline();
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userTimeLine;
+    }
+    
 }

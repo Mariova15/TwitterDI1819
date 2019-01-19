@@ -20,6 +20,7 @@ import twitter4j.AccountSettings;
 import twitter4j.FilterQuery;
 import twitter4j.Location;
 import twitter4j.PagableResponseList;
+import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.RateLimitStatus;
@@ -130,14 +131,20 @@ public class Test {
             //GestionClienteTwitter.retwitear(twitter, 1084744008398557184L);
             /*Query usuarioBuscar = new Query("dinocazares");
             QueryResult search = twitter.search(usuarioBuscar);*/
- /*List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
+            /*List<Status> tweets = GestionClienteTwitter.buscarTopic(twitter, "dinocazares");
             for (Status tweet : tweets) {
             System.out.println(tweet.getText());
             System.out.println(tweet.getId());
             }*/
-
-            System.out.println(GestionClienteTwitter.listadoFollowers(twitter).size());
-            System.out.println(GestionClienteTwitter.listadoFollows(twitter).size());
+            /*System.out.println(GestionClienteTwitter.listadoFollowers(twitter).size());
+            System.out.println(GestionClienteTwitter.listadoFollows(twitter).size());*/
+            //String temp = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in dapibus erat. Mauris iaculis pulvinar eros. Donec euismod ante a orci mattis, eget suscipit mi porttitor. Integer erat sapien, laoreet sed purus nec, feugiat commodo lorem. Nulla nunc leo, ultrices sit amet quam eu di";
+            ResponseList<Status> homeTimeline = twitter.getHomeTimeline(new Paging(1));
+            
+            for (Status status : homeTimeline) {
+                System.out.println(status.getCreatedAt());
+            }
+            
             /*ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
@@ -150,9 +157,9 @@ public class Test {
             for (Trend trend : placeTrends.getTrends()) {
             System.out.println(trend.getName());
             }*/
-            }catch (TwitterException ex) {
+        } catch (TwitterException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        }
     }
+}
