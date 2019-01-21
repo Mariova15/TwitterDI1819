@@ -9,18 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import logica.Excepciones.CifradoExcepcion;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -36,31 +28,49 @@ public class Autentificacion {
     private String oatPublico = "HkM0LS2MQLnh2c4ECo40HHYmP";
     private String oatPrivado = "uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG";
     
+    /**
+     * genera un Request token, necesario para lanzar el navegador
+     * @param twitter
+     * @return
+     * @throws URISyntaxException
+     * @throws TwitterException
+     * @throws IOException 
+     */
     public RequestToken getRequestToken(Twitter twitter) throws URISyntaxException, TwitterException, IOException{
         if (twitter==null) throw new IllegalArgumentException("twitter no puede ser nulo");
         twitter.setOAuthConsumer(oatPublico, oatPrivado);
         return twitter.getOAuthRequestToken();
     }
     
-    public void nuevaConexion(Twitter twitter,RequestToken request,String pin)
-            throws TwitterException, NoSuchAlgorithmException, IOException, 
-            FileNotFoundException, InvalidKeySpecException, NoSuchPaddingException,
-            InvalidKeyException, IllegalBlockSizeException, BadPaddingException{
-        
-        
+    /**
+     * crea una nueva conexion
+     * @param twitter
+     * @param request
+     * @param pin
+     * @throws TwitterException
+     * @throws logica.Excepciones.CifradoExcepcion
+     * @throws IOException 
+     */
+    public void nuevaConexion(Twitter twitter,RequestToken request,String pin) 
+            throws TwitterException, CifradoExcepcion, IOException{
         if (twitter==null||request==null) throw new IllegalArgumentException("twitter y/o request no pueden ser nulos");
         AccessToken access = twitter.getOAuthAccessToken(request, pin);
-        guardarConexion(twitter,request);
+        guardarConexion(access);
         
     }
 
-    private void guardarConexion(Twitter twitter,RequestToken request) throws TwitterException,
-            NoSuchAlgorithmException, FileNotFoundException, IOException, 
-            InvalidKeySpecException, NoSuchPaddingException, InvalidKeyException
-            , IllegalBlockSizeException, BadPaddingException {
+    /**
+     * guarda la conexion pasada por parametro
+     * @param access
+     * @throws logica.Excepciones.CifradoExcepcion
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
+    private void guardarConexion(AccessToken access) 
+            throws CifradoExcepcion, FileNotFoundException, IOException  {
         
-        if (twitter==null) throw new IllegalArgumentException("twitter no puede ser nulo");
-        String claves = request.getToken()+","+request.getTokenSecret();
+        if (access==null) throw new IllegalArgumentException("twitter no puede ser nulo");
+        String claves = access.getToken()+","+access.getTokenSecret();
         String sha256 = cifrado.sha256(claves);
         
         Properties configuracion = new Properties();
@@ -76,7 +86,7 @@ public class Autentificacion {
     }
     
     /**
-     * 
+     * carga la ultima sesion 
      * @return
      * @throws FileNotFoundException
      * @throws IOException
@@ -88,42 +98,35 @@ public class Autentificacion {
         
         Properties configuracion = new Properties();
         configuracion.load(new FileInputStream(new File("configuracion.cnf")));
-        String ultimaSesion = configuracion.getProperty("ultima_sesion");
-        if(ultimaSesion==null||"".equals(ultimaSesion)) throw new Exception("no hay sesion guardada");
+        String sha256 = configuracion.getProperty("ultima_sesion");
+        if(sha256==null||"".equals(sha256)) throw new Exception("no hay sesion guardada");
         
-        File sesion = new File("sesiones"+File.separator+ultimaSesion);
+        File sesion = new File("sesiones"+File.separator+sha256);
         if(!sesion.exists()) {
             errorSesion();
         }
         
         
-        cargarSesion(sesion, ultimaSesion, twitter);
+        cargarSesion(sesion, sha256, twitter);
         return twitter;
     }
 
     /**
-     * mirar que tokens se necesita para guardar la sesion y como cargarlos luego
-     * @param sesion
-     * @param sha256
-     * @param twitter
-     * @throws BadPaddingException
-     * @throws NoSuchAlgorithmException
-     * @throws IOException
-     * @throws Exception
-     * @throws NoSuchPaddingException
-     * @throws InvalidKeySpecException
-     * @throws FileNotFoundException
-     * @throws TwitterException
-     * @throws IllegalBlockSizeException
-     * @throws InvalidKeyException 
+     * carga una sesion
+     * @param sesion archivo con la sesion encriptada
+     * @param sha256 nombre del archivo, sha256 del contenido desencriptado
+     * @param twitter 
+     * @throws java.io.FileNotFoundException
+     * @throws logica.Excepciones.CifradoExcepcion
+     * 
      */
-    private void cargarSesion(File sesion, String sha256, Twitter twitter) throws BadPaddingException, NoSuchAlgorithmException, IOException, Exception, NoSuchPaddingException, InvalidKeySpecException, FileNotFoundException, TwitterException, IllegalBlockSizeException, InvalidKeyException {
+    public void cargarSesion(File sesion, String sha256, Twitter twitter) 
+            throws FileNotFoundException, IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
+        
         FileInputStream reader = new FileInputStream(sesion);
         byte[] encriptado = new byte[reader.available()];
         reader.read(encriptado);
         String desencriptado = cifrado.desencriptar(encriptado);
-        System.out.println(desencriptado);
-        System.out.println(sha256);
         if(!cifrado.sha256(desencriptado).equals(sha256)){
             errorSesion();
         }
@@ -132,15 +135,16 @@ public class Autentificacion {
         if(claves.length<2){
             errorSesion();
         }
-        RequestToken token = twitter.getOAuthRequestToken(claves[0], claves[1]);
-        
-        twitter.getOAuthAccessToken(token, "");
+        twitter.setOAuthConsumer(oatPublico, oatPrivado);
+        AccessToken oathAccessToken = new AccessToken(claves[0], claves[1]);
+        twitter.setOAuthAccessToken(oathAccessToken);
+        guardarConexion(oathAccessToken);
     }
     
-    private void errorSesion() throws Exception{
+    private void errorSesion() throws Excepciones.SesionExcepcion, FileNotFoundException, IOException {
         Properties configuracion = new Properties();
         configuracion.setProperty("ultima_sesion", "");
         configuracion.store(new FileOutputStream(new File("configuracion.cnf")), "configuracion twitter");
-        throw new Exception("error al cargar la sesion");
+        throw new Excepciones.SesionExcepcion();
     }
 }
