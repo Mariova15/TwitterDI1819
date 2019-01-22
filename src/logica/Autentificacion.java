@@ -5,17 +5,20 @@
  */
 package logica;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import logica.Excepciones.CifradoExcepcion;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -30,25 +33,10 @@ import twitter4j.auth.RequestToken;
 public class Autentificacion {
 
     private final transient CifradoRsa cifrado = new CifradoRsa();
-    private String oatPublico = "HkM0LS2MQLnh2c4ECo40HHYmP";
-    private String oatPrivado = "uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG";
+    private transient String oatPublico = "HkM0LS2MQLnh2c4ECo40HHYmP";
+    private transient String oatPrivado = "uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG";
 
-    /**
-     * genera un Request token, necesario para lanzar el navegador
-     *
-     * @param twitter
-     * @return
-     * @throws URISyntaxException
-     * @throws TwitterException
-     * @throws IOException
-     */
-    public RequestToken getRequestToken(Twitter twitter) throws URISyntaxException, TwitterException, IOException {
-        if (twitter == null) {
-            throw new IllegalArgumentException("twitter no puede ser nulo");
-        }
-        twitter.setOAuthConsumer(oatPublico, oatPrivado);
-        return twitter.getOAuthRequestToken();
-    }
+    
 
     /**
      * crea una nueva conexion
@@ -60,13 +48,16 @@ public class Autentificacion {
      * @throws logica.Excepciones.CifradoExcepcion
      * @throws IOException
      */
-    public void nuevaConexion(Twitter twitter, RequestToken request, String pin)
-            throws TwitterException, CifradoExcepcion, IOException {
-        if (twitter == null || request == null) {
-            throw new IllegalArgumentException("twitter y/o request no pueden ser nulos");
-        }
-        AccessToken access = twitter.getOAuthAccessToken(request, pin);
+    public Twitter nuevaConexion()
+            throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
+        Twitter twitter= TwitterFactory.getSingleton();
+        twitter.setOAuthConsumer(oatPublico, oatPrivado);
+        RequestToken requestToken = twitter.getOAuthRequestToken();
+        Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
+        String pin = JOptionPane.showInputDialog("introduce pin");
+        AccessToken access = twitter.getOAuthAccessToken(requestToken, pin);
         guardarConexion(access);
+        return twitter;
 
     }
 

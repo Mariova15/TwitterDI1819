@@ -1,17 +1,27 @@
-
 package interfaz;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
-
+import logica.Autentificacion;
+import logica.Excepciones;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.RequestToken;
 
 public class Logg extends javax.swing.JFrame {
- private static final String RUTA_LOGO = ".." + File.separator + "imgs"
+
+    private static final String RUTA_LOGO = ".." + File.separator + "imgs"
             + File.separator + "logo.png";
-  private static final String RUTA_ICON = ".." + File.separator + "imgs"
+    private static final String RUTA_ICON = ".." + File.separator + "imgs"
             + File.separator + "favicon-32x32.png";
+
     /**
      * Creates new form Logg
      */
@@ -21,7 +31,7 @@ public class Logg extends javax.swing.JFrame {
 
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
-         //Establecer una imagen en una label
+        //Establecer una imagen en una label
         jLabelLogo.setIcon(new ImageIcon(getClass().getResource(RUTA_LOGO)));
         //Establecer el logo del a aplicación
         setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());
@@ -39,13 +49,9 @@ public class Logg extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         botonLogin = new javax.swing.JButton();
-        jTextFieldUsuario = new javax.swing.JTextField();
-        botonAniadirCuenta = new javax.swing.JButton();
         jLabelLogo = new javax.swing.JLabel();
-        botonCerrarSesion = new javax.swing.JButton();
         jLabelConectado = new javax.swing.JLabel();
         jCheckBoxRemember = new javax.swing.JCheckBox();
-        jPasswordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,59 +71,21 @@ public class Logg extends javax.swing.JFrame {
             }
         });
 
-        jTextFieldUsuario.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jTextFieldUsuario.setText("Usuario");
-        jTextFieldUsuario.setName("Nombre y apellidos"); // NOI18N
-        jTextFieldUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldUsuarioActionPerformed(evt);
-            }
-        });
-
-        botonAniadirCuenta.setBackground(new java.awt.Color(56, 161, 243));
-        botonAniadirCuenta.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonAniadirCuenta.setText("Añadir Cuenta");
-        botonAniadirCuenta.setToolTipText("PIEDARA");
-        botonAniadirCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAniadirCuentaActionPerformed(evt);
-            }
-        });
-
-        botonCerrarSesion.setBackground(new java.awt.Color(56, 161, 243));
-        botonCerrarSesion.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonCerrarSesion.setText("Cerrar Sesión");
-        botonCerrarSesion.setToolTipText("PIEDARA");
-        botonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonCerrarSesionActionPerformed(evt);
-            }
-        });
-
         jLabelConectado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelConectado.setForeground(new java.awt.Color(51, 51, 51));
         jLabelConectado.setToolTipText("tu apuesta");
 
         jCheckBoxRemember.setText("Remember");
-
-        jPasswordField.setText("jPasswordField1");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jPasswordField)
-                    .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(botonAniadirCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botonCerrarSesion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jCheckBoxRemember)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botonLogin)))
-                .addGap(5, 5, 5)
+                .addGap(57, 57, 57)
+                .addComponent(jCheckBoxRemember)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botonLogin)
+                .addGap(6, 6, 6)
                 .addComponent(jLabelConectado, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                 .addGap(25, 25, 25))
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -136,19 +104,11 @@ public class Logg extends javax.swing.JFrame {
                         .addComponent(jLabelConectado, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                        .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)
-                        .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jCheckBoxRemember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(botonLogin))
-                        .addGap(18, 18, 18)
-                        .addComponent(botonCerrarSesion)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botonAniadirCuenta)
-                        .addGap(64, 64, 64))))
+                        .addGap(142, 142, 142))))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -184,34 +144,20 @@ public class Logg extends javax.swing.JFrame {
 
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
 
-        botonLogin.setVisible(false);
-        botonCerrarSesion.setVisible(true);
-        botonAniadirCuenta.setVisible(false);
-        jTextFieldUsuario.setVisible(false);
-        jPasswordField.setVisible(false);
-        DialogTwitter gestorClienteTwitter
-        = new DialogTwitter(this, true);
-        gestorClienteTwitter.setVisible(true);
+        try {
+            Autentificacion auto = new Autentificacion();
+            
+            Twitter nuevaConexion = auto.nuevaConexion();
+            
+            botonLogin.setVisible(false);
+            DialogTwitter gestorClienteTwitter
+                    = new DialogTwitter(this, true, nuevaConexion);
+            gestorClienteTwitter.setVisible(true);
+        } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex) {
+            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_botonLoginActionPerformed
-
-    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
-
-    private void botonAniadirCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAniadirCuentaActionPerformed
-
-    }//GEN-LAST:event_botonAniadirCuentaActionPerformed
-
-    private void botonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCerrarSesionActionPerformed
-
-        botonLogin.setVisible(true);
-        botonCerrarSesion.setVisible(false);
-        botonAniadirCuenta.setVisible(true);
-        jTextFieldUsuario.setVisible(true);
-        jPasswordField.setVisible(true);
-        jLabelConectado.setText("");
-    }//GEN-LAST:event_botonCerrarSesionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,15 +195,11 @@ public class Logg extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botonAniadirCuenta;
-    private javax.swing.JButton botonCerrarSesion;
     private javax.swing.JButton botonLogin;
     private javax.swing.JCheckBox jCheckBoxRemember;
     private javax.swing.JLabel jLabelConectado;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPasswordField jPasswordField;
-    private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
 }

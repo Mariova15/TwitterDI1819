@@ -32,11 +32,11 @@ public class EjemploAutentificacion {
             Autentificacion autentificacion = new Autentificacion();
             // nueva conexion:
             Twitter twitter = TwitterFactory.getSingleton();
-            RequestToken requestToken = autentificacion.getRequestToken(twitter);
+            RequestToken requestToken = twitter.getOAuthRequestToken();
             Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
             System.out.print("introduce pin: ");
             String pin = new Scanner(System.in).nextLine(); //se necesita introducir el pin
-            autentificacion.nuevaConexion(twitter, requestToken, pin);
+            autentificacion.nuevaConexion();
             
             
             // cargar ultima conexion
