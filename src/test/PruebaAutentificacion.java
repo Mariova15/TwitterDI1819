@@ -1,4 +1,4 @@
-package logica;
+package test;
 
 import java.awt.Desktop;
 import java.io.IOException;

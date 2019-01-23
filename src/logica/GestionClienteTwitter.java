@@ -36,12 +36,14 @@ public class GestionClienteTwitter {
      * @param twitter con la información de usuario.
      * @param twit Cadena con el mensaje a twittear.
      */
-    public static void publicarTwit(Twitter twitter, String twit) {
+    public static boolean publicarTwit(Twitter twitter, String twit) {
         try {
             twitter.updateStatus(twit);
+            return true;
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     /**
@@ -270,7 +272,7 @@ public class GestionClienteTwitter {
     public static ResponseList<Status> listarTimeLineUsuario(Twitter twitter){
         ResponseList<Status> userTimeLine = null;
         try {
-            userTimeLine = twitter.getHomeTimeline();
+            userTimeLine = twitter.getUserTimeline();
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
