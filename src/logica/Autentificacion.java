@@ -15,9 +15,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import logica.Excepciones.CifradoExcepcion;
 import twitter4j.Twitter;
@@ -35,7 +32,24 @@ public class Autentificacion {
     private final transient CifradoRsa cifrado = new CifradoRsa();
     private transient String oatPublico = "HkM0LS2MQLnh2c4ECo40HHYmP";
     private transient String oatPrivado = "uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG";
+    private static Autentificacion AUTENTIFICACION;
+    private Configuracion configuracion;
 
+    private  Autentificacion() {
+        Twitter twitter= TwitterFactory.getSingleton();
+        twitter.setOAuthConsumer(oatPublico, oatPrivado);
+        this.configuracion=new Configuracion();
+        this.configuracion.setComentario("configuracion twitter");
+    }
+    
+    public static Autentificacion getInstance(){
+        if(AUTENTIFICACION==null) AUTENTIFICACION=new Autentificacion();
+        return AUTENTIFICACION;
+    }
+
+    public Configuracion getConfiguracion() {
+        return configuracion;
+    }
     
 
     /**
@@ -51,7 +65,6 @@ public class Autentificacion {
     public Twitter nuevaConexion()
             throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
         Twitter twitter= TwitterFactory.getSingleton();
-        twitter.setOAuthConsumer(oatPublico, oatPrivado);
         RequestToken requestToken = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
@@ -78,9 +91,8 @@ public class Autentificacion {
         String claves = access.getToken() + "," + access.getTokenSecret();
         String sha256 = cifrado.sha256(claves);
 
-        Properties configuracion = new Properties();
-        configuracion.setProperty("ultima_sesion", sha256);
-        configuracion.store(new FileOutputStream(new File("configuracion.cnf")), "configuracion twitter");
+        
+        this.configuracion.setClave("ultima_sesion", sha256);
 
         File sesion = new File("sesiones" + File.separator + sha256);
         sesion.getParentFile().mkdirs();
@@ -98,15 +110,14 @@ public class Autentificacion {
      * @throws IOException
      * @throws Exception
      */
-    public Twitter cargarUltimaSesion() throws FileNotFoundException, IOException, Exception {
+    public Twitter cargarUltimaSesion() throws FileNotFoundException, 
+            IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
         Twitter twitter = TwitterFactory.getSingleton();
-        twitter.setOAuthConsumer(oatPublico, oatPrivado);
 
-        Properties configuracion = new Properties();
-        configuracion.load(new FileInputStream(new File("configuracion.cnf")));
-        String sha256 = configuracion.getProperty("ultima_sesion");
+        
+        String sha256 = this.configuracion.getClave("ultima_sesion");
         if (sha256 == null || "".equals(sha256)) {
-            throw new Exception("no hay sesion guardada");
+            errorSesion();
         }
 
         File sesion = new File("sesiones" + File.separator + sha256);
@@ -132,13 +143,12 @@ public class Autentificacion {
             throws FileNotFoundException, IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
 
         AccessToken accessToken = getAccessToken(sesion);
-        twitter.setOAuthConsumer(oatPublico, oatPrivado);
         twitter.setOAuthAccessToken(accessToken);
+        
         guardarConexion(accessToken);
     }
     
     public void cargarSesion (AccessToken accessToken,Twitter twitter) throws CifradoExcepcion, IOException{
-        twitter.setOAuthConsumer(oatPublico, oatPrivado);
         twitter.setOAuthAccessToken(accessToken);
         guardarConexion(accessToken);
     }
@@ -159,7 +169,8 @@ public class Autentificacion {
         return conexiones;
     }
 
-    private AccessToken getAccessToken(File file) throws FileNotFoundException, CifradoExcepcion, IOException, Excepciones.SesionExcepcion {
+    private AccessToken getAccessToken(File file) throws FileNotFoundException,
+            CifradoExcepcion, IOException, Excepciones.SesionExcepcion {
         FileInputStream reader = new FileInputStream(file);
         byte[] encriptado = new byte[reader.available()];
         reader.read(encriptado);
@@ -176,9 +187,7 @@ public class Autentificacion {
     }
 
     private void errorSesion() throws Excepciones.SesionExcepcion, FileNotFoundException, IOException {
-        Properties configuracion = new Properties();
-        configuracion.setProperty("ultima_sesion", "");
-        configuracion.store(new FileOutputStream(new File("configuracion.cnf")), "configuracion twitter");
+        this.configuracion.setClave("ultima_sesion", "");
         throw new Excepciones.SesionExcepcion();
     }
 }

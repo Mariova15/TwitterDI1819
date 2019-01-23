@@ -29,7 +29,7 @@ public class EjemploAutentificacion {
      */
     public static void main(String[] args) {
         try {
-            Autentificacion autentificacion = new Autentificacion();
+            Autentificacion autentificacion = Autentificacion.getInstance();
             // nueva conexion:
             Twitter twitter = TwitterFactory.getSingleton();
             RequestToken requestToken = twitter.getOAuthRequestToken();
