@@ -35,22 +35,23 @@ public class Autentificacion {
     private static Autentificacion AUTENTIFICACION;
     private Configuracion configuracion;
 
-    private  Autentificacion() {
-        Twitter twitter= TwitterFactory.getSingleton();
+    private Autentificacion() {
+        Twitter twitter = TwitterFactory.getSingleton();
         twitter.setOAuthConsumer(oatPublico, oatPrivado);
-        this.configuracion=new Configuracion();
+        this.configuracion = new Configuracion();
         this.configuracion.setComentario("configuracion twitter");
     }
-    
-    public static Autentificacion getInstance(){
-        if(AUTENTIFICACION==null) AUTENTIFICACION=new Autentificacion();
+
+    public static Autentificacion getInstance() {
+        if (AUTENTIFICACION == null) {
+            AUTENTIFICACION = new Autentificacion();
+        }
         return AUTENTIFICACION;
     }
 
     public Configuracion getConfiguracion() {
         return configuracion;
     }
-    
 
     /**
      * crea una nueva conexion
@@ -64,14 +65,14 @@ public class Autentificacion {
      */
     public Twitter nuevaConexion(Boolean activarGuardado)
             throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
-        Twitter twitter= TwitterFactory.getSingleton();
+        Twitter twitter = TwitterFactory.getSingleton();
         RequestToken requestToken = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
         AccessToken access = twitter.getOAuthAccessToken(requestToken, pin);
         if (activarGuardado) {
             guardarConexion(access);
-        }        
+        }
         return twitter;
 
     }
@@ -93,7 +94,6 @@ public class Autentificacion {
         String claves = access.getToken() + "," + access.getTokenSecret();
         String sha256 = cifrado.sha256(claves);
 
-        
         this.configuracion.setClave("ultima_sesion", sha256);
 
         File sesion = new File("sesiones" + File.separator + sha256);
@@ -105,6 +105,18 @@ public class Autentificacion {
     }
 
     /**
+     * borra la conexion pasada por parametro
+     *
+     * @throws logica.Excepciones.CifradoExcepcion
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void borrarUltimaSesion()
+            throws CifradoExcepcion, FileNotFoundException, IOException {
+        this.configuracion.setClave("ultima_sesion", "");
+    }
+
+    /**
      * carga la ultima sesion
      *
      * @return
@@ -112,11 +124,10 @@ public class Autentificacion {
      * @throws IOException
      * @throws Exception
      */
-    public Twitter cargarUltimaSesion() throws FileNotFoundException, 
+    public Twitter cargarUltimaSesion() throws FileNotFoundException,
             IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
         Twitter twitter = TwitterFactory.getSingleton();
 
-        
         String sha256 = this.configuracion.getClave("ultima_sesion");
         if (sha256 == null || "".equals(sha256)) {
             errorSesion();
@@ -146,11 +157,11 @@ public class Autentificacion {
 
         AccessToken accessToken = getAccessToken(sesion);
         twitter.setOAuthAccessToken(accessToken);
-        
+
         guardarConexion(accessToken);
     }
-    
-    public void cargarSesion (AccessToken accessToken,Twitter twitter) throws CifradoExcepcion, IOException{
+
+    public void cargarSesion(AccessToken accessToken, Twitter twitter) throws CifradoExcepcion, IOException {
         twitter.setOAuthAccessToken(accessToken);
         guardarConexion(accessToken);
     }

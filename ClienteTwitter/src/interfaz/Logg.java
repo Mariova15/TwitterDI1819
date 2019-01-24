@@ -53,6 +53,7 @@ public class Logg extends javax.swing.JFrame {
         jLabelLogo = new javax.swing.JLabel();
         jLabelConectado = new javax.swing.JLabel();
         jCheckBoxRemember = new javax.swing.JCheckBox();
+        botonDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,22 +79,42 @@ public class Logg extends javax.swing.JFrame {
 
         jCheckBoxRemember.setText("Remember");
 
+        botonDelete.setBackground(new java.awt.Color(56, 161, 243));
+        botonDelete.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        botonDelete.setForeground(new java.awt.Color(255, 255, 255));
+        botonDelete.setText("Borrar última conexión");
+        botonDelete.setToolTipText("PIEDARA");
+        botonDelete.setActionCommand("Borrar última conexión");
+        botonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(jCheckBoxRemember)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botonLogin)
-                .addGap(6, 6, 6)
-                .addComponent(jLabelConectado, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                .addGap(25, 25, 25))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(57, 57, 57)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(195, 195, 195)
+                        .addComponent(jLabelConectado, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(botonDelete)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(jCheckBoxRemember)
+                                .addGap(18, 18, 18)
+                                .addComponent(botonLogin)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,10 +128,12 @@ public class Logg extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jCheckBoxRemember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBoxRemember, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonLogin))
-                        .addGap(142, 142, 142))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botonDelete)
+                        .addGap(115, 115, 115))))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -166,6 +189,16 @@ public class Logg extends javax.swing.JFrame {
 
     }//GEN-LAST:event_botonLoginActionPerformed
 
+    private void botonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeleteActionPerformed
+        try {
+            auto.borrarUltimaSesion();
+        } catch (Excepciones.CifradoExcepcion ex) {
+            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_botonDeleteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -202,6 +235,7 @@ public class Logg extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonDelete;
     private javax.swing.JButton botonLogin;
     private javax.swing.JCheckBox jCheckBoxRemember;
     private javax.swing.JLabel jLabelConectado;

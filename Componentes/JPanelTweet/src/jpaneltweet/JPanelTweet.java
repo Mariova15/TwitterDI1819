@@ -20,26 +20,35 @@ public class JPanelTweet extends JPanel {
     private JLabel jLabelScreenName , jLabelName, jLabelTime, jLabelText;
     
     public JPanelTweet() {
+                
+        this.setSize(454, 122);
         
-        this.setLayout(new BorderLayout());
+        //this.setLayout(new BorderLayout());
         
-        jLabelScreenName = new JLabel(screenName);        
+        jLabelScreenName = new JLabel(screenName);       
         jLabelName = new JLabel(name);
         jLabelTime = new JLabel(time);
         jLabelText = new JLabel(text);
         
-        this.add(jLabelScreenName , BorderLayout.NORTH);
+        jLabelScreenName.setSize(100, 25);
+        jLabelName.setSize(100, 25);
+        jLabelTime.setSize(100, 25);
+        jLabelText.setSize(100, 25);
+        
+        //this.add(jLabelScreenName , BorderLayout.NORTH);
         this.add(jLabelName);
         this.add(jLabelTime);
         this.add(jLabelText);
         
+        
+        
     }
 
-    public String getsCreenName() {
+    public String getscreenName() {
         return screenName;
     }
 
-    public void setsCreenName(String sCreenName) {
+    public void setscreenName(String sCreenName) {
         this.screenName = sCreenName;
     }
 
