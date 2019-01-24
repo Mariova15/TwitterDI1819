@@ -38,7 +38,7 @@ public class EjemploAutentificacion {
             Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
             System.out.print("introduce pin: ");
             String pin = new Scanner(System.in).nextLine(); //se necesita introducir el pin
-            autentificacion.nuevaConexion();
+            //autentificacion.nuevaConexion();
             
             
             // cargar ultima conexion

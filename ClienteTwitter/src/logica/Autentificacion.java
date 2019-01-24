@@ -62,14 +62,16 @@ public class Autentificacion {
      * @throws logica.Excepciones.CifradoExcepcion
      * @throws IOException
      */
-    public Twitter nuevaConexion()
+    public Twitter nuevaConexion(Boolean activarGuardado)
             throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
         Twitter twitter= TwitterFactory.getSingleton();
         RequestToken requestToken = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
         AccessToken access = twitter.getOAuthAccessToken(requestToken, pin);
-        guardarConexion(access);
+        if (activarGuardado) {
+            guardarConexion(access);
+        }        
         return twitter;
 
     }

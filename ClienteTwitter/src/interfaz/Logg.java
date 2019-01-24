@@ -64,7 +64,8 @@ public class Logg extends javax.swing.JFrame {
 
         botonLogin.setBackground(new java.awt.Color(56, 161, 243));
         botonLogin.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        botonLogin.setText("LOGIN");
+        botonLogin.setForeground(new java.awt.Color(255, 255, 255));
+        botonLogin.setText("Login");
         botonLogin.setToolTipText("PIEDARA");
         botonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -145,24 +146,24 @@ public class Logg extends javax.swing.JFrame {
 
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
 
-        
-    try {
-        //trata de cargar la ultima sesion
-        Twitter cargarUltimaSesion = auto.cargarUltimaSesion();
-        new DialogTwitter(this, rootPaneCheckingEnabled, cargarUltimaSesion).setVisible(true);
-    } catch (IOException | Excepciones.CifradoExcepcion ex) {
-        Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (Excepciones.SesionExcepcion ex) {
         try {
-            //si no puede inicia una nueva conexion
-            Twitter nuevaConexion = auto.nuevaConexion();
-            new DialogTwitter(this, rootPaneCheckingEnabled, nuevaConexion).setVisible(true);
-        } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
-            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex1);
+            //trata de cargar la ultima sesion
+            Twitter cargarUltimaSesion = auto.cargarUltimaSesion();
+            new DialogTwitter(this, rootPaneCheckingEnabled, cargarUltimaSesion).setVisible(true);
+        } catch (IOException | Excepciones.CifradoExcepcion ex) {
+            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Excepciones.SesionExcepcion ex) {
+            try {
+                //si no puede inicia una nueva conexion
+                Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected()); 
+
+                new DialogTwitter(this, rootPaneCheckingEnabled, nuevaConexion).setVisible(true);
+                this.setVisible(false);
+            } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
+                Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
-    }
-        
-           
+
 
     }//GEN-LAST:event_botonLoginActionPerformed
 
