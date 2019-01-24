@@ -89,18 +89,17 @@
                       </Group>
                       <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                       <Component id="jTextFieldPublicarTwit" min="-2" pref="235" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jButtonPublicarTwit" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonPublicarTwit" min="-2" pref="77" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButtonPublicarTwit" alignment="1" max="32767" attributes="0"/>
                           <Component id="jTextFieldPublicarTwit" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -113,6 +112,10 @@
                                   <Component id="jLabelUserImg" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="jButtonPublicarTwit" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -137,6 +140,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButtonPublicarTwit">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="f3" green="a1" red="38" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Twittear"/>
               </Properties>
               <Events>
@@ -149,6 +155,10 @@
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+                <Property name="lineBorder" type="int" value="4"/>
+                <Property name="lineColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="f3" green="a1" red="38" type="rgb"/>
                 </Property>
               </Properties>
             </Component>
@@ -214,6 +224,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextArea" name="jTextAreaUserTimeLine">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="lineWrap" type="boolean" value="true"/>
                     <Property name="rows" type="int" value="5"/>
@@ -224,6 +235,9 @@
             </Container>
             <Component class="javax.swing.JButton" name="jButtonRefresh">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="f3" green="a1" red="38" type="rgb"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Refrescar"/>
               </Properties>
               <Events>
@@ -245,6 +259,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextArea" name="jTextAreaHomeTL">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                   </Properties>

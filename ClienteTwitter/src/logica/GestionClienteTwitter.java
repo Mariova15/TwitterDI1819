@@ -5,12 +5,16 @@
  */
 package logica;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import twitter4j.GeoLocation;
-import twitter4j.Location;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -38,8 +42,12 @@ public class GestionClienteTwitter {
      */
     public static boolean publicarTwit(Twitter twitter, String twit) {
         try {
-            twitter.updateStatus(twit);
-            return true;
+            for (Status status : GestionClienteTwitter.listarTimeLineUsuario(twitter)) {
+                if (!status.getText().equals(twit)) {
+                    twitter.updateStatus(twit);
+                    return true;
+                }
+            }
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -248,13 +256,14 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que devuelve una lista de los últimos 20 twits de las personas que sigue el usuario.
-     * 
+     * Método que devuelve una lista de los últimos 20 twits de las personas que
+     * sigue el usuario.
+     *
      * @param twitter con la información de usuario.
-     * @return 
+     * @return
      */
     public static ResponseList<Status> listarTimeLineSeguidos(Twitter twitter) {
-        ResponseList<Status> timeLine = null ;
+        ResponseList<Status> timeLine = null;
         try {
             timeLine = twitter.getHomeTimeline();
         } catch (TwitterException ex) {
@@ -264,12 +273,13 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * Método que devuelve una lista de los últimos 20 twits que ha realizado el usuario.
-     * 
+     * Método que devuelve una lista de los últimos 20 twits que ha realizado el
+     * usuario.
+     *
      * @param twitter con la información de usuario.
-     * @return 
+     * @return
      */
-    public static ResponseList<Status> listarTimeLineUsuario(Twitter twitter){
+    public static ResponseList<Status> listarTimeLineUsuario(Twitter twitter) {
         ResponseList<Status> userTimeLine = null;
         try {
             userTimeLine = twitter.getUserTimeline();
@@ -278,5 +288,31 @@ public class GestionClienteTwitter {
         }
         return userTimeLine;
     }
-    
+
+    public static void descargarIMG(String imgURL, String rutaIMG) {
+        try {            
+            InputStream in = new BufferedInputStream(new URL(imgURL).openStream());            
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            
+            byte[] buf = new byte[1024];
+            int n = 0;
+
+            while (-1 != (n = in.read(buf))) {
+                out.write(buf, 0, n);
+            }
+
+            out.close();
+            in.close();
+            byte[] response = out.toByteArray();
+            
+            FileOutputStream fos = new FileOutputStream(rutaIMG);
+            fos.write(response);
+            fos.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+
 }

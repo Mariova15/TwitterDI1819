@@ -119,6 +119,7 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         jLabelName.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
+        jButtonPublicarTwit.setBackground(new java.awt.Color(56, 161, 243));
         jButtonPublicarTwit.setText("Twittear");
         jButtonPublicarTwit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -127,6 +128,8 @@ public class DialogTwitter extends javax.swing.JDialog {
         });
 
         jLabelUserImg.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelUserImg.setLineBorder(4);
+        jLabelUserImg.setLineColor(new java.awt.Color(56, 161, 243));
 
         javax.swing.GroupLayout jPanelUserLayout = new javax.swing.GroupLayout(jPanelUser);
         jPanelUser.setLayout(jPanelUserLayout);
@@ -141,16 +144,15 @@ public class DialogTwitter extends javax.swing.JDialog {
                     .addComponent(jLabelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addComponent(jTextFieldPublicarTwit, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonPublicarTwit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonPublicarTwit, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanelUserLayout.setVerticalGroup(
             jPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUserLayout.createSequentialGroup()
+            .addGroup(jPanelUserLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonPublicarTwit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextFieldPublicarTwit)
                     .addGroup(jPanelUserLayout.createSequentialGroup()
                         .addGroup(jPanelUserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,18 +162,23 @@ public class DialogTwitter extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabelScName, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabelUserImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 7, Short.MAX_VALUE)))
+                        .addGap(0, 7, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelUserLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonPublicarTwit)))
                 .addContainerGap())
         );
 
         jPanelTimeLine.setBackground(new java.awt.Color(255, 255, 255));
 
+        jTextAreaUserTimeLine.setEditable(false);
         jTextAreaUserTimeLine.setColumns(20);
         jTextAreaUserTimeLine.setLineWrap(true);
         jTextAreaUserTimeLine.setRows(5);
         jTextAreaUserTimeLine.setWrapStyleWord(true);
         jScrollPaneUserTimeline.setViewportView(jTextAreaUserTimeLine);
 
+        jButtonRefresh.setBackground(new java.awt.Color(56, 161, 243));
         jButtonRefresh.setText("Refrescar");
         jButtonRefresh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -182,6 +189,7 @@ public class DialogTwitter extends javax.swing.JDialog {
         jLabelUserTL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelUserTL.setText("User timeline");
 
+        jTextAreaHomeTL.setEditable(false);
         jTextAreaHomeTL.setColumns(20);
         jTextAreaHomeTL.setRows(5);
         jScrollPaneHomeTL.setViewportView(jTextAreaHomeTL);
