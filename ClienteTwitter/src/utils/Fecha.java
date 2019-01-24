@@ -35,4 +35,9 @@ public class Fecha {
         return sdf.format(fechaFormat);
     }
 
+    public static String timeFormat(Date fechaFormat) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+        return sdf.format(fechaFormat);
+    }
+
 }
