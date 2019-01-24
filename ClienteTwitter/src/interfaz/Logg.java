@@ -158,7 +158,6 @@ public class Logg extends javax.swing.JFrame {
                 Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected()); 
 
                 new DialogTwitter(this, rootPaneCheckingEnabled, nuevaConexion).setVisible(true);
-                this.setVisible(false);
             } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
                 Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex1);
             }
