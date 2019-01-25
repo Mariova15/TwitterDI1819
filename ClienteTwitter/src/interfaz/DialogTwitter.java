@@ -42,14 +42,6 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         this.twitter = twitter;
         
-        try {
-            jPanelTweet1.setscreenName(twitter.getScreenName());
-        } catch (TwitterException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalStateException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
         pintarTimeLine(twitter);
 
         try {
@@ -121,7 +113,6 @@ public class DialogTwitter extends javax.swing.JDialog {
         jScrollPaneHomeTL = new javax.swing.JScrollPane();
         jTextAreaHomeTL = new javax.swing.JTextArea();
         jLabelHomeTL = new javax.swing.JLabel();
-        jPanelTweet1 = new jpaneltweet.JPanelTweet();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -338,19 +329,13 @@ public class DialogTwitter extends javax.swing.JDialog {
                     .addComponent(jPanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelTimeLine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(jPanelTweet1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBackgroundLayout.setVerticalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(jPanelTweet1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelTimeLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -363,9 +348,7 @@ public class DialogTwitter extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -440,7 +423,6 @@ public class DialogTwitter extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelHeader;
     private javax.swing.JPanel jPanelTimeLine;
-    private jpaneltweet.JPanelTweet jPanelTweet1;
     private javax.swing.JPanel jPanelUser;
     private javax.swing.JScrollPane jScrollPaneHomeTL;
     private javax.swing.JScrollPane jScrollPaneUserTimeline;
