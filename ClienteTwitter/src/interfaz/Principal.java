@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
@@ -56,17 +57,17 @@ public class Principal extends javax.swing.JDialog {
             jLabelScName.setText("@" + twitter.getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
 
-            String imgUser = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
-
+            /*String imgUser = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
+            
             URL url = new URL(imgUser);
             InputStream in = new BufferedInputStream(url.openStream());
-
+            
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
             int n = 0;
             System.out.println("descargando");
             while (-1 != (n = in.read(buf))) {
-                out.write(buf, 0, n);
+            out.write(buf, 0, n);
             }
             System.out.println("descargado");
             out.close();
@@ -75,12 +76,17 @@ public class Principal extends javax.swing.JDialog {
             FileOutputStream fos = new FileOutputStream("user.png");
             fos.write(response);
             fos.close();
-
+            
             Image userProfileIMG = new ImageIcon("user.png").getImage().getScaledInstance(
-                    jLabelUserImg.getWidth(), jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+            jLabelUserImg.getWidth(), jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);*/
 
             //jLabelUserImg.setIcon(new ImageIcon("user.png"));
-            jLabelUserImg.setIcon(new ImageIcon(userProfileIMG));
+            //jLabelUserImg.setIcon(new ImageIcon(userProfileIMG));
+            Image image = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
+                    .getScaledInstance(jLabelUserImg.getWidth(),
+                     jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+
+            jLabelUserImg.setIcon(new ImageIcon(image));
 
             jLabelUserImg.setComponent(this);
 
@@ -94,7 +100,7 @@ public class Principal extends javax.swing.JDialog {
             jLabelAccionTT1.setjLabelAccionListener(new JLabelAccionListener() {
                 @Override
                 public void realizarAccion() {
-                    
+
                     List<Status> buscarTopic = GestionClienteTwitter.buscarTopic(twitter, jLabelAccionTT1.getText());
                     for (Status status : buscarTopic) {
                         System.out.println(status.getUser().getScreenName());
@@ -103,12 +109,10 @@ public class Principal extends javax.swing.JDialog {
                     }
 
                 }
-            });                       
+            });
             Trend[] listarTrendingTopic = GestionClienteTwitter.listarTrendingTopic(twitter, 1);
-                
+
             jLabelAccionTT1.setText(listarTrendingTopic[0].getName());
-               
-           
 
         } catch (TwitterException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

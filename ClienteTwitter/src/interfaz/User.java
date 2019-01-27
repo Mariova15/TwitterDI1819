@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import logica.GestionClienteTwitter;
 import twitter4j.Status;
@@ -41,35 +42,17 @@ public class User extends javax.swing.JDialog {
         try {            
             pintarTimeLine(twitter);
             
-            String bannerUser = twitter.showUser(twitter.getId()).getProfileBanner600x200URL();
-            
-            URL url = new URL(bannerUser);
-            InputStream in = new BufferedInputStream(url.openStream());
-
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
-            int n = 0;
-            System.out.println("descargando");
-            while (-1 != (n = in.read(buf))) {
-                out.write(buf, 0, n);
-            }
-            System.out.println("descargado");
-            out.close();
-            in.close();
-            byte[] response = out.toByteArray();
-            FileOutputStream fos = new FileOutputStream("banner.png");
-            fos.write(response);
-            fos.close();
-            
-             Image userBannerIMG = new ImageIcon("banner.png").getImage().getScaledInstance(
-                    jLabelBanner.getWidth(), jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
+            Image imageBanner = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getProfileBanner600x200URL()))
+                    .getScaledInstance(jLabelBanner.getWidth(),
+                     jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
              
-            jLabelBanner.setIcon(new ImageIcon(userBannerIMG));
+            jLabelBanner.setIcon(new ImageIcon(imageBanner));
             
-            Image userProfileIMG = new ImageIcon("user.png").getImage().getScaledInstance(
-                    jLabelUserImg.getWidth(), jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+            Image imageUserProfile = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
+                    .getScaledInstance(jLabelUserImg.getWidth(),
+                     jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
             
-            jLabelUserImg.setIcon(new ImageIcon(userProfileIMG));
+            jLabelUserImg.setIcon(new ImageIcon(imageUserProfile));
         } catch (TwitterException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
