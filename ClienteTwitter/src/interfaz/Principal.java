@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,11 +20,13 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
+import jlabelaccion.JLabelAccion;
 import jlabelaccion.JLabelAccionListener;
 import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
 import twitter4j.ResponseList;
 import twitter4j.Status;
+import twitter4j.Trend;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import utils.Fecha;
@@ -88,11 +91,11 @@ public class Principal extends javax.swing.JDialog {
                 }
             });
 
-            jLabelAccionTT.setjLabelAccionListener(new JLabelAccionListener() {
+            jLabelAccionTT1.setjLabelAccionListener(new JLabelAccionListener() {
                 @Override
                 public void realizarAccion() {
-
-                    List<Status> buscarTopic = GestionClienteTwitter.buscarTopic(twitter, jLabelAccionTT.getText());
+                    
+                    List<Status> buscarTopic = GestionClienteTwitter.buscarTopic(twitter, jLabelAccionTT1.getText());
                     for (Status status : buscarTopic) {
                         System.out.println(status.getUser().getScreenName());
                         System.out.println(status.getText());
@@ -100,7 +103,12 @@ public class Principal extends javax.swing.JDialog {
                     }
 
                 }
-            });
+            });                       
+            Trend[] listarTrendingTopic = GestionClienteTwitter.listarTrendingTopic(twitter, 1);
+                
+            jLabelAccionTT1.setText(listarTrendingTopic[0].getName());
+               
+           
 
         } catch (TwitterException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +148,7 @@ public class Principal extends javax.swing.JDialog {
         jLabelHomeTL = new javax.swing.JLabel();
         jPanelTT = new javax.swing.JPanel();
         jLabelTT = new javax.swing.JLabel();
-        jLabelAccionTT = new jlabelaccion.JLabelAccion();
+        jLabelAccionTT1 = new jlabelaccion.JLabelAccion();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -339,8 +347,8 @@ public class Principal extends javax.swing.JDialog {
         jLabelTT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTT.setText("Trending topics");
 
-        jLabelAccionTT.setText("#namm2019");
-        jLabelAccionTT.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelAccionTT1.setText("#namm2019");
+        jLabelAccionTT1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout jPanelTTLayout = new javax.swing.GroupLayout(jPanelTT);
         jPanelTT.setLayout(jPanelTTLayout);
@@ -350,12 +358,12 @@ public class Principal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanelTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelTTLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabelAccionTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelTTLayout.createSequentialGroup()
                         .addComponent(jLabelTT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(jPanelTTLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabelAccionTT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanelTTLayout.setVerticalGroup(
             jPanelTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,8 +371,8 @@ public class Principal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelAccionTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabelAccionTT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(209, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
@@ -467,7 +475,7 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JButton jButtonLogOut;
     private javax.swing.JButton jButtonPublicarTwit;
     private javax.swing.JButton jButtonRefresh;
-    private jlabelaccion.JLabelAccion jLabelAccionTT;
+    private jlabelaccion.JLabelAccion jLabelAccionTT1;
     private javax.swing.JLabel jLabelHomeTL;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelScName;
