@@ -42,17 +42,13 @@ public class EjemploAutentificacion {
             
             
             // cargar ultima conexion
-            Twitter ultimaSesion = autentificacion.cargarUltimaSesion();
+            //Twitter ultimaSesion = autentificacion.cargarUltimaSesion();
             
             //cargar sesion guardada
-            File sesion = new File("sesiones").listFiles()[0];//primera sesion...mas o menos
-            autentificacion.cargarSesion(sesion, sesion.getName(), twitter); //crear objeto twitter antes
+            //File sesion = new File("sesiones").listFiles()[0];//primera sesion...mas o menos
+            //autentificacion.cargarSesion(sesion, sesion.getName(), twitter); //crear objeto twitter antes
             
         } catch (IOException | URISyntaxException | TwitterException ex) {
-            Logger.getLogger(EjemploAutentificacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Excepciones.CifradoExcepcion ex) {
-            Logger.getLogger(EjemploAutentificacion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
             Logger.getLogger(EjemploAutentificacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         

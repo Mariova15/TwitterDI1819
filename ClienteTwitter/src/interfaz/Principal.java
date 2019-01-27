@@ -1,5 +1,7 @@
 package interfaz;
 
+import java.awt.Component;
+import java.awt.Dialog;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.BufferedInputStream;
@@ -16,6 +18,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
+import jlabelaccion.JLabelAccionListener;
+import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
 import twitter4j.ResponseList;
 import twitter4j.Status;
@@ -23,7 +27,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import utils.Fecha;
 
-public class DialogTwitter extends javax.swing.JDialog {
+public class Principal extends javax.swing.JDialog {
 
     private static final String RUTA_ICON = ".." + File.separator + "imgs"
             + File.separator + "favicon-96x96.png";
@@ -33,7 +37,7 @@ public class DialogTwitter extends javax.swing.JDialog {
     /**
      * Creates new form DialogConfiguracion
      */
-    public DialogTwitter(java.awt.Frame parent, boolean modal, Twitter twitter) {
+    public Principal(java.awt.Frame parent, boolean modal, Twitter twitter) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
@@ -73,20 +77,29 @@ public class DialogTwitter extends javax.swing.JDialog {
 
             //jLabelUserImg.setIcon(new ImageIcon("user.png"));
             jLabelUserImg.setIcon(new ImageIcon(userProfileIMG));
+            
+            jLabelUserImg.setComponent(this);
+            
+            jLabelUserImg.setcLabelListener(new CLabelListener() {
+                @Override
+                public void realizarAccion(Component component) {
+                    new User((Dialog) component, true, twitter).setVisible(true);
+                }
+            });
 
         } catch (TwitterException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(DialogTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Establecer el logo del a aplicación
         setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());
-
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -109,10 +122,10 @@ public class DialogTwitter extends javax.swing.JDialog {
         jScrollPaneUserTimeline = new javax.swing.JScrollPane();
         jTextAreaUserTimeLine = new javax.swing.JTextArea();
         jButtonRefresh = new javax.swing.JButton();
-        jLabelUserTL = new javax.swing.JLabel();
         jScrollPaneHomeTL = new javax.swing.JScrollPane();
         jTextAreaHomeTL = new javax.swing.JTextArea();
         jLabelHomeTL = new javax.swing.JLabel();
+        jLabelUserTL = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -274,9 +287,6 @@ public class DialogTwitter extends javax.swing.JDialog {
             }
         });
 
-        jLabelUserTL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelUserTL.setText("User timeline");
-
         jTextAreaHomeTL.setEditable(false);
         jTextAreaHomeTL.setColumns(20);
         jTextAreaHomeTL.setRows(5);
@@ -284,6 +294,9 @@ public class DialogTwitter extends javax.swing.JDialog {
 
         jLabelHomeTL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelHomeTL.setText("Home timeline");
+
+        jLabelUserTL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelUserTL.setText("User timeline");
 
         javax.swing.GroupLayout jPanelTimeLineLayout = new javax.swing.GroupLayout(jPanelTimeLine);
         jPanelTimeLine.setLayout(jPanelTimeLineLayout);
@@ -294,12 +307,12 @@ public class DialogTwitter extends javax.swing.JDialog {
                 .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelTimeLineLayout.createSequentialGroup()
-                        .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(jScrollPaneUserTimeline)
-                            .addComponent(jLabelUserTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
                         .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPaneHomeTL)
+                            .addComponent(jScrollPaneUserTimeline, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                            .addComponent(jLabelUserTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, 313, Short.MAX_VALUE)
                             .addComponent(jLabelHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -308,8 +321,8 @@ public class DialogTwitter extends javax.swing.JDialog {
             .addGroup(jPanelTimeLineLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelUserTL)
-                    .addComponent(jLabelHomeTL))
+                    .addComponent(jLabelHomeTL)
+                    .addComponent(jLabelUserTL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
@@ -378,7 +391,7 @@ public class DialogTwitter extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        // TODO add your handling code here:
+        new User(this, true, twitter).setVisible(true);
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void pintarTimeLine(Twitter twitter) {

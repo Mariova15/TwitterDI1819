@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
+import jlabelaccion.JLabelAccionListener;
 import logica.Autentificacion;
 import logica.Excepciones;
 import twitter4j.Twitter;
@@ -15,7 +16,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
 
-public class Logg extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
 
     Autentificacion auto = Autentificacion.getInstance();
     private static final String RUTA_LOGO = ".." + File.separator + "imgs"
@@ -26,7 +27,7 @@ public class Logg extends javax.swing.JFrame {
     /**
      * Creates new form Logg
      */
-    public Logg() {
+    public Login() {
         initComponents();
         setLocationRelativeTo(null);
 
@@ -35,7 +36,8 @@ public class Logg extends javax.swing.JFrame {
         //Establecer una imagen en una label
         jLabelLogo.setIcon(new ImageIcon(getClass().getResource(RUTA_LOGO)));
         //Establecer el logo del a aplicación
-        setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());        
+       
     }
 
     /**
@@ -84,7 +86,6 @@ public class Logg extends javax.swing.JFrame {
         botonDelete.setForeground(new java.awt.Color(255, 255, 255));
         botonDelete.setText("Borrar última conexión");
         botonDelete.setToolTipText("PIEDARA");
-        botonDelete.setActionCommand("Borrar última conexión");
         botonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botonDeleteActionPerformed(evt);
@@ -172,17 +173,17 @@ public class Logg extends javax.swing.JFrame {
         try {
             //trata de cargar la ultima sesion
             Twitter cargarUltimaSesion = auto.cargarUltimaSesion();
-            new DialogTwitter(this, rootPaneCheckingEnabled, cargarUltimaSesion).setVisible(true);
+            new Principal(this, true, cargarUltimaSesion).setVisible(true);
         } catch (IOException | Excepciones.CifradoExcepcion ex) {
-            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Excepciones.SesionExcepcion ex) {
             try {
                 //si no puede inicia una nueva conexion
                 Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected()); 
 
-                new DialogTwitter(this, rootPaneCheckingEnabled, nuevaConexion).setVisible(true);
+                new Principal(this, true, nuevaConexion).setVisible(true);
             } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
-                Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex1);
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
 
@@ -193,9 +194,9 @@ public class Logg extends javax.swing.JFrame {
         try {
             auto.borrarUltimaSesion();
         } catch (Excepciones.CifradoExcepcion ex) {
-            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Logg.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_botonDeleteActionPerformed
 
@@ -216,20 +217,21 @@ public class Logg extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Logg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Logg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Logg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Logg.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Logg().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }

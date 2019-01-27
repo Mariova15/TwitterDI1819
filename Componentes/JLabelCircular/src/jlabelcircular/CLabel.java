@@ -1,6 +1,9 @@
 package jlabelcircular;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.AbstractBorder;
@@ -13,6 +16,8 @@ public class CLabel extends JLabel {
    private AbstractBorder circleBorder = new CircleBorder();       
    private int lineBorder=1; 
    private Color lineColor= Color.BLACK;
+   private Component component;    
+   private CLabelListener cLabelListener;
    
     /** Constructor */
      public CLabel()
@@ -24,7 +29,15 @@ public class CLabel extends JLabel {
         setOpaque(true);
         setHorizontalAlignment(CENTER);       
         setVisible(true);       
-        setBorder(circleBorder); 
+        setBorder(circleBorder);
+        this.addMouseListener(new MouseAdapter() {
+         @Override
+            public void mouseClicked(MouseEvent me) {
+                if (cLabelListener != null) {
+                    cLabelListener.realizarAccion(component);
+                }
+            }
+        });
      }
      
     //Color de borde
@@ -47,5 +60,21 @@ public class CLabel extends JLabel {
         circleBorder = new CircleBorder(lineColor, lineBorder);
         this.lineBorder = lineBorder;        
         setBorder(circleBorder); 
+    }
+    
+    public Component getComponent() {
+        return component;
+    }
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
+
+    public CLabelListener getcLabelListener() {
+        return cLabelListener;
+    }
+
+    public void setcLabelListener(CLabelListener cLabelListener) {
+        this.cLabelListener = cLabelListener;
     }
 }

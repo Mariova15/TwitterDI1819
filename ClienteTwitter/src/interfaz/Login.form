@@ -179,7 +179,6 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Borrar &#xfa;ltima conexi&#xf3;n"/>
                 <Property name="toolTipText" type="java.lang.String" value="PIEDARA"/>
-                <Property name="actionCommand" type="java.lang.String" value="Borrar &#xfa;ltima conexi&#xf3;n"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonDeleteActionPerformed"/>

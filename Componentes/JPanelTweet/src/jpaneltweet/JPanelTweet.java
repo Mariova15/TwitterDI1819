@@ -6,6 +6,7 @@
 package jpaneltweet;
 
 import java.awt.BorderLayout;
+import java.io.Serializable;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -13,7 +14,7 @@ import javax.swing.JPanel;
  *
  * @author Mario
  */
-public class JPanelTweet extends JPanel {
+public class JPanelTweet extends JPanel implements Serializable {
 
     private String screenName, name, time, text;
     

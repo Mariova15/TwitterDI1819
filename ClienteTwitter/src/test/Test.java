@@ -125,6 +125,7 @@ public class Test {
 
             System.out.println("acceso con éxito");
             twitter.setOAuthAccessToken(access);
+            System.out.println(access.getScreenName());
 
             //GestionClienteTwitter.publicarTwit(twitter, "TEST");
             //GestionClienteTwitter.borrarTwitRetweet(twitter, 1084859566444199938L);
@@ -142,9 +143,27 @@ public class Test {
             ResponseList<Status> homeTimeline = twitter.getHomeTimeline(new Paging(1));
             
             for (Status status : homeTimeline) {
-                System.out.println(status.getCreatedAt());
+                System.out.println(status.getUser().getScreenName());
             }
+            System.out.println("-------------------------------------");
             
+            Desktop.getDesktop().browse(new URI(request.getAuthorizationURL()));
+            System.out.println("Introduce el pin: "); //se introduce el pin
+            String pin = new Scanner(System.in).nextLine();
+            
+            access = twitter.getOAuthAccessToken(request, pin);
+            
+            twitter.setOAuthAccessToken(access);
+            System.out.println(access.getScreenName());
+            System.out.println(access.getToken());
+            System.out.println(access.getTokenSecret());
+            
+            ResponseList<Status> pruebaTL = twitter.getHomeTimeline(new Paging(1));
+            
+            for (Status status : pruebaTL) {
+                System.out.println(status.getUser().getScreenName());
+            }
+                        
             /*ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
@@ -158,6 +177,10 @@ public class Test {
             System.out.println(trend.getName());
             }*/
         } catch (TwitterException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
 
