@@ -905,16 +905,16 @@ is divided into following sections:
         </propertyfile>
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-jar.properties}"/>
-            <param location="${project.JLabelAccion}" name="call.subproject"/>
-            <param location="${project.JLabelAccion}/build.xml" name="call.script"/>
+            <param location="${project.JLabelCircular}" name="call.subproject"/>
+            <param location="${project.JLabelCircular}/build.xml" name="call.script"/>
             <param name="call.target" value="jar"/>
             <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
             <param name="transfer.not.archive.disabled" value="true"/>
         </antcall>
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-jar.properties}"/>
-            <param location="${project.JLabelCircular}" name="call.subproject"/>
-            <param location="${project.JLabelCircular}/build.xml" name="call.script"/>
+            <param location="${project.JLabelTT}" name="call.subproject"/>
+            <param location="${project.JLabelTT}/build.xml" name="call.script"/>
             <param name="call.target" value="jar"/>
             <param name="transfer.built-jar.properties" value="${built-jar.properties}"/>
             <param name="transfer.not.archive.disabled" value="true"/>
@@ -1422,16 +1422,16 @@ is divided into following sections:
         </propertyfile>
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-clean.properties}"/>
-            <param location="${project.JLabelAccion}" name="call.subproject"/>
-            <param location="${project.JLabelAccion}/build.xml" name="call.script"/>
+            <param location="${project.JLabelCircular}" name="call.subproject"/>
+            <param location="${project.JLabelCircular}/build.xml" name="call.script"/>
             <param name="call.target" value="clean"/>
             <param name="transfer.built-clean.properties" value="${built-clean.properties}"/>
             <param name="transfer.not.archive.disabled" value="true"/>
         </antcall>
         <antcall target="-maybe-call-dep">
             <param name="call.built.properties" value="${built-clean.properties}"/>
-            <param location="${project.JLabelCircular}" name="call.subproject"/>
-            <param location="${project.JLabelCircular}/build.xml" name="call.script"/>
+            <param location="${project.JLabelTT}" name="call.subproject"/>
+            <param location="${project.JLabelTT}/build.xml" name="call.script"/>
             <param name="call.target" value="clean"/>
             <param name="transfer.built-clean.properties" value="${built-clean.properties}"/>
             <param name="transfer.not.archive.disabled" value="true"/>

@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jlabelaccion;
+package jlabeltt;
 
 /**
  *
  * @author Mario
  */
-public interface JLabelAccionListener {
+public interface JLabelTTListener {
     
-    public void realizarAccion();
+    public void realizarAccion(String text);
     
 }

@@ -8,13 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.StageStyle;
 import javax.swing.ImageIcon;
-import jlabelaccion.JLabelAccionListener;
 import logica.Autentificacion;
 import logica.Excepciones;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.RequestToken;
+import jlabeltt.JLabelTTListener;
 
 public class Login extends javax.swing.JFrame {
 

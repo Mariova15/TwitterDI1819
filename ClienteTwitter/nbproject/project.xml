@@ -13,7 +13,7 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
-                <foreign-project>JLabelAccion</foreign-project>
+                <foreign-project>JLabelCircular</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
@@ -21,7 +21,7 @@
                 <id>jar</id>
             </reference>
             <reference>
-                <foreign-project>JLabelCircular</foreign-project>
+                <foreign-project>JLabelTT</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>

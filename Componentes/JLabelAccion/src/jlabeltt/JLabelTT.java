@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jlabelaccion;
+package jlabeltt;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -15,26 +15,29 @@ import javax.swing.JOptionPane;
  *
  * @author Mario
  */
-public class JLabelAccion extends JLabel implements Serializable {
+public class JLabelTT extends JLabel implements Serializable {
 
-    private JLabelAccionListener jLabelAccionListener;
+    private JLabelTTListener jLabelAccionListener;
     
-    public JLabelAccion() {
+    public JLabelTT() {
+        
+        String text = this.getText();
+        
         this.addMouseListener(new MouseAdapter() {
          @Override
             public void mouseClicked(MouseEvent me) {
                 if (jLabelAccionListener != null) {
-                    jLabelAccionListener.realizarAccion();
+                    jLabelAccionListener.realizarAccion(text);
                 }
             }
         });
     }
 
-    public JLabelAccionListener getjLabelAccionListener() {
+    public JLabelTTListener getjLabelAccionListener() {
         return jLabelAccionListener;
     }
 
-    public void setjLabelAccionListener(JLabelAccionListener jLabelAccionListener) {
+    public void setjLabelAccionListener(JLabelTTListener jLabelAccionListener) {
         this.jLabelAccionListener = jLabelAccionListener;
     }
     

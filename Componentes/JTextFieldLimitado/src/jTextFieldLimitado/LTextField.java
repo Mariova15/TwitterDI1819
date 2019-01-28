@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.Serializable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -17,7 +18,7 @@ import javax.swing.event.DocumentListener;
  *
  * @author alumnop
  */
-public class LTextField extends JTextField implements Serializable {
+public class LTextField extends JTextArea implements Serializable {
 
     private int numeroMaximo;
 

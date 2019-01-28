@@ -35,12 +35,12 @@ public class User extends javax.swing.JDialog {
      * Creates new form User
      */
     public User(java.awt.Dialog parent, boolean modal, Twitter twitter) {
-        super(parent, modal);
+        super(parent, modal);        
+        initComponents();
         setLocationRelativeTo(null);
         this.twitter = twitter;
-        initComponents();
         try {            
-            pintarTimeLine(twitter);
+            //pintarTimeLine(twitter);
             
             Image imageBanner = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getProfileBanner600x200URL()))
                     .getScaledInstance(jLabelBanner.getWidth(),
@@ -87,35 +87,21 @@ public class User extends javax.swing.JDialog {
         jButtonRefresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanelBackground.setBackground(new java.awt.Color(244, 244, 244));
         jPanelBackground.setPreferredSize(new java.awt.Dimension(600, 200));
 
         jPanelUserInfo.setBackground(new java.awt.Color(255, 255, 255));
         jPanelUserInfo.setPreferredSize(new java.awt.Dimension(580, 180));
+        jPanelUserInfo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabelUserImg.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelUserImg.setLineBorder(4);
+        jLabelUserImg.setLineColor(new java.awt.Color(255, 255, 255));
         jLabelUserImg.setPreferredSize(new java.awt.Dimension(158, 158));
-
-        javax.swing.GroupLayout jPanelUserInfoLayout = new javax.swing.GroupLayout(jPanelUserInfo);
-        jPanelUserInfo.setLayout(jPanelUserInfoLayout);
-        jPanelUserInfoLayout.setHorizontalGroup(
-            jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUserInfoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelUserImg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelBanner, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanelUserInfoLayout.setVerticalGroup(
-            jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelUserInfoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelUserInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelUserImg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelBanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
+        jPanelUserInfo.add(jLabelUserImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
+        jPanelUserInfo.add(jLabelBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 570, 200));
 
         jPanelTL.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -157,7 +143,7 @@ public class User extends javax.swing.JDialog {
                 .addComponent(jLabelTL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneUserTimeline, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
                 .addComponent(jButtonRefresh)
                 .addContainerGap())
         );
@@ -169,30 +155,20 @@ public class User extends javax.swing.JDialog {
             .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelUserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanelTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelUserInfo, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelBackgroundLayout.setVerticalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanelUserInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelTL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
