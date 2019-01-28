@@ -5,7 +5,6 @@
  */
 package jTextFieldLimitado;
 
-
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,20 +18,20 @@ import javax.swing.event.DocumentListener;
  * @author alumnop
  */
 public class LTextField extends JTextField implements Serializable {
-    
+
     private int numeroMaximo;
 
     public LTextField() {
-        numeroMaximo=280;
+        numeroMaximo = 288;
         setText("");
         getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if(getText().length()==numeroMaximo){
+                if (getText().length() >= numeroMaximo) {
                     setCaretColor(Color.red);
                     setEditable(false);
                 }
-                
+
             }
 
             @Override
@@ -41,10 +40,10 @@ public class LTextField extends JTextField implements Serializable {
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                
+
             }
         });
-        
+
         addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -52,13 +51,14 @@ public class LTextField extends JTextField implements Serializable {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                 
-                if(e.getKeyCode()==8){
-                    /*if(getText().length()!=0)
-                    setText(getText().substring(0, getText().length()-1));
-                    else setText("");*/
-                    setEditable(true);
-                    setCaretColor(null);
+
+                if (e.getKeyCode() == 8) {
+                    if (getText().length() > numeroMaximo) {
+                        setText(getText().substring(0, getText().length() - 1));
+                    } else {
+                        setEditable(true);
+                        setCaretColor(null);
+                    }
                 }
             }
 
@@ -75,6 +75,5 @@ public class LTextField extends JTextField implements Serializable {
     public void setNumeroMaximo(int numeroMaximo) {
         this.numeroMaximo = numeroMaximo;
     }
-    
-    
+
 }
