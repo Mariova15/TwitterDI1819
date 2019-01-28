@@ -28,15 +28,11 @@ public class LTextField extends JTextField implements Serializable {
         getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                    if(!Character.isDigit(getText().charAt(getText().length()-1))){
-                        //hacer algo
-                        setCaretColor(Color.red);
-                        setEditable(false);
-                        
-                    }else{
-                if(getText().length()==numeroMaximo)
-                    setEnabled(false);
-                    }
+                if(getText().length()==numeroMaximo){
+                    setCaretColor(Color.red);
+                    setEditable(false);
+                }
+                
             }
 
             @Override
@@ -56,9 +52,11 @@ public class LTextField extends JTextField implements Serializable {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                 
                 if(e.getKeyCode()==8){
-                    String texto = getText().substring(0, getText().length()-1);
-                    setText(texto);
+                    /*if(getText().length()!=0)
+                    setText(getText().substring(0, getText().length()-1));
+                    else setText("");*/
                     setEditable(true);
                     setCaretColor(null);
                 }
