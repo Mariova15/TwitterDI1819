@@ -16,8 +16,11 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import jlabeltt.JLabelTTListener;
+import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import utils.Fecha;
 
 /**
@@ -27,13 +30,13 @@ import utils.Fecha;
 public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object> {
 
     private Twitter twitter;
-    
+
     /**
      * Creates new form Tweet
      */
     public Tweet(Twitter twitter) {
         initComponents();
-        
+
         this.twitter = twitter;
     }
 
@@ -53,6 +56,7 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         jTextAreaTexto = new javax.swing.JTextArea();
         jLabelDate = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabelBorrar = new jlabeltt.JLabelTT();
 
         jPanelBackground.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -74,6 +78,9 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("RT");
 
+        jLabelBorrar.setText("BORRAR");
+        jLabelBorrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
         jPanelBackground.setLayout(jPanelBackgroundLayout);
         jPanelBackgroundLayout.setHorizontalGroup(
@@ -85,13 +92,14 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                        .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                                .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelDate)))
-                        .addGap(0, 170, Short.MAX_VALUE)))
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                        .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelDate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addComponent(jLabelBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanelBackgroundLayout.setVerticalGroup(
@@ -100,9 +108,11 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
                 .addContainerGap()
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelBackgroundLayout.createSequentialGroup()
-                        .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelDate))
+                        .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelDate))
+                            .addComponent(jLabelBorrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(cLabelAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -127,6 +137,7 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jlabelcircular.CLabel cLabelAvatar;
     private javax.swing.JLabel jLabel1;
+    private jlabeltt.JLabelTT jLabelBorrar;
     private javax.swing.JLabel jLabelDate;
     private jlabeltt.JLabelTT jLabelTTScreenName;
     private javax.swing.JPanel jPanelBackground;
@@ -139,17 +150,25 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         try {
             Status status = (Status) value;
             jLabelTTScreenName.setText("@" + status.getUser().getScreenName());
-            
+
             Image image;
-            
+
             image = ImageIO.read(new URL(status.getUser().get400x400ProfileImageURL())).getScaledInstance(cLabelAvatar.getWidth(),
-                     cLabelAvatar.getHeight(), Image.SCALE_SMOOTH);          
+                    cLabelAvatar.getHeight(), Image.SCALE_SMOOTH);
             cLabelAvatar.setIcon(new ImageIcon(image));
-            
+
             jTextAreaTexto.setText(status.getText());
-            
+
             jLabelDate.setText(Fecha.timeFormat(status.getCreatedAt()));
-            
+
+            jLabelBorrar.setjLabelAccionListener(new JLabelTTListener() {
+                @Override
+                public void realizarAccion(String text) {
+                    GestionClienteTwitter.borrarTwitRetweet(twitter, status.getId());
+                    System.out.println("BORRADO");
+                }
+            });
+
             return this;
         } catch (MalformedURLException ex) {
             Logger.getLogger(Tweet.class.getName()).log(Level.SEVERE, null, ex);
