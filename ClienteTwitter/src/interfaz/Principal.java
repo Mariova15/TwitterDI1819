@@ -2,29 +2,20 @@ package interfaz;
 
 import java.awt.Component;
 import java.awt.Dialog;
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.border.EmptyBorder;
-import jlabeltt.JLabelTT;
 import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
-import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Trend;
 import twitter4j.Twitter;
@@ -38,6 +29,7 @@ public class Principal extends javax.swing.JDialog {
             + File.separator + "favicon-96x96.png";
 
     private Twitter twitter;
+    private DefaultListModel statuses = new DefaultListModel();
 
     /**
      * Creates new form DialogConfiguracion
@@ -51,7 +43,7 @@ public class Principal extends javax.swing.JDialog {
 
         this.twitter = twitter;
 
-        //pintarTimeLine(twitter);
+        pintarTimeLine(twitter);
 
         try {
             jLabelScName.setText("@" + twitter.getScreenName());
@@ -149,9 +141,9 @@ public class Principal extends javax.swing.JDialog {
         jTextFieldPublicarTwit = new jTextFieldLimitado.LTextField();
         jPanelTimeLine = new javax.swing.JPanel();
         jButtonRefresh = new javax.swing.JButton();
-        jScrollPaneHomeTL = new javax.swing.JScrollPane();
-        jTextAreaHomeTL = new javax.swing.JTextArea();
         jLabelHomeTL = new javax.swing.JLabel();
+        jScrollPaneTL = new javax.swing.JScrollPane();
+        jListTL = new javax.swing.JList<>();
         jPanelTT = new javax.swing.JPanel();
         jLabelTT = new javax.swing.JLabel();
         jLabelTT1 = new jlabeltt.JLabelTT();
@@ -264,14 +256,14 @@ public class Principal extends javax.swing.JDialog {
             }
         });
 
-        jTextAreaHomeTL.setEditable(false);
-        jTextAreaHomeTL.setColumns(20);
-        jTextAreaHomeTL.setRows(5);
-        jTextAreaHomeTL.setWrapStyleWord(true);
-        jScrollPaneHomeTL.setViewportView(jTextAreaHomeTL);
-
         jLabelHomeTL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelHomeTL.setText("Home timeline");
+
+        jScrollPaneTL.setBackground(new java.awt.Color(255, 255, 255));
+
+        jListTL.setModel(statuses);
+        jListTL.setCellRenderer(new Tweet(twitter));
+        jScrollPaneTL.setViewportView(jListTL);
 
         javax.swing.GroupLayout jPanelTimeLineLayout = new javax.swing.GroupLayout(jPanelTimeLine);
         jPanelTimeLine.setLayout(jPanelTimeLineLayout);
@@ -280,9 +272,9 @@ public class Principal extends javax.swing.JDialog {
             .addGroup(jPanelTimeLineLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelTimeLineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
-                    .addComponent(jLabelHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonRefresh, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addComponent(jLabelHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTL))
                 .addContainerGap())
         );
         jPanelTimeLineLayout.setVerticalGroup(
@@ -291,7 +283,7 @@ public class Principal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelHomeTL)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTL, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonRefresh)
                 .addContainerGap())
@@ -411,14 +403,17 @@ public class Principal extends javax.swing.JDialog {
         userTimeLine += "--------------------------------------" + "\n";
         }*/
         for (Status status : GestionClienteTwitter.listarTimeLineSeguidos(twitter)) {
-            homeTimeLine += status.getUser().getName() + "\n";
+            /*homeTimeLine += status.getUser().getName() + "\n";
             homeTimeLine += "@" + status.getUser().getScreenName() + "\n";
             homeTimeLine += Fecha.timeFormat(status.getCreatedAt()) + "\n";
             homeTimeLine += status.getText() + "\n";
-            homeTimeLine += "--------------------------------------" + "\n";
+            homeTimeLine += "--------------------------------------" + "\n";*/
+            
+            statuses.addElement(status);
+            
         }
 
-        jTextAreaHomeTL.setText(homeTimeLine);
+        //jTextAreaHomeTL.setText(homeTimeLine);
         //jTextAreaUserTimeLine.setText(userTimeLine);
     }
 
@@ -434,6 +429,7 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelTT;
     private jlabeltt.JLabelTT jLabelTT1;
     private jlabelcircular.CLabel jLabelUserImg;
+    private javax.swing.JList<String> jListTL;
     private javax.swing.JPanel jPanelAcciones;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelHeader;
@@ -441,8 +437,7 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelTimeLine;
     private javax.swing.JPanel jPanelUser;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPaneHomeTL;
-    private javax.swing.JTextArea jTextAreaHomeTL;
+    private javax.swing.JScrollPane jScrollPaneTL;
     private jTextFieldLimitado.LTextField jTextFieldPublicarTwit;
     // End of variables declaration//GEN-END:variables
 }
