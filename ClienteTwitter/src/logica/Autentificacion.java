@@ -70,7 +70,13 @@ public class Autentificacion {
         Desktop.getDesktop().browse(new URI(requestToken.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
         AccessToken access = twitter.getOAuthAccessToken(requestToken, pin);
+
         if (activarGuardado) {
+            File profile = new File(".." + File.separator + "imgs"
+                    + File.separator + "user" + File.separator + access.getScreenName());
+            if (!profile.exists()) {
+                GestionClienteTwitter.descargarUserIMG(twitter, access.getScreenName());
+            }
             guardarConexion(access);
         }
         return twitter;

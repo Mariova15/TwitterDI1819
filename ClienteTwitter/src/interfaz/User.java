@@ -8,6 +8,7 @@ package interfaz;
 import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,29 +33,47 @@ public class User extends javax.swing.JDialog {
 
     private Twitter twitter;
     private DefaultListModel statuses = new DefaultListModel();
-    
+
     /**
      * Creates new form User
      */
     public User(java.awt.Dialog parent, boolean modal, Twitter twitter) {
-        super(parent, modal);        
+        super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
         this.twitter = twitter;
-        try {            
+        try {
             pintarTimeLine(twitter);
-            
-            Image imageBanner = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getProfileBanner600x200URL()))
-                    .getScaledInstance(jLabelBanner.getWidth(),
-                     jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
-             
-            jLabelBanner.setIcon(new ImageIcon(imageBanner));
-            
-            Image imageUserProfile = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
-                    .getScaledInstance(jLabelUserImg.getWidth(),
-                     jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
-            
-            jLabelUserImg.setIcon(new ImageIcon(imageUserProfile));
+
+            File profile = new File(".." + File.separator + "imgs"
+                    + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
+
+            if (profile.exists()) {
+                File userBannerFile = new File("src" + File.separator + "imgs"
+                        + File.separator + "users" + File.separator + twitter.showUser(twitter.getId()).getScreenName() + File.separator
+                        + twitter.showUser(twitter.getId()).getScreenName() + "-banner.png");
+                Image userBannerImage = ImageIO.read(userBannerFile).getScaledInstance(jLabelBanner.getWidth(),
+                        jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
+                jLabelBanner.setIcon(new ImageIcon(userBannerImage));
+
+                File userProfileFile = new File("src" + File.separator + "imgs"
+                        + File.separator + "users" + File.separator + twitter.showUser(twitter.getId()).getScreenName() + File.separator
+                        + twitter.showUser(twitter.getId()).getScreenName() + "-profile.png");
+                Image userProfileImage = ImageIO.read(userProfileFile).getScaledInstance(jLabelUserImg.getWidth(),
+                        jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+            } else {
+                Image userBannerImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getProfileBanner1500x500URL()))
+                        .getScaledInstance(jLabelBanner.getWidth(),
+                                jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
+                jLabelBanner.setIcon(new ImageIcon(userBannerImage));
+
+                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
+                        .getScaledInstance(jLabelUserImg.getWidth(),
+                                jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+            }
+
         } catch (TwitterException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
@@ -64,9 +83,7 @@ public class User extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
     }
 
     /**
@@ -102,7 +119,7 @@ public class User extends javax.swing.JDialog {
         jLabelUserImg.setLineColor(new java.awt.Color(255, 255, 255));
         jLabelUserImg.setPreferredSize(new java.awt.Dimension(158, 158));
         jPanelUserInfo.add(jLabelUserImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
-        jPanelUserInfo.add(jLabelBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 570, 200));
+        jPanelUserInfo.add(jLabelBanner, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -2, 660, 200));
 
         jPanelTL.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -171,13 +188,13 @@ public class User extends javax.swing.JDialog {
         pintarTimeLine(twitter);
     }//GEN-LAST:event_jButtonRefreshActionPerformed
 
-private void pintarTimeLine(Twitter twitter) {
+    private void pintarTimeLine(Twitter twitter) {
 
-        for (Status status : GestionClienteTwitter.listarTimeLineUsuario(twitter)) {            
-            statuses.addElement(status);            
+        for (Status status : GestionClienteTwitter.listarTimeLineUsuario(twitter)) {
+            statuses.addElement(status);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabelBanner;

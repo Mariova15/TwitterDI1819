@@ -26,12 +26,18 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanelBackground" alignment="0" max="32767" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jPanelBackground" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanelBackground" min="-2" max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="jPanelBackground" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -51,9 +57,9 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jPanelHeader" max="32767" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="jPanelTT" max="32767" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jPanelTimeLine" min="-2" max="-2" attributes="0"/>
+                          <Component id="jPanelTT" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jPanelTimeLine" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -65,8 +71,8 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanelHeader" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jPanelTimeLine" max="32767" attributes="0"/>
                       <Component id="jPanelTT" max="32767" attributes="0"/>
                   </Group>
@@ -90,7 +96,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jPanelUser" min="-2" pref="364" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanelAcciones" pref="261" max="32767" attributes="0"/>
+                      <Component id="jPanelAcciones" pref="481" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -236,7 +242,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="170" y="90" width="77" height="-1"/>
+                      <AbsoluteConstraints x="400" y="90" width="77" height="-1"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -255,7 +261,7 @@
                   </Events>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="80" y="90" width="77" height="-1"/>
+                      <AbsoluteConstraints x="310" y="90" width="77" height="-1"/>
                     </Constraint>
                   </Constraints>
                 </Component>
@@ -265,7 +271,7 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="11" y="11" width="240" height="70"/>
+                      <AbsoluteConstraints x="80" y="10" width="400" height="70"/>
                     </Constraint>
                   </Constraints>
 
@@ -298,7 +304,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButtonRefresh" pref="394" max="32767" attributes="0"/>
+                          <Component id="jButtonRefresh" max="32767" attributes="0"/>
                           <Component id="jLabelHomeTL" max="32767" attributes="0"/>
                           <Component id="jScrollPaneTL" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -312,7 +318,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabelHomeTL" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPaneTL" pref="186" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneTL" pref="266" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonRefresh" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -386,7 +392,7 @@
                           <Group type="102" attributes="0">
                               <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                               <Component id="jLabelTT1" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="112" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Component id="jLabelTT" max="32767" attributes="0"/>

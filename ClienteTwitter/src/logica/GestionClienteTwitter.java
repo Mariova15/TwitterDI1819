@@ -7,6 +7,7 @@ package logica;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,13 +42,13 @@ public class GestionClienteTwitter {
      * @param twit Cadena con el mensaje a twittear.
      */
     public static void publicarTwit(Twitter twitter, String twit) {
-        try {            
-                    twitter.updateStatus(twit);                    
- 
+        try {
+            twitter.updateStatus(twit);
+
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }
 
     /**
@@ -285,11 +286,42 @@ public class GestionClienteTwitter {
         return userTimeLine;
     }
 
-    public static void descargarIMG(String imgURL, String rutaIMG) {
-        try {            
-            InputStream in = new BufferedInputStream(new URL(imgURL).openStream());            
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
+    public static void descargarUserIMG(Twitter twitter, String screenName) {
+        try {
+
+            File dirUser = new File("src" + File.separator + "imgs"
+                    + File.separator + "users" + File.separator + screenName);
             
+            dirUser.mkdir();
+            
+            FileOutputStream fos = new FileOutputStream("src" + File.separator + "imgs"
+                    + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-profile.png");
+            fos.write(GestionClienteTwitter.descargaRecursos(
+                    twitter.showUser(twitter.getId()).get400x400ProfileImageURL()));
+            fos.close();
+
+            fos = new FileOutputStream("src" + File.separator + "imgs"
+                    + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-banner.png");
+            fos.write(GestionClienteTwitter.descargaRecursos(
+                    twitter.showUser(twitter.getId()).getProfileBanner1500x500URL()));
+            fos.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static byte[] descargaRecursos(String url) {
+        byte[] response = null;
+        try {
+            InputStream in = new BufferedInputStream(new URL(url).openStream());
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+
             byte[] buf = new byte[1024];
             int n = 0;
 
@@ -299,16 +331,11 @@ public class GestionClienteTwitter {
 
             out.close();
             in.close();
-            byte[] response = out.toByteArray();
-            
-            FileOutputStream fos = new FileOutputStream(rutaIMG);
-            fos.write(response);
-            fos.close();
-            
+            response = out.toByteArray();
         } catch (IOException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        return response;
     }
 
 }
