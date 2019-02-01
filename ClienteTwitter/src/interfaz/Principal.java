@@ -51,7 +51,6 @@ public class Principal extends javax.swing.JDialog {
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
 
             /*String imgUser = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
-            
             URL url = new URL(imgUser);
             InputStream in = new BufferedInputStream(url.openStream());
             
@@ -88,7 +87,7 @@ public class Principal extends javax.swing.JDialog {
                         jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             } else {
-                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getMiniProfileImageURL()))
+                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getBiggerProfileImageURL()))
                         .getScaledInstance(jLabelUserImg.getWidth(),
                                 jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));

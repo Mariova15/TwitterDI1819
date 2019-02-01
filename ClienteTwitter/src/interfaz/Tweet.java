@@ -20,7 +20,6 @@ import jlabeltt.JLabelTTListener;
 import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import utils.Fecha;
 
 /**
@@ -153,7 +152,8 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
 
             Image image;
 
-            image = ImageIO.read(new URL(status.getUser().get400x400ProfileImageURL())).getScaledInstance(cLabelAvatar.getWidth(),
+
+            image = ImageIO.read(new URL(status.getUser().getBiggerProfileImageURL())).getScaledInstance(cLabelAvatar.getWidth(),
                     cLabelAvatar.getHeight(), Image.SCALE_SMOOTH);
             cLabelAvatar.setIcon(new ImageIcon(image));
 
