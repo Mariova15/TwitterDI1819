@@ -1,15 +1,21 @@
 package interfaz;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import logica.Autentificacion;
+import logica.CifradoRsa;
 import logica.Excepciones;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 
 public class Login extends javax.swing.JFrame {
 
@@ -31,7 +37,31 @@ public class Login extends javax.swing.JFrame {
         //Establecer una imagen en una label
         jLabelLogo.setIcon(new ImageIcon(getClass().getResource(RUTA_LOGO)));
         //Establecer el logo del a aplicación
-        setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());        
+        setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());   
+        /*
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        File[] ficheros = new File("sesiones").listFiles();
+        CifradoRsa cifrado = new CifradoRsa();
+        for (File fichero : ficheros) {
+        
+        try {
+        FileInputStream reader = new FileInputStream(fichero);
+        byte[] bytes = new byte[reader.available()];
+        reader.read(bytes);
+        String desencriptar = cifrado.desencriptar(bytes);
+        modelo.addElement(new CifradoRsa().sha256(desencriptar));
+        } catch (FileNotFoundException ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Excepciones.CifradoExcepcion ex) {
+        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        */
+        //}
+        
+        
+        //this.jComboBox1.setModel(modelo);
        
     }
 
@@ -51,6 +81,8 @@ public class Login extends javax.swing.JFrame {
         jLabelConectado = new javax.swing.JLabel();
         jCheckBoxRemember = new javax.swing.JCheckBox();
         botonDelete = new javax.swing.JButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,13 +119,26 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setText("jLabel1");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(101, 101, 101))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(195, 195, 195)
                         .addComponent(jLabelConectado, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
@@ -107,10 +152,6 @@ public class Login extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(botonLogin)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,6 +165,10 @@ public class Login extends javax.swing.JFrame {
                         .addContainerGap(190, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(39, 39, 39)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jCheckBoxRemember, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonLogin))
@@ -165,23 +210,33 @@ public class Login extends javax.swing.JFrame {
 
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
 
-        try {
+       // try {
+             try {
             //trata de cargar la ultima sesion
             Twitter cargarUltimaSesion = auto.cargarUltimaSesion();
             new Principal(this, true, cargarUltimaSesion).setVisible(true);
-        } catch (IOException | Excepciones.CifradoExcepcion ex) {
+            } catch (IOException | Excepciones.CifradoExcepcion ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Excepciones.SesionExcepcion ex) {
+            } catch (Excepciones.SesionExcepcion ex) {
             try {
-                //si no puede inicia una nueva conexion
-                Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected()); 
-
-                new Principal(this, true, nuevaConexion).setVisible(true);
+            //si no puede inicia una nueva conexion
+            Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected());
+            new Principal(this, true, nuevaConexion).setVisible(true);
             } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex1);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex1);
             }
-        }
-
+            }
+            /*  String itemAt = this.jComboBox1.getItemAt(jComboBox1.getSelectedIndex());
+            Twitter twitter = TwitterFactory.getSingleton();
+            auto.cargarSesion(new File("sesiones"+File.separator+itemAt),itemAt, twitter);
+            new Principal(this, true, twitter).setVisible(true);
+            } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Excepciones.CifradoExcepcion ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Excepciones.SesionExcepcion ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
 
     }//GEN-LAST:event_botonLoginActionPerformed
 
@@ -235,6 +290,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton botonDelete;
     private javax.swing.JButton botonLogin;
     private javax.swing.JCheckBox jCheckBoxRemember;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelConectado;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JPanel jPanel1;

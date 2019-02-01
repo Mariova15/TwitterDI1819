@@ -3,6 +3,8 @@ package interfaz;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -75,6 +77,7 @@ public class Principal extends javax.swing.JDialog {
             /*Image image = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
             .getScaledInstance(jLabelUserImg.getWidth(),
             jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);*/
+            
             File profile = new File(".." + File.separator + "imgs"
                     + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
             if (profile.exists()) {
@@ -85,7 +88,7 @@ public class Principal extends javax.swing.JDialog {
                         jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             } else {
-                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
+                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getMiniProfileImageURL()))
                         .getScaledInstance(jLabelUserImg.getWidth(),
                                 jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
@@ -117,6 +120,16 @@ public class Principal extends javax.swing.JDialog {
             Trend[] listarTrendingTopic = GestionClienteTwitter.listarTrendingTopic(twitter, 1);
 
             jLabelTT1.setText(listarTrendingTopic[0].getName());
+            
+            jListTL.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    System.out.println("X: "+e.getX() + "Y: "+ e.getY());
+                }
+                
+            });
+            
 
         } catch (TwitterException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

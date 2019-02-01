@@ -292,7 +292,7 @@ public class GestionClienteTwitter {
             File dirUser = new File("src" + File.separator + "imgs"
                     + File.separator + "users" + File.separator + screenName);
             
-            dirUser.mkdir();
+            dirUser.mkdirs();
             
             FileOutputStream fos = new FileOutputStream("src" + File.separator + "imgs"
                     + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-profile.png");
