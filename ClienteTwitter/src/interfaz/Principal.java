@@ -38,6 +38,7 @@ public class Principal extends javax.swing.JDialog {
     public Principal(java.awt.Frame parent, boolean modal, Twitter twitter) {
         super(parent, modal);
         initComponents();
+        parent.dispose();//cerramos al padre una vez entrado
         setLocationRelativeTo(null);
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
@@ -87,10 +88,25 @@ public class Principal extends javax.swing.JDialog {
                         jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             } else {
-                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getBiggerProfileImageURL()))
-                        .getScaledInstance(jLabelUserImg.getWidth(),
-                                jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
-                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try { 
+                            
+                            String url = twitter.showUser(twitter.getId()).getBiggerProfileImageURL();
+                            if(url!=null||!"".equals(url)){
+                                Image userProfileImage = ImageIO.read(new URL(url))
+                                    .getScaledInstance(jLabelUserImg.getWidth(),
+                                            jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+                            jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+                            }
+                            
+                        } catch (TwitterException | IllegalStateException | IOException ex) {
+                           ex.printStackTrace();
+                        }
+                    }
+                }).start();
+                
             }
 
             //jLabelUserImg.setIcon(new ImageIcon(userProfileImage));

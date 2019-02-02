@@ -58,15 +58,31 @@ public class User extends javax.swing.JDialog {
                         jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             } else {
-                Image userBannerImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).getProfileBanner1500x500URL()))
-                        .getScaledInstance(jLabelBanner.getWidth(),
-                                jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
-                jLabelBanner.setIcon(new ImageIcon(userBannerImage));
-
-                Image userProfileImage = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
-                        .getScaledInstance(jLabelUserImg.getWidth(),
-                                jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
-                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+                
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            String urlBanner = twitter.showUser(twitter.getId()).getProfileBanner1500x500URL();
+                            String urlProfile = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
+                            //sino compruebas si es nulo cuando no tiene banner el programa rompe
+                            if(urlBanner!=null&&!"".equals(urlBanner)){
+                                Image userBannerImage = ImageIO.read(new URL(urlBanner))
+                                        .getScaledInstance(jLabelBanner.getWidth(),
+                                                jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
+                                jLabelBanner.setIcon(new ImageIcon(userBannerImage));
+                            }
+                            if (urlProfile!=null&&!"".equals(urlProfile)){
+                                Image userProfileImage = ImageIO.read(new URL(urlProfile))
+                                        .getScaledInstance(jLabelUserImg.getWidth(),
+                                                jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+                                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+                            }       } catch (TwitterException | IllegalStateException | IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                }).start();
+                
             }
 
         } catch (TwitterException ex) {

@@ -221,6 +221,7 @@ public class Login extends javax.swing.JFrame {
             try {
             //si no puede inicia una nueva conexion
             Twitter nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected());
+            if (nuevaConexion!=null)
             new Principal(this, true, nuevaConexion).setVisible(true);
             } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex1) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex1);
@@ -242,7 +243,7 @@ public class Login extends javax.swing.JFrame {
 
     private void botonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonDeleteActionPerformed
         try {
-            auto.borrarUltimaSesion();
+            this.auto.borrarUltimaSesion();
         } catch (Excepciones.CifradoExcepcion ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

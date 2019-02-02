@@ -12,7 +12,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +37,14 @@ import twitter4j.User;
  * @author Mario
  */
 public class GestionClienteTwitter {
+    
+    private Configuracion configuracion;
+
+    public GestionClienteTwitter() {
+        configuracion=new Configuracion();
+    }
+    
+    
 
     /**
      * Metodo que twittea un mensaje.
@@ -299,7 +310,6 @@ public class GestionClienteTwitter {
             fos.write(GestionClienteTwitter.descargaRecursos(
                     twitter.showUser(twitter.getId()).get400x400ProfileImageURL()));
             fos.close();
-
             fos = new FileOutputStream("src" + File.separator + "imgs"
                     + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-banner.png");
             fos.write(GestionClienteTwitter.descargaRecursos(
@@ -318,6 +328,7 @@ public class GestionClienteTwitter {
 
     public static byte[] descargaRecursos(String url) {
         byte[] response = null;
+        if(url==null||"".equals(url)) return new byte[0];//o añadir una excepción
         try {
             InputStream in = new BufferedInputStream(new URL(url).openStream());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -337,5 +348,5 @@ public class GestionClienteTwitter {
         }
         return response;
     }
-
+    
 }
