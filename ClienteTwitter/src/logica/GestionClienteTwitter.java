@@ -187,6 +187,11 @@ public class GestionClienteTwitter {
         return friends;
     }
 
+    /**
+     * Método que controla el limite de conexiones con API
+     * 
+     * @param rls Limite de conexiones dle usuario.
+     */
     public static void handleRateLimit(RateLimitStatus rls) {
         int remaining = rls.getRemaining();
         System.out.println("Rate Limit Remaining: " + remaining);
@@ -297,6 +302,13 @@ public class GestionClienteTwitter {
         return userTimeLine;
     }
 
+    
+    /**
+     * Método que descarga las img dle usuario cuardandolas en un directorio con su screen name.
+     * 
+     * @param twitter
+     * @param screenName 
+     */
     public static void descargarUserIMG(Twitter twitter, String screenName) {
         try {
 
@@ -326,6 +338,12 @@ public class GestionClienteTwitter {
 
     }
 
+    /**
+     * Método que descarga archivos pasandole una url.
+     * 
+     * @param url dle archivo a descargar
+     * @return 
+     */
     public static byte[] descargaRecursos(String url) {
         byte[] response = null;
         if(url==null||"".equals(url)) return new byte[0];//o añadir una excepción

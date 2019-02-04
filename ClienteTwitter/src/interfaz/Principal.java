@@ -38,7 +38,7 @@ public class Principal extends javax.swing.JDialog {
     public Principal(java.awt.Frame parent, boolean modal, Twitter twitter) {
         super(parent, modal);
         initComponents();
-        parent.dispose();//cerramos al padre una vez entrado
+        //parent.dispose();//cerramos al padre una vez entrado
         setLocationRelativeTo(null);
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
@@ -136,10 +136,12 @@ public class Principal extends javax.swing.JDialog {
 
             jLabelTT1.setText(listarTrendingTopic[0].getName());
             
+            //Falta añadir metodos para interactuar con el tweet y sacar info d ela lista de tweets con el index
             jListTL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    System.out.println(jListTL.getSelectedIndex());
                     System.out.println("X: "+e.getX() + "Y: "+ e.getY());
                 }
                 
