@@ -18,6 +18,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import logica.Excepciones.CifradoExcepcion;
 import twitter4j.Twitter;
@@ -32,7 +34,7 @@ import twitter4j.auth.RequestToken;
  */
 public class Autentificacion {
 
-    private final transient CifradoRsa cifrado = new CifradoRsa();
+    private final transient CifradoRSAObjeto cifrado = new CifradoRSAObjeto();
     private final transient String OAUTHPUBLICO = "HkM0LS2MQLnh2c4ECo40HHYmP";
     private final transient String OAUTHPRIVADO = "uPhHLyAJahCC4ui9nC2AHvzYZEEGDnNyoshKsXIL845C3MVFWG";
     private static Autentificacion AUTENTIFICACION;
@@ -115,7 +117,7 @@ public class Autentificacion {
         File sesion = new File("sesiones" + File.separator + screenName);
         sesion.getParentFile().mkdirs();
         FileOutputStream writer = new FileOutputStream(sesion);
-        byte[] encriptado = cifrado.encriptar(claves);
+        byte[] encriptado = cifrado.encriptar(claves.getBytes());
         writer.write(encriptado);
         writer.close();
     }
@@ -180,7 +182,7 @@ public class Autentificacion {
             errorSesion();
         }
 
-        cargarSesion(sesion, twitter,screenName);
+        cargarSesion(twitter,screenName);
         return twitter;
     }
 
@@ -193,10 +195,10 @@ public class Autentificacion {
      * @throws logica.Excepciones.CifradoExcepcion
      *
      */
-    public void cargarSesion(File sesion, Twitter twitter,String screenName)
+    public void cargarSesion(Twitter twitter,String screenName)
             throws FileNotFoundException, IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
-
-        AccessToken accessToken = getAccessToken(sesion);
+        File file = new File ("sesiones"+File.separator+screenName);
+        AccessToken accessToken = getAccessToken(file);
         twitter.setOAuthAccessToken(accessToken);
 
         guardarConexion(accessToken,screenName);
@@ -228,7 +230,7 @@ public class Autentificacion {
         FileInputStream reader = new FileInputStream(file);
         byte[] encriptado = new byte[reader.available()];
         reader.read(encriptado);
-        String desencriptado = cifrado.desencriptar(encriptado);
+        String desencriptado = new String(cifrado.desencriptar(encriptado));
         //0 publica, 1 privada
         String[] claves = desencriptado.split(",");
         if (claves.length < 2) {
@@ -242,5 +244,13 @@ public class Autentificacion {
         throw new Excepciones.SesionExcepcion();
     }
     
+    public void cargarSesionesComboBox (JComboBox combo) throws FileNotFoundException{
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+        File[] ficheros = new File("sesiones").listFiles();
+        for (File fichero : ficheros) {
+            modelo.addElement(fichero.getName());
+            combo.setModel(modelo);
+        }
+    }
      
 }

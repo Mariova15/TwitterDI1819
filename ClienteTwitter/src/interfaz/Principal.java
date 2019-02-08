@@ -48,7 +48,7 @@ public class Principal extends javax.swing.JDialog {
         pintarTimeLine(twitter);
 
         try {
-            jLabelScName.setText("@" + twitter.getScreenName());
+            jLabelScName.setText("@" + twitter.users().showUser(twitter.getId()).getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
 
             /*String imgUser = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
@@ -115,7 +115,28 @@ public class Principal extends javax.swing.JDialog {
             jLabelUserImg.setcLabelListener(new CLabelListener() {
                 @Override
                 public void realizarAccion(Component component) {
-                    new User((Dialog) component, true, twitter).setVisible(true);
+                    // new User((Dialog) component, true, twitter).setVisible(true);
+                   String[] objeto = new String[]{"Añadir cuenta","Cambiar cuenta","Ir al perfil"};
+                    String objetoSeleccionado = (String) JOptionPane.showInputDialog(component, "", "", JOptionPane.INFORMATION_MESSAGE, null, objeto, objeto[0]);
+                   if(objetoSeleccionado!=null){
+                       switch (objetoSeleccionado) {
+                           case "Añadir cuenta":
+                               new Login(false).setVisible(true);
+                               dispose();
+                            break;
+                            case "Cambiar cuenta":
+                                new Login(true).setVisible(true);
+                                dispose();
+                            break;
+                            case "Ir al perfil":
+                                new User((Dialog) component, true, twitter).setVisible(true);
+                       }
+                       //añadir cuenta, volver al login principal, solo el login
+                       
+                       //cambiar cuenta boton en on
+                       //ir al perfil, abrir el dialogo comentado
+                   }
+                   
                 }
             });
 

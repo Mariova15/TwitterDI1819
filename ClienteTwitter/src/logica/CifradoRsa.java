@@ -77,11 +77,11 @@ public class CifradoRsa {
       * @return
       * @throws logica.Excepciones.CifradoExcepcion 
       */
-     public byte[] encriptar(String msng) throws CifradoExcepcion {
+     public byte[] encriptar(byte[] msng) throws CifradoExcepcion {
          try{
          Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
-        return cipher.doFinal(msng.getBytes());
+        return cipher.doFinal(msng);
         } catch (Exception ex) {
              throw new Excepciones.CifradoExcepcion(ex);
          } 
@@ -93,11 +93,11 @@ public class CifradoRsa {
       * @return
       * @throws logica.Excepciones.CifradoExcepcion 
       */
-     public String desencriptar(byte[] data) throws CifradoExcepcion{
+     public byte[] desencriptar(byte[] data) throws CifradoExcepcion{
          try {
              Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
              cipher.init(Cipher.DECRYPT_MODE, getPrivateKey());
-             return new String(cipher.doFinal(data));
+             return cipher.doFinal(data);
          } catch (Exception ex) {
              throw new Excepciones.CifradoExcepcion(ex);
          } 

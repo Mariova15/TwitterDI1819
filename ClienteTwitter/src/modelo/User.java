@@ -5,56 +5,52 @@
  */
 package modelo;
 
-import twitter4j.auth.AccessToken;
+import java.io.Serializable;
 
 /**
  *
- * @author Mario
+ * @author alumnop
  */
-public class User {
+public class User implements Serializable{
+    private String tokens,sceenName,name;
 
-    private String screeName, accessToken, accessTokenSecret;
-    private long id;
-
-    public User(String accessToken, String accessTokenSecret) {
-        this.accessToken = accessToken;
-        this.accessTokenSecret = accessTokenSecret;
-    }
-
-    public User(String screeName, String accessToken, String accessTokenSecret, long id) {
-        this.screeName = screeName;
-        this.accessToken = accessToken;
-        this.accessTokenSecret = accessTokenSecret;
-        this.id = id;
-    }
-        
-    public long getId() {
-        return id;
+    public User(String tokens, String sceenName, String name) {
+        this.tokens = tokens;
+        this.sceenName = sceenName;
+        this.name = name;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-        
-    public String getScreeName() {
-        return screeName;
+    public User() {
     }
 
-    public void setScreeName(String screeName) {
-        this.screeName = screeName;
-    }
-        
-    public String getAccessToken() {
-        return accessToken;
+    public String getTokens() {
+        return tokens;
     }
 
-    public String getAccessTokenSecret() {
-        return accessTokenSecret;
+    public void setTokens(String tokens) {
+        this.tokens = tokens;
     }
 
-    public AccessToken generarAccessToken(){    
-        AccessToken token;        
-        return token = new AccessToken(accessToken , accessTokenSecret);       
+    public String getSceenName() {
+        return sceenName;
     }
+
+    public void setSceenName(String sceenName) {
+        this.sceenName = sceenName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "User{ sceenName=" + sceenName + ", name=" + name + '}';
+    }
+
     
 }

@@ -40,42 +40,34 @@ public class Login extends javax.swing.JFrame {
         jLabelLogo.setIcon(new ImageIcon(getClass().getResource(RUTA_LOGO)));
         //Establecer el logo del a aplicación
         setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());
-        /*
-        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-        File[] ficheros = new File("sesiones").listFiles();
-        CifradoRsa cifrado = new CifradoRsa();
-        for (File fichero : ficheros) {
-        
         try {
-        FileInputStream reader = new FileInputStream(fichero);
-        byte[] bytes = new byte[reader.available()];
-        reader.read(bytes);
-        String desencriptar = cifrado.desencriptar(bytes);
-        modelo.addElement(new CifradoRsa().sha256(desencriptar));
-        } catch (FileNotFoundException ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            auto.cargarSesionesComboBox(this.jComboBoxSesiones);
         } catch (IOException ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Excepciones.CifradoExcepcion ex) {
-        Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            
+            ex.printStackTrace();
         }
-         */
-        //}
-
-        //this.jComboBox1.setModel(modelo);
-        
+        this.jComboBoxSesiones.setVisible(false);
         
         jswitchRecordar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (jswitchRecordar.isOnOff()) {
-                    jComboBox1.setVisible(true);
+                    jComboBoxSesiones.setVisible(true);
                 } else {
-                    jComboBox1.setVisible(false);
+                    jComboBoxSesiones.setVisible(false);
                 }
             }
         });
 
+    }
+    
+    public Login (boolean switchActivado){
+        this();
+        this.jswitchRecordar.setOnOff(switchActivado);
+        this.jswitchRecordar.setVisible(false);
+        if (switchActivado){
+            this.jComboBoxSesiones.setVisible(true);
+        }
     }
 
     /**
@@ -93,7 +85,7 @@ public class Login extends javax.swing.JFrame {
         botonLogin = new javax.swing.JButton();
         jCheckBoxRemember = new javax.swing.JCheckBox();
         botonDelete = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBoxSesiones = new javax.swing.JComboBox<>();
         jswitchRecordar = new jswitch.Jswitch();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -132,9 +124,8 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxSesiones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jswitchRecordar.setBackgroundColor(new java.awt.Color(56, 161, 243));
         jswitchRecordar.setOnOff(false);
         jswitchRecordar.setPreferredSize(new java.awt.Dimension(50, 30));
 
@@ -155,8 +146,8 @@ public class Login extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(botonLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(11, Short.MAX_VALUE))
+                            .addComponent(jComboBoxSesiones, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLoginLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(botonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,7 +160,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
                 .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSesiones, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jswitchRecordar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -200,9 +191,8 @@ public class Login extends javax.swing.JFrame {
 
         //Tiene que borrar la conexion seleccionada en el combox de las recordadas
         try {
-            this.auto.borrarUltimaSesion();
-        } catch (Excepciones.CifradoExcepcion ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            this.auto.borrarConexion(this.jComboBoxSesiones.getItemAt(this.jComboBoxSesiones.getSelectedIndex()));
+            
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -233,9 +223,13 @@ public class Login extends javax.swing.JFrame {
 
         if (jswitchRecordar.isOnOff()) {
             //Parte donde carga la sesion del combox
-            
-            //Twitter cargarUltimaSesion = auto.cargarSesion(accessToken, twitter, RUTA_LOGO);
-            //new Principal(this, true, cargarUltimaSesion).setVisible(true);
+            Twitter twitter = TwitterFactory.getSingleton();
+            try {
+                auto.cargarSesion(twitter, this.jComboBoxSesiones.getItemAt(this.jComboBoxSesiones.getSelectedIndex()));
+            } catch (IOException | Excepciones.CifradoExcepcion | Excepciones.SesionExcepcion ex) {
+                ex.printStackTrace();
+            }
+            new Principal(this, true, twitter).setVisible(true);
         } else {
             Twitter nuevaConexion = null;
             try {
@@ -307,7 +301,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton botonDelete;
     private javax.swing.JButton botonLogin;
     private javax.swing.JCheckBox jCheckBoxRemember;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBoxSesiones;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelLogin;
