@@ -19,6 +19,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -37,14 +38,12 @@ import twitter4j.User;
  * @author Mario
  */
 public class GestionClienteTwitter {
-    
+
     private Configuracion configuracion;
 
     public GestionClienteTwitter() {
-        configuracion=new Configuracion();
+        configuracion = new Configuracion();
     }
-    
-    
 
     /**
      * Metodo que twittea un mensaje.
@@ -189,7 +188,7 @@ public class GestionClienteTwitter {
 
     /**
      * Método que controla el limite de conexiones con API
-     * 
+     *
      * @param rls Limite de conexiones dle usuario.
      */
     public static void handleRateLimit(RateLimitStatus rls) {
@@ -269,6 +268,21 @@ public class GestionClienteTwitter {
     }
 
     /**
+     * * Método que devuelve una lista de las 10 tendencias mas populares pasandole una busqueda previa.
+     * 
+     * @param arrayTrend
+     * @return 
+     */
+    public static DefaultListModel listar10TrendingTopic(Trend[] arrayTrend) {
+        DefaultListModel listaModeloTT = new DefaultListModel();
+
+        for (int i = 0; i < 10; i++) {
+            listaModeloTT.addElement(arrayTrend[i].getName());
+        }
+        return listaModeloTT;
+    }
+
+    /**
      * Método que devuelve una lista de los últimos 20 twits de las personas que
      * sigue el usuario.
      *
@@ -302,28 +316,28 @@ public class GestionClienteTwitter {
         return userTimeLine;
     }
 
-    
     /**
-     * Método que descarga las img dle usuario cuardandolas en un directorio con su screen name.
-     * 
+     * Método que descarga las img dle usuario cuardandolas en un directorio con
+     * su screen name.
+     *
      * @param twitter
-     * @param screenName 
+     * @param screenName
      */
     public static void descargarUserIMG(Twitter twitter, String screenName) {
         try {
 
             File dirUser = new File("src" + File.separator + "imgs"
                     + File.separator + "users" + File.separator + screenName);
-            
+
             dirUser.mkdirs();
-            
+
             FileOutputStream fos = new FileOutputStream("src" + File.separator + "imgs"
-                    + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-profile.png");
+                    + File.separator + "users" + File.separator + screenName + File.separator + screenName + "-profile.png");
             fos.write(GestionClienteTwitter.descargaRecursos(
                     twitter.showUser(twitter.getId()).get400x400ProfileImageURL()));
             fos.close();
             fos = new FileOutputStream("src" + File.separator + "imgs"
-                    + File.separator + "users" +File.separator + screenName + File.separator + screenName + "-banner.png");
+                    + File.separator + "users" + File.separator + screenName + File.separator + screenName + "-banner.png");
             fos.write(GestionClienteTwitter.descargaRecursos(
                     twitter.showUser(twitter.getId()).getProfileBanner1500x500URL()));
             fos.close();
@@ -340,13 +354,15 @@ public class GestionClienteTwitter {
 
     /**
      * Método que descarga archivos pasandole una url.
-     * 
+     *
      * @param url dle archivo a descargar
-     * @return 
+     * @return
      */
     public static byte[] descargaRecursos(String url) {
         byte[] response = null;
-        if(url==null||"".equals(url)) return new byte[0];//o añadir una excepción
+        if (url == null || "".equals(url)) {
+            return new byte[0];//o añadir una excepción
+        }
         try {
             InputStream in = new BufferedInputStream(new URL(url).openStream());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -366,5 +382,5 @@ public class GestionClienteTwitter {
         }
         return response;
     }
-    
+
 }

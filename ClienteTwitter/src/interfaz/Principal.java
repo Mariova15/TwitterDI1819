@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.ListModel;
 import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
 import twitter4j.Status;
@@ -138,37 +140,31 @@ public class Principal extends javax.swing.JDialog {
                    }
                    
                 }
-            });
-
-            jLabelTT1.setjLabelAccionListener(new JLabelTTListener() {
-                @Override
-                public void realizarAccion(String text) {
-
-                    List<Status> buscarTopic = GestionClienteTwitter.buscarTopic(twitter, text);
-                    for (Status status : buscarTopic) {
-                        System.out.println(status.getUser().getScreenName());
-                        System.out.println(status.getText());
-                        System.out.println("----------------");
-                    }
-
-                }
-            });
-            Trend[] listarTrendingTopic = GestionClienteTwitter.listarTrendingTopic(twitter, 1);
-
-            jLabelTT1.setText(listarTrendingTopic[0].getName());
+            });                       
             
-            //Falta añadir metodos para interactuar con el tweet y sacar info d ela lista de tweets con el index
+            //no poner botones en tweet y al hacer click mostrar opciones para interactuar.
             jListTL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                     System.out.println(jListTL.getSelectedIndex());
                     System.out.println("X: "+e.getX() + "Y: "+ e.getY());
-                }
-                
+                }                
             });
             
-
+            //RELLENA JLIST CON 10 TT
+            jListTT.setModel(GestionClienteTwitter.listar10TrendingTopic(
+                    GestionClienteTwitter.listarTrendingTopic(twitter, 1)));
+            
+            jListTT.addMouseListener((new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    //FALTA GESTIONAR LIMITE DE CONEXIONES
+                    GestionClienteTwitter.buscarTopic(twitter, jListTL.getSelectedValue());
+                }                
+            }));
+            
         } catch (TwitterException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
@@ -206,7 +202,8 @@ public class Principal extends javax.swing.JDialog {
         jListTL = new javax.swing.JList<>();
         jPanelTT = new javax.swing.JPanel();
         jLabelTT = new javax.swing.JLabel();
-        jLabelTT1 = new jlabeltt.JLabelTT();
+        jScrollPaneTT = new javax.swing.JScrollPane();
+        jListTT = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -355,8 +352,14 @@ public class Principal extends javax.swing.JDialog {
         jLabelTT.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTT.setText("Trending topics");
 
-        jLabelTT1.setText("jLabelTT1");
-        jLabelTT1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jScrollPaneTT.setBackground(new java.awt.Color(255, 255, 255));
+
+        jListTT.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPaneTT.setViewportView(jListTT);
 
         javax.swing.GroupLayout jPanelTTLayout = new javax.swing.GroupLayout(jPanelTT);
         jPanelTT.setLayout(jPanelTTLayout);
@@ -365,22 +368,18 @@ public class Principal extends javax.swing.JDialog {
             .addGroup(jPanelTTLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelTTLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabelTT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(112, Short.MAX_VALUE))
-                    .addGroup(jPanelTTLayout.createSequentialGroup()
-                        .addComponent(jLabelTT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(jLabelTT, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneTT))
+                .addContainerGap())
         );
         jPanelTTLayout.setVerticalGroup(
             jPanelTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelTTLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabelTT)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelTT1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPaneTT)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
@@ -491,9 +490,9 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelScName;
     private javax.swing.JLabel jLabelTT;
-    private jlabeltt.JLabelTT jLabelTT1;
     private jlabelcircular.CLabel jLabelUserImg;
     private javax.swing.JList<String> jListTL;
+    private javax.swing.JList<String> jListTT;
     private javax.swing.JPanel jPanelAcciones;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelHeader;
@@ -502,6 +501,7 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JPanel jPanelUser;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneTL;
+    private javax.swing.JScrollPane jScrollPaneTT;
     private jTextFieldLimitado.LTextField jTextFieldPublicarTwit;
     // End of variables declaration//GEN-END:variables
 }
