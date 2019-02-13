@@ -79,7 +79,6 @@ public class Principal extends javax.swing.JDialog {
             /*Image image = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
             .getScaledInstance(jLabelUserImg.getWidth(),
             jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);*/
-            
             File profile = new File(".." + File.separator + "imgs"
                     + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
             if (profile.exists()) {
@@ -93,22 +92,22 @@ public class Principal extends javax.swing.JDialog {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try { 
-                            
+                        try {
+
                             String url = twitter.showUser(twitter.getId()).getBiggerProfileImageURL();
-                            if(url!=null||!"".equals(url)){
+                            if (url != null || !"".equals(url)) {
                                 Image userProfileImage = ImageIO.read(new URL(url))
-                                    .getScaledInstance(jLabelUserImg.getWidth(),
-                                            jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
-                            jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
+                                        .getScaledInstance(jLabelUserImg.getWidth(),
+                                                jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
+                                jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
                             }
-                            
+
                         } catch (TwitterException | IllegalStateException | IOException ex) {
-                           ex.printStackTrace();
+                            ex.printStackTrace();
                         }
                     }
                 }).start();
-                
+
             }
 
             //jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
@@ -118,53 +117,56 @@ public class Principal extends javax.swing.JDialog {
                 @Override
                 public void realizarAccion(Component component) {
                     // new User((Dialog) component, true, twitter).setVisible(true);
-                   String[] objeto = new String[]{"Añadir cuenta","Cambiar cuenta","Ir al perfil"};
+                    String[] objeto = new String[]{"Añadir cuenta", "Cambiar cuenta", "Ir al perfil"};
                     String objetoSeleccionado = (String) JOptionPane.showInputDialog(component, "", "", JOptionPane.INFORMATION_MESSAGE, null, objeto, objeto[0]);
-                   if(objetoSeleccionado!=null){
-                       switch (objetoSeleccionado) {
-                           case "Añadir cuenta":
-                               new Login(false).setVisible(true);
-                               dispose();
-                            break;
+                    if (objetoSeleccionado != null) {
+                        switch (objetoSeleccionado) {
+                            case "Añadir cuenta":
+                                new Login(false).setVisible(true);
+                                dispose();
+                                break;
                             case "Cambiar cuenta":
                                 new Login(true).setVisible(true);
                                 dispose();
-                            break;
+                                break;
                             case "Ir al perfil":
                                 new User((Dialog) component, true, twitter).setVisible(true);
-                       }
-                       //añadir cuenta, volver al login principal, solo el login
-                       
-                       //cambiar cuenta boton en on
-                       //ir al perfil, abrir el dialogo comentado
-                   }
-                   
+                        }
+                        //añadir cuenta, volver al login principal, solo el login
+
+                        //cambiar cuenta boton en on
+                        //ir al perfil, abrir el dialogo comentado
+                    }
+
                 }
-            });                       
-            
+            });
+
             //no poner botones en tweet y al hacer click mostrar opciones para interactuar.
             jListTL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                     System.out.println(jListTL.getSelectedIndex());
-                    System.out.println("X: "+e.getX() + "Y: "+ e.getY());
-                }                
+                    System.out.println("X: " + e.getX() + "Y: " + e.getY());
+                }
             });
-            
+
             //RELLENA JLIST CON 10 TT
             jListTT.setModel(GestionClienteTwitter.listar10TrendingTopic(
                     GestionClienteTwitter.listarTrendingTopic(twitter, 1)));
-            
+
             jListTT.addMouseListener((new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                     //FALTA GESTIONAR LIMITE DE CONEXIONES
-                    GestionClienteTwitter.buscarTopic(twitter, jListTL.getSelectedValue());
-                }                
+
+                    for (Status status : GestionClienteTwitter.buscarTopic(twitter, jListTT.getSelectedValue())) {
+                    System.out.println(status.getText());
+                    }
+                }
             }));
-            
+
         } catch (TwitterException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
