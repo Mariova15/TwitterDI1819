@@ -2,6 +2,8 @@
 package interfaz;
 
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -15,7 +17,9 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import logica.GestionClienteTwitter;
+import twitter4j.Relationship;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -82,6 +86,58 @@ public class User extends javax.swing.JDialog {
                         }
                     }
                 }).start();
+                
+                jListHomeTL.addMouseListener(new MouseAdapter() {
+
+                 @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    
+                    Status tweetHomeTL = (Status) statuses.elementAt(jListHomeTL.getSelectedIndex());
+                    
+                    //Fallo al elegir las opciones de interaccion 
+                    
+                    String follow, rt = "Retweet", fav = "Favorito";
+                    
+                     if (tweetHomeTL.isRetweetedByMe()) {
+                         rt = "Borrar rt";
+                     }
+                     if (tweetHomeTL.isFavorited()) {
+                         fav = "Borrar fav";
+                     }
+                    
+                    String accion = (String) JOptionPane.showInputDialog(
+                            e.getComponent().getParent(),
+                            "Seleccione opcion",
+                            "Selector de acciones sobre tweet",
+                            JOptionPane.QUESTION_MESSAGE, null,
+                            new Object[]{"Responder", rt, fav, "Borrar"}, "opcion 2");
+                    
+                    if (accion != null) {
+                        switch(accion){
+                            case "Responder":
+                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
+                                GestionClienteTwitter.responderTwit(twitter, respuesta,
+                                        tweetHomeTL.getId() );
+                                pintarTimeLine(twitter);
+                                break;                            
+                            case "Borrar retweet":
+                                GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
+                                pintarTimeLine(twitter);
+                                break;
+                            case "Favorito":
+                                GestionClienteTwitter.hacerFavorito(twitter, tweetHomeTL.getId());
+                                pintarTimeLine(twitter);
+                                break;
+                            case "Borrar":
+                                GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
+                                pintarTimeLine(twitter);
+                                break;
+                        }
+                    }
+
+                }
+            });
                 
             }
 

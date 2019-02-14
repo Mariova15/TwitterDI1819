@@ -5,6 +5,7 @@
  */
 package logica;
 
+import static java.awt.image.ImageObserver.WIDTH;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -24,6 +25,7 @@ import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.RateLimitStatus;
+import twitter4j.Relationship;
 import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
@@ -247,6 +249,56 @@ public class GestionClienteTwitter {
         return usuariosEncontrados;
     }
 
+    public static boolean comprobarSiSigue(Twitter twitter, long usuarioComprobar) {
+        boolean targetFollowingSource = false;
+        try {
+            System.out.println(twitter.getId());
+            System.out.println("PRUEBA "+usuarioComprobar);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Relationship showFriendship = twitter.showFriendship(twitter.getId(), usuarioComprobar);
+            targetFollowingSource = showFriendship.isSourceFollowingTarget();
+            //targetFollowingSource = showFriendship.isSourceFollowedByTarget(); MUTUALS
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalStateException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return targetFollowingSource;
+    }
+
+    /**
+     * Método que sigue a un usuario por su id.
+     *
+     * @param twitter
+     * @param idUsuarioSeguir
+     */
+    public static void seguirUsuario(Twitter twitter, long idUsuarioSeguir) {
+        try {
+            twitter.createFriendship(idUsuarioSeguir);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Método que deja de seguir a un usuario por su id.
+     *
+     * @param twitter
+     * @param idUsuarioSeguir
+     */
+    public static void dejarDeSeguirUsuario(Twitter twitter, long idUsuarioSeguir) {
+        try {
+            twitter.destroyFriendship(idUsuarioSeguir);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     /**
      * Método que devuelve una lista de las tendencias mas populares de un lugar
      * determinado.
@@ -268,10 +320,11 @@ public class GestionClienteTwitter {
     }
 
     /**
-     * * Método que devuelve una lista de las 10 tendencias mas populares pasandole una busqueda previa.
-     * 
+     * * Método que devuelve una lista de las 10 tendencias mas populares
+     * pasandole una busqueda previa.
+     *
      * @param arrayTrend
-     * @return 
+     * @return
      */
     public static DefaultListModel listar10TrendingTopic(Trend[] arrayTrend) {
         DefaultListModel listaModeloTT = new DefaultListModel();

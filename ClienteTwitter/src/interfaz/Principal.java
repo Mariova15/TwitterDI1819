@@ -48,7 +48,7 @@ public class Principal extends javax.swing.JDialog {
         this.twitter = twitter;
 
         pintarTimeLine(twitter);
-
+                
         try {
             jLabelScName.setText("@" + twitter.users().showUser(twitter.getId()).getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
