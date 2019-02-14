@@ -53,32 +53,6 @@ public class Principal extends javax.swing.JDialog {
             jLabelScName.setText("@" + twitter.users().showUser(twitter.getId()).getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
 
-            /*String imgUser = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
-            URL url = new URL(imgUser);
-            InputStream in = new BufferedInputStream(url.openStream());
-            
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            byte[] buf = new byte[1024];
-            int n = 0;
-            System.out.println("descargando");
-            while (-1 != (n = in.read(buf))) {
-            out.write(buf, 0, n);
-            }
-            System.out.println("descargado");
-            out.close();
-            in.close();
-            byte[] response = out.toByteArray();
-            FileOutputStream fos = new FileOutputStream("user.png");
-            fos.write(response);
-            fos.close();
-            
-            Image userProfileIMG = new ImageIcon("user.png").getImage().getScaledInstance(
-            jLabelUserImg.getWidth(), jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);*/
-            //jLabelUserImg.setIcon(new ImageIcon("user.png"));
-            //jLabelUserImg.setIcon(new ImageIcon(userProfileIMG));
-            /*Image image = ImageIO.read(new URL(twitter.showUser(twitter.getId()).get400x400ProfileImageURL()))
-            .getScaledInstance(jLabelUserImg.getWidth(),
-            jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);*/
             File profile = new File(".." + File.separator + "imgs"
                     + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
             if (profile.exists()) {
@@ -110,9 +84,7 @@ public class Principal extends javax.swing.JDialog {
 
             }
 
-            //jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             jLabelUserImg.setComponent(this);
-
             jLabelUserImg.setcLabelListener(new CLabelListener() {
                 @Override
                 public void realizarAccion(Component component) {
@@ -146,8 +118,32 @@ public class Principal extends javax.swing.JDialog {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    System.out.println(jListTL.getSelectedIndex());
-                    System.out.println("X: " + e.getX() + "Y: " + e.getY());
+                    
+                    Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
+
+                    String accion = (String) JOptionPane.showInputDialog(
+                            e.getComponent().getParent(),
+                            "Seleccione opcion",
+                            "Selector de acciones sobre tweet",
+                            JOptionPane.QUESTION_MESSAGE, null,
+                            new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
+                    
+                    if (accion != null) {
+                        switch(accion){
+                            case "Responder":
+                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
+                                GestionClienteTwitter.responderTwit(twitter, respuesta,
+                                        tweetTL.getId() );
+                                break;                            
+                            case "Retweet":
+                                GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
+                                break;
+                            case "Favorito":
+                                GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
+                                break;
+                        }
+                    }
+
                 }
             });
 
@@ -162,7 +158,7 @@ public class Principal extends javax.swing.JDialog {
                     //FALTA GESTIONAR LIMITE DE CONEXIONES
 
                     for (Status status : GestionClienteTwitter.buscarTopic(twitter, jListTT.getSelectedValue())) {
-                    System.out.println(status.getText());
+                        System.out.println(status.getText());
                     }
                 }
             }));
