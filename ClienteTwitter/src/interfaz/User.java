@@ -1,16 +1,10 @@
-
 package interfaz;
 
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +13,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import logica.GestionClienteTwitter;
-import twitter4j.Relationship;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -30,6 +23,7 @@ import twitter4j.TwitterException;
  */
 public class User extends javax.swing.JDialog {
 
+    //Atributos
     private Twitter twitter;
     private DefaultListModel statuses = new DefaultListModel();
 
@@ -39,7 +33,10 @@ public class User extends javax.swing.JDialog {
     public User(java.awt.Dialog parent, boolean modal, final Twitter twitter) {
         super(parent, modal);
         initComponents();
+        //parent.dispose();//cerramos al padre una vez entrado
         setLocationRelativeTo(null);
+        //Establecer el título de la aplicación
+        setTitle("TTCSASM");
         this.twitter = twitter;
         try {
             pintarTimeLine(twitter);
@@ -62,7 +59,7 @@ public class User extends javax.swing.JDialog {
                         jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
             } else {
-                
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -70,84 +67,78 @@ public class User extends javax.swing.JDialog {
                             String urlBanner = twitter.showUser(twitter.getId()).getProfileBanner1500x500URL();
                             String urlProfile = twitter.showUser(twitter.getId()).get400x400ProfileImageURL();
                             //sino compruebas si es nulo cuando no tiene banner el programa rompe
-                            if(urlBanner!=null&&!"".equals(urlBanner)){
+                            if (urlBanner != null && !"".equals(urlBanner)) {
                                 Image userBannerImage = ImageIO.read(new URL(urlBanner))
                                         .getScaledInstance(jLabelBanner.getWidth(),
                                                 jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
                                 jLabelBanner.setIcon(new ImageIcon(userBannerImage));
                             }
-                            if (urlProfile!=null&&!"".equals(urlProfile)){
+                            if (urlProfile != null && !"".equals(urlProfile)) {
                                 Image userProfileImage = ImageIO.read(new URL(urlProfile))
                                         .getScaledInstance(jLabelUserImg.getWidth(),
                                                 jLabelUserImg.getHeight(), Image.SCALE_SMOOTH);
                                 jLabelUserImg.setIcon(new ImageIcon(userProfileImage));
-                            }       } catch (TwitterException | IllegalStateException | IOException ex) {
+                            }
+                        } catch (TwitterException | IllegalStateException | IOException ex) {
                             ex.printStackTrace();
                         }
                     }
                 }).start();
-                
+
                 jListHomeTL.addMouseListener(new MouseAdapter() {
 
-                 @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    
-                    Status tweetHomeTL = (Status) statuses.elementAt(jListHomeTL.getSelectedIndex());
-                    
-                    //Fallo al elegir las opciones de interaccion 
-                    
-                    String follow, rt = "Retweet", fav = "Favorito";
-                    
-                     if (tweetHomeTL.isRetweetedByMe()) {
-                         rt = "Borrar rt";
-                     }
-                     if (tweetHomeTL.isFavorited()) {
-                         fav = "Borrar fav";
-                     }
-                    
-                    String accion = (String) JOptionPane.showInputDialog(
-                            e.getComponent().getParent(),
-                            "Seleccione opcion",
-                            "Selector de acciones sobre tweet",
-                            JOptionPane.QUESTION_MESSAGE, null,
-                            new Object[]{"Responder", rt, fav, "Borrar"}, "opcion 2");
-                    
-                    if (accion != null) {
-                        switch(accion){
-                            case "Responder":
-                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
-                                GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                        tweetHomeTL.getId() );
-                                pintarTimeLine(twitter);
-                                break;                            
-                            case "Borrar retweet":
-                                GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
-                                pintarTimeLine(twitter);
-                                break;
-                            case "Favorito":
-                                GestionClienteTwitter.hacerFavorito(twitter, tweetHomeTL.getId());
-                                pintarTimeLine(twitter);
-                                break;
-                            case "Borrar":
-                                GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
-                                pintarTimeLine(twitter);
-                                break;
-                        }
-                    }
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
 
-                }
-            });
-                
+                        Status tweetHomeTL = (Status) statuses.elementAt(jListHomeTL.getSelectedIndex());
+
+                        //Fallo al elegir las opciones de interaccion 
+                        String follow, rt = "Retweet", fav = "Favorito";
+
+                        if (tweetHomeTL.isRetweetedByMe()) {
+                            rt = "Borrar rt";
+                        }
+                        if (tweetHomeTL.isFavorited()) {
+                            fav = "Borrar fav";
+                        }
+
+                        String accion = (String) JOptionPane.showInputDialog(
+                                e.getComponent().getParent(),
+                                "Seleccione opcion",
+                                "Selector de acciones sobre tweet",
+                                JOptionPane.QUESTION_MESSAGE, null,
+                                new Object[]{"Responder", rt, fav, "Borrar"}, "opcion 2");
+
+                        if (accion != null) {
+                            switch (accion) {
+                                case "Responder":
+                                    String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
+                                    GestionClienteTwitter.responderTwit(twitter, respuesta,
+                                            tweetHomeTL.getId());
+                                    pintarTimeLine(twitter);
+                                    break;
+                                case "Borrar retweet":
+                                    GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
+                                    pintarTimeLine(twitter);
+                                    break;
+                                case "Favorito":
+                                    GestionClienteTwitter.hacerFavorito(twitter, tweetHomeTL.getId());
+                                    pintarTimeLine(twitter);
+                                    break;
+                                case "Borrar":
+                                    GestionClienteTwitter.borrarTwitRetweet(twitter, tweetHomeTL.getId());
+                                    pintarTimeLine(twitter);
+                                    break;
+                            }
+                        }
+
+                    }
+                });
+
             }
 
-        } catch (TwitterException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalStateException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (TwitterException | IllegalStateException | IOException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -254,7 +245,11 @@ public class User extends javax.swing.JDialog {
     private void jButtonRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRefreshActionPerformed
         pintarTimeLine(twitter);
     }//GEN-LAST:event_jButtonRefreshActionPerformed
-
+    /**
+     * Método privado para pintar en un JList el TimeLine.
+     *
+     * @param twitter
+     */
     private void pintarTimeLine(Twitter twitter) {
 
         for (Status status : GestionClienteTwitter.listarTimeLineUsuario(twitter)) {

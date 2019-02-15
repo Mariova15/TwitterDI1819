@@ -43,11 +43,11 @@ public class Login extends javax.swing.JFrame {
         try {
             auto.cargarSesionesComboBox(this.jComboBoxSesiones);
         } catch (IOException ex) {
-            
+
             ex.printStackTrace();
         }
         this.jComboBoxSesiones.setVisible(false);
-        
+
         jswitchRecordar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -58,24 +58,24 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         comprobarUsuarios();
 
     }
 
     private void comprobarUsuarios() {
-        if(auto.comprobarUsuarios()){
+        if (auto.comprobarUsuarios()) {
             this.jswitchRecordar.setVisible(true);
-        }else{
+        } else {
             this.jswitchRecordar.setVisible(false);
         }
     }
-    
-    public Login (boolean switchActivado){
+
+    public Login(boolean switchActivado) {
         this();
         this.jswitchRecordar.setOnOff(switchActivado);
         this.jswitchRecordar.setVisible(false);
-        if (switchActivado){
+        if (switchActivado) {
             this.jComboBoxSesiones.setVisible(true);
         }
     }
@@ -207,7 +207,7 @@ public class Login extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_botonDeleteActionPerformed
 
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed
@@ -231,8 +231,6 @@ public class Login extends javax.swing.JFrame {
         }
         }*/
         //Prueba Login
-        
-
         if (jswitchRecordar.isOnOff()) {
             //Parte donde carga la sesion del combox
             Twitter twitter = TwitterFactory.getSingleton();
@@ -246,18 +244,12 @@ public class Login extends javax.swing.JFrame {
             Twitter nuevaConexion = null;
             try {
                 nuevaConexion = auto.nuevaConexion(jCheckBoxRemember.isSelected());
-            } catch (TwitterException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Excepciones.CifradoExcepcion ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (URISyntaxException ex) {
+            } catch (TwitterException | Excepciones.CifradoExcepcion | IOException | URISyntaxException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
             if (nuevaConexion != null) {
-            new Principal(this, true, nuevaConexion).setVisible(true);
-        }
+                new Principal(this, true, nuevaConexion).setVisible(true);
+            }
         }
 
         /*  String itemAt = this.jComboBox1.getItemAt(jComboBox1.getSelectedIndex());

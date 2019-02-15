@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package interfaz;
 
 import java.awt.Component;
@@ -16,8 +12,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import jlabeltt.JLabelTTListener;
-import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import utils.Fecha;

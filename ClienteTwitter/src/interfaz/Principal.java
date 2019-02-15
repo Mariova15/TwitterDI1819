@@ -7,24 +7,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
 import twitter4j.Status;
-import twitter4j.Trend;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
-import jlabeltt.JLabelTTListener;
 
 public class Principal extends javax.swing.JDialog {
 
@@ -166,7 +160,6 @@ public class Principal extends javax.swing.JDialog {
         } catch (TwitterException | IllegalStateException | IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         //Establecer el logo del a aplicación
         setIconImage(new ImageIcon(getClass().getResource(RUTA_ICON)).getImage());
 
