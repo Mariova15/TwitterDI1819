@@ -163,11 +163,7 @@ public class Principal extends javax.swing.JDialog {
                 }
             }));
 
-        } catch (TwitterException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalStateException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (TwitterException | IllegalStateException | IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -427,9 +423,11 @@ public class Principal extends javax.swing.JDialog {
     private void jButtonPublicarTwitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPublicarTwitActionPerformed
         GestionClienteTwitter.publicarTwit(twitter, jTextFieldPublicarTwit.getText());
         jTextFieldPublicarTwit.setText("");
-        JOptionPane.showMessageDialog(this, "Twit publicado");
+   
+        //Confirmación tweet
+        JDialogConfirmacionTweet confirmacionTweet = new JDialogConfirmacionTweet(this,true);
+        confirmacionTweet.setVisible(true);
 
-        //JOptionPane.showMessageDialog(this, "Error al publicar el twit");
 
     }//GEN-LAST:event_jButtonPublicarTwitActionPerformed
 
