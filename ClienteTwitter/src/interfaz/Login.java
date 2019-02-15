@@ -58,7 +58,17 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         });
+        
+        comprobarUsuarios();
 
+    }
+
+    private void comprobarUsuarios() {
+        if(auto.comprobarUsuarios()){
+            this.jswitchRecordar.setVisible(true);
+        }else{
+            this.jswitchRecordar.setVisible(false);
+        }
     }
     
     public Login (boolean switchActivado){
@@ -192,10 +202,12 @@ public class Login extends javax.swing.JFrame {
         //Tiene que borrar la conexion seleccionada en el combox de las recordadas
         try {
             this.auto.borrarConexion(this.jComboBoxSesiones.getItemAt(this.jComboBoxSesiones.getSelectedIndex()));
-            
+            auto.cargarSesionesComboBox(this.jComboBoxSesiones);
+            comprobarUsuarios();
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }//GEN-LAST:event_botonDeleteActionPerformed
 
     private void botonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonLoginActionPerformed

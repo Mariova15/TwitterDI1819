@@ -13,10 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -72,13 +69,13 @@ public class Autentificacion {
      */
     public Twitter nuevaConexion(Boolean activarGuardado)
             throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
-        Twitter twitter = TwitterFactory.getSingleton();
+        final Twitter twitter = TwitterFactory.getSingleton();
         if (request == null)
         this.request = twitter.getOAuthRequestToken();
         Desktop.getDesktop().browse(new URI(this.request.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
         if(pin==null) return null;
-        AccessToken access = twitter.getOAuthAccessToken(this.request, pin);
+        final AccessToken access = twitter.getOAuthAccessToken(this.request, pin);
 
         if (activarGuardado) {
             File profile = new File(".." + File.separator + "imgs"
@@ -147,11 +144,16 @@ public class Autentificacion {
         
         if (imagenes.exists()){
             //no os creais que soy un genio lo encontré por internet
-            Path path = imagenes.toPath();
-            Files.walk(path)
+           // Path path = imagenes.toPath();
+            //TODO: Cambiar a 1.7
+            /*Files.walk(path)
             .sorted(Comparator.reverseOrder())
             .map(Path::toFile)
-            .forEach(File::delete);
+            .forEach(File::delete);*/
+            for (File listFile : imagenes.listFiles()) {
+                listFile.delete();
+            }
+            imagenes.delete();
         }
         
         String userConfiguracion = this.configuracion.getClave("ultima_sesion");
@@ -251,6 +253,11 @@ public class Autentificacion {
             modelo.addElement(fichero.getName());
             combo.setModel(modelo);
         }
+    }
+    
+    public boolean comprobarUsuarios(){
+        File sesiones = new File("sesiones");
+        return sesiones.list().length>0;
     }
      
 }

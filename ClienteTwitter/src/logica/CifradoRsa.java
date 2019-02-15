@@ -15,9 +15,9 @@ import java.security.PublicKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 import javax.crypto.Cipher;
 import logica.Excepciones.CifradoExcepcion;
+import org.apache.commons.codec.binary.Base64;
 import sun.security.rsa.RSAKeyPairGenerator;
 
 /**
@@ -35,7 +35,7 @@ public class CifradoRsa {
       */
      private PrivateKey getPrivateKey() throws CifradoExcepcion{
          try {
-             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(clavePrivada.getBytes()));
+             PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.decodeBase64(clavePrivada.getBytes()));
              KeyFactory kf = KeyFactory.getInstance("RSA");
              RSAPrivateKey privKey = (RSAPrivateKey) kf.generatePrivate(spec);
              return privKey;
@@ -51,7 +51,7 @@ public class CifradoRsa {
       */
      private PublicKey getPublicKey() throws CifradoExcepcion{
          try {
-             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(clavePublica.getBytes()));
+             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.decodeBase64(clavePublica.getBytes()));
              KeyFactory keyFactory = KeyFactory.getInstance("RSA");
              PublicKey publKey = keyFactory.generatePublic(keySpec);
              return publKey;
@@ -67,8 +67,8 @@ public class CifradoRsa {
             //volver publico, usarlo, copiar las claves y volverlo a poner privado
             RSAKeyPairGenerator keyPairGenerator = new RSAKeyPairGenerator();
             KeyPair keyPair = keyPairGenerator.generateKeyPair();
-            System.out.println(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()));
-            System.out.println(Base64.getEncoder().encodeToString(keyPair.getPrivate().getEncoded()));
+            System.out.println(Base64.encodeBase64String(keyPair.getPublic().getEncoded()));
+            System.out.println(Base64.encodeBase64String(keyPair.getPrivate().getEncoded()));
      }
      
      /**
@@ -113,7 +113,7 @@ public class CifradoRsa {
          try {
              MessageDigest digest = MessageDigest.getInstance("SHA-256");
              byte[] hash = digest.digest(msng.getBytes(StandardCharsets.UTF_8));
-             return Base64.getEncoder().encodeToString(hash);
+             return Base64.encodeBase64String(hash);
          } catch (NoSuchAlgorithmException ex) {
              throw new Excepciones.CifradoExcepcion(ex);
          }

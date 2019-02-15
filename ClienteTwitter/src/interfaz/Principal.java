@@ -37,7 +37,7 @@ public class Principal extends javax.swing.JDialog {
     /**
      * Creates new form DialogConfiguracion
      */
-    public Principal(java.awt.Frame parent, boolean modal, Twitter twitter) {
+    public Principal(java.awt.Frame parent, boolean modal, final Twitter twitter) {
         super(parent, modal);
         initComponents();
         //parent.dispose();//cerramos al padre una vez entrado

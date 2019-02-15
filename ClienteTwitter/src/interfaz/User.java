@@ -36,7 +36,7 @@ public class User extends javax.swing.JDialog {
     /**
      * Creates new form User
      */
-    public User(java.awt.Dialog parent, boolean modal, Twitter twitter) {
+    public User(java.awt.Dialog parent, boolean modal, final Twitter twitter) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);

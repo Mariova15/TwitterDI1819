@@ -21,7 +21,7 @@ public class JLabelTT extends JLabel implements Serializable {
     
     public JLabelTT() {
         
-        String text = this.getText();
+        final String text = this.getText();
         
         this.addMouseListener(new MouseAdapter() {
          @Override
