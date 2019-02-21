@@ -3,19 +3,27 @@ package interfaz;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import jlabelcircular.CLabelListener;
 import logica.GestionClienteTwitter;
+import twitter4j.Location;
+import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -141,6 +149,23 @@ public class Principal extends javax.swing.JDialog {
                 }
             });
 
+            final ResponseList<Location> availableTrends = twitter.getAvailableTrends();
+            DefaultComboBoxModel<String> lugarTendencia = new DefaultComboBoxModel<>();
+            
+            for (Location availableTrend : availableTrends) {
+                lugarTendencia.addElement(availableTrend.getName());
+            }
+            
+            jComboBoxTT.setModel((ComboBoxModel<String>) lugarTendencia);
+            
+            jComboBoxTT.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    jListTT.setModel(GestionClienteTwitter.listar10TrendingTopic(
+                    GestionClienteTwitter.listarTrendingTopic(twitter, 
+                            availableTrends.get(jComboBoxTT.getSelectedIndex()).getWoeid())));
+                }
+            });
+
             //RELLENA JLIST CON 10 TT
             jListTT.setModel(GestionClienteTwitter.listar10TrendingTopic(
                     GestionClienteTwitter.listarTrendingTopic(twitter, 1)));
@@ -149,10 +174,10 @@ public class Principal extends javax.swing.JDialog {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    
-                    VistasBusqueda busqueda = new VistasBusqueda((Dialog)Principal.this, true, twitter, jListTT.getSelectedValue());
-                    busqueda.setVisible(true);                  
-                    
+
+                    VistasBusqueda busqueda = new VistasBusqueda((Dialog) Principal.this, true, twitter, jListTT.getSelectedValue());
+                    busqueda.setVisible(true);
+
                 }
             }));
 
@@ -188,6 +213,7 @@ public class Principal extends javax.swing.JDialog {
         jLabelTT = new javax.swing.JLabel();
         jScrollPaneTT = new javax.swing.JScrollPane();
         jListTT = new javax.swing.JList<>();
+        jComboBoxTT = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -325,6 +351,8 @@ public class Principal extends javax.swing.JDialog {
         });
         jScrollPaneTT.setViewportView(jListTT);
 
+        jComboBoxTT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanelTTLayout = new javax.swing.GroupLayout(jPanelTT);
         jPanelTT.setLayout(jPanelTTLayout);
         jPanelTTLayout.setHorizontalGroup(
@@ -333,7 +361,8 @@ public class Principal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanelTTLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelTT, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-                    .addComponent(jScrollPaneTT))
+                    .addComponent(jScrollPaneTT)
+                    .addComponent(jComboBoxTT, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelTTLayout.setVerticalGroup(
@@ -342,6 +371,8 @@ public class Principal extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelTT)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBoxTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneTT)
                 .addContainerGap())
         );
@@ -443,6 +474,7 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JButton jButtonBuscar;
     private javax.swing.JButton jButtonPublicarTwit;
     private javax.swing.JButton jButtonRefresh;
+    private javax.swing.JComboBox<String> jComboBoxTT;
     private javax.swing.JLabel jLabelHomeTL;
     private javax.swing.JLabel jLabelName;
     private javax.swing.JLabel jLabelScName;

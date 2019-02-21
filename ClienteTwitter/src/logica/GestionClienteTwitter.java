@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import twitter4j.Location;
 import twitter4j.PagableResponseList;
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -253,7 +254,7 @@ public class GestionClienteTwitter {
         boolean targetFollowingSource = false;
         try {
             System.out.println(twitter.getId());
-            System.out.println("PRUEBA "+usuarioComprobar);
+            System.out.println("PRUEBA " + usuarioComprobar);
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateException ex) {
@@ -335,6 +336,16 @@ public class GestionClienteTwitter {
         return listaModeloTT;
     }
 
+    public static void listarTendenciasDisponibles(Twitter twitter) {
+        try {
+            for (Location availableTrend : twitter.getAvailableTrends()) {
+                
+            }
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * Método que devuelve una lista de los últimos 20 twits de las personas que
      * sigue el usuario.
