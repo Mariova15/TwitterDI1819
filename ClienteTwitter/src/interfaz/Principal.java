@@ -175,8 +175,6 @@ public class Principal extends javax.swing.JDialog {
         jLabelName = new javax.swing.JLabel();
         jLabelScName = new javax.swing.JLabel();
         jLabelUserImg = new jlabelcircular.CLabel();
-        jButtonAnnadirCuenta = new javax.swing.JButton();
-        jButtonLogOut = new javax.swing.JButton();
         jPanelAcciones = new javax.swing.JPanel();
         jButtonPublicarTwit = new javax.swing.JButton();
         jButtonBuscar = new javax.swing.JButton();
@@ -216,26 +214,6 @@ public class Principal extends javax.swing.JDialog {
         jLabelUserImg.setLineBorder(4);
         jLabelUserImg.setLineColor(new java.awt.Color(255, 255, 255));
         jPanelUser.add(jLabelUserImg, new org.netbeans.lib.awtextra.AbsoluteConstraints(14, 11, -1, -1));
-
-        jButtonAnnadirCuenta.setBackground(new java.awt.Color(255, 255, 255));
-        jButtonAnnadirCuenta.setForeground(new java.awt.Color(56, 161, 243));
-        jButtonAnnadirCuenta.setText("Añadir cuenta");
-        jButtonAnnadirCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAnnadirCuentaActionPerformed(evt);
-            }
-        });
-        jPanelUser.add(jButtonAnnadirCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, -1, -1));
-
-        jButtonLogOut.setBackground(new java.awt.Color(255, 255, 255));
-        jButtonLogOut.setForeground(new java.awt.Color(56, 161, 243));
-        jButtonLogOut.setText("Cambiar cuenta");
-        jButtonLogOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonLogOutActionPerformed(evt);
-            }
-        });
-        jPanelUser.add(jButtonLogOut, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, -1, -1));
 
         jPanelAcciones.setBackground(new java.awt.Color(56, 161, 243));
         jPanelAcciones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -428,16 +406,9 @@ public class Principal extends javax.swing.JDialog {
         pintarTimeLine(twitter);
     }//GEN-LAST:event_jButtonRefreshActionPerformed
 
-    private void jButtonAnnadirCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnadirCuentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAnnadirCuentaActionPerformed
-
-    private void jButtonLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogOutActionPerformed
-        this.dispose();
-    }//GEN-LAST:event_jButtonLogOutActionPerformed
-
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-        //new User(this, true, twitter).setVisible(true);
+       VistasBusqueda busqueda = new VistasBusqueda(this, true, twitter, jTextFieldPublicarTwit.getText());
+       busqueda.setVisible(true);
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void pintarTimeLine(Twitter twitter) {
@@ -470,9 +441,7 @@ public class Principal extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAnnadirCuenta;
     private javax.swing.JButton jButtonBuscar;
-    private javax.swing.JButton jButtonLogOut;
     private javax.swing.JButton jButtonPublicarTwit;
     private javax.swing.JButton jButtonRefresh;
     private javax.swing.JLabel jLabelHomeTL;
