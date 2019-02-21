@@ -42,7 +42,7 @@ public class Principal extends javax.swing.JDialog {
         this.twitter = twitter;
 
         pintarTimeLine(twitter);
-                
+
         try {
             jLabelScName.setText("@" + twitter.users().showUser(twitter.getId()).getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
@@ -112,7 +112,7 @@ public class Principal extends javax.swing.JDialog {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    
+
                     Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
 
                     String accion = (String) JOptionPane.showInputDialog(
@@ -121,14 +121,14 @@ public class Principal extends javax.swing.JDialog {
                             "Selector de acciones sobre tweet",
                             JOptionPane.QUESTION_MESSAGE, null,
                             new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
-                    
+
                     if (accion != null) {
-                        switch(accion){
+                        switch (accion) {
                             case "Responder":
                                 String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
                                 GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                        tweetTL.getId() );
-                                break;                            
+                                        tweetTL.getId());
+                                break;
                             case "Retweet":
                                 GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
                                 break;
@@ -149,11 +149,10 @@ public class Principal extends javax.swing.JDialog {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    //FALTA GESTIONAR LIMITE DE CONEXIONES
-
-                    for (Status status : GestionClienteTwitter.buscarTopic(twitter, jListTT.getSelectedValue())) {
-                        System.out.println(status.getText());
-                    }
+                    
+                    VistasBusqueda busqueda = new VistasBusqueda((Dialog)Principal.this, true, twitter, jListTT.getSelectedValue());
+                    busqueda.setVisible(true);                  
+                    
                 }
             }));
 
@@ -394,9 +393,9 @@ public class Principal extends javax.swing.JDialog {
     private void jButtonPublicarTwitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPublicarTwitActionPerformed
         GestionClienteTwitter.publicarTwit(twitter, jTextFieldPublicarTwit.getText());
         jTextFieldPublicarTwit.setText("");
-   
+
         //Confirmación tweet
-        JDialogConfirmacionTweet confirmacionTweet = new JDialogConfirmacionTweet(this,true);
+        JDialogConfirmacionTweet confirmacionTweet = new JDialogConfirmacionTweet(this, true);
         confirmacionTweet.setVisible(true);
 
 
@@ -407,8 +406,8 @@ public class Principal extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonRefreshActionPerformed
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
-       VistasBusqueda busqueda = new VistasBusqueda(this, true, twitter, jTextFieldPublicarTwit.getText());
-       busqueda.setVisible(true);
+        VistasBusqueda busqueda = new VistasBusqueda(this, true, twitter, jTextFieldPublicarTwit.getText());
+        busqueda.setVisible(true);
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void pintarTimeLine(Twitter twitter) {
