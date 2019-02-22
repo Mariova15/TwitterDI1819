@@ -249,6 +249,16 @@ public class GestionClienteTwitter {
         }
         return usuariosEncontrados;
     }
+    
+    public static User buscarPrimerUsuario(Twitter twitter, String usuario) {
+        ResponseList<User> usuariosEncontrados = null;
+        try {
+            usuariosEncontrados = twitter.searchUsers(usuario, 0);
+        } catch (TwitterException ex) {
+            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return usuariosEncontrados.get(0);
+    }
 
     public static boolean comprobarSiSigue(Twitter twitter, long usuarioComprobar) {
         boolean targetFollowingSource = false;

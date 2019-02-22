@@ -27,6 +27,7 @@ import twitter4j.ResponseList;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 public class Principal extends javax.swing.JDialog {
 
@@ -92,13 +93,11 @@ public class Principal extends javax.swing.JDialog {
                 public void realizarAccion(Component component) {
                     // new User((Dialog) component, true, twitter).setVisible(true);
                     String[] objeto = new String[]{"Añadir cuenta", "Cambiar cuenta", "Ir al perfil"};
-                    new JDialogCombobox(Principal.this, true,objeto).setVisible(true);
-                    
-                        
-                        //añadir cuenta, volver al login principal, solo el login
+                    new JDialogCombobox(Principal.this, true, objeto).setVisible(true);
 
-                        //cambiar cuenta boton en on
-                        //ir al perfil, abrir el dialogo comentado
+                    //añadir cuenta, volver al login principal, solo el login
+                    //cambiar cuenta boton en on
+                    //ir al perfil, abrir el dialogo comentado
                 }
             });
 
@@ -106,29 +105,90 @@ public class Principal extends javax.swing.JDialog {
             jListTL.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    try {
+                        super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
 
-                    Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
-                    String[] opciones = new String[]{"Responder", "Retweet", "Favorito"};
-                    new JDialogCombobox(Principal.this, true, opciones,tweetTL.getId()).setVisible(true);
+                        Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
+                        String tweet = tweetTL.getText();
+                        String[] opciones = null;
+                        //aun no está hecho
+                        //no tiene funcionalidad aun
+                        String[] usersTweet = getUsersTweet(tweet);
+                        if (sigueAlguno(tweet, tweetTL.getUser(),usersTweet)) {
+                            if (sigueTodos(tweet, tweetTL.getUser(),usersTweet)) {
+                                opciones = new String[]{"Responder", "Retweet", "Favorito", "dejar de seguir"};
+                            } else {
+                                opciones = new String[]{"Responder", "Retweet", "Favorito", "seguir", "dejar de seguir"};
+                            }
+                            
 
+                        } else {
+                            opciones = new String[]{"Responder", "Retweet", "Favorito", "seguir"};
+                        }
+                        
+                        new JDialogCombobox(Principal.this, true, opciones, tweetTL.getId()).setVisible(true);
+                    } catch (TwitterException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
+
+                private String[] getUsersTweet(String tweet) {
+                    if (tweet.contains("@")) {
+                        String[] tweetPartido = tweet.split("@");
+                        String[] usuarios = new String[tweetPartido.length];
+
+                        for (int i = 0; i < tweetPartido.length; i++) {
+                            usuarios[i] = tweetPartido[i].split(" ")[0];
+                        }
+                        return usuarios;
+                    }
+                    return null;
+                }
+
+                private boolean sigueAlguno(String tweet, User user,String[] usersTweet) throws TwitterException {
+                    if (usersTweet != null) {
+                        for (String string : usersTweet) {
+                            if (twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
+                                return true;
+                            }
+                        }
+                    }
+                    if (twitter.showFriendship(twitter.getScreenName(), user.getScreenName()).isSourceFollowingTarget()) {
+                        return true;
+                    }
+                    return false;
+                }
+
+                private boolean sigueTodos(String tweet, User user,String[] usersTweet) throws TwitterException {
+                    if (usersTweet != null) {
+                        for (String string : usersTweet) {
+                            if (!twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
+                                return false;
+                            }
+                        }
+                    }
+                    if (!twitter.showFriendship(twitter.getScreenName(), user.getScreenName()).isSourceFollowingTarget()) {
+                        return false;
+                    }
+                    return true;
                 }
             });
 
             final ResponseList<Location> availableTrends = twitter.getAvailableTrends();
             DefaultComboBoxModel<String> lugarTendencia = new DefaultComboBoxModel<>();
-            
+
             for (Location availableTrend : availableTrends) {
                 lugarTendencia.addElement(availableTrend.getName());
             }
-            
+
             jComboBoxTT.setModel((ComboBoxModel<String>) lugarTendencia);
-            
+
             jComboBoxTT.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     jListTT.setModel(GestionClienteTwitter.listar10TrendingTopic(
-                    GestionClienteTwitter.listarTrendingTopic(twitter, 
-                            availableTrends.get(jComboBoxTT.getSelectedIndex()).getWoeid())));
+                            GestionClienteTwitter.listarTrendingTopic(twitter,
+                                    availableTrends.get(jComboBoxTT.getSelectedIndex()).getWoeid())));
                 }
             });
 
