@@ -1,5 +1,14 @@
 package interfaz;
 
+import java.awt.Dialog;
+import java.awt.Frame;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import logica.GestionClienteTwitter;
+import twitter4j.Twitter;
+import twitter4j.TwitterFactory;
+
 /**
  *
  * @author Shaila
@@ -9,13 +18,36 @@ public class JDialogCombobox extends javax.swing.JDialog {
     /**
      * Creates new form JDialogConfirmacionTweet
      */
-    public JDialogCombobox(java.awt.Dialog parent, boolean modal) {
+    private long id;
+
+    private JDialogCombobox(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
         //parent.dispose();//cerramos al padre una vez entrado
         setLocationRelativeTo(null);
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
+    }
+
+    JDialogCombobox(Dialog parent, boolean b, String[] objeto) {
+        this(parent, b);
+        this.rellenarCombo(objeto);
+    }
+
+    JDialogCombobox(Principal aThis, boolean b, String[] opciones, long id) {
+        this(aThis, b, opciones);
+        this.id = id;
+    }
+
+    private void rellenarCombo(String[] objeto) {
+        DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
+
+        for (String string : objeto) {
+            modelo.addElement(string);
+        }
+
+        this.jComboBoxStrings.setModel(modelo);
+
     }
 
     /**
@@ -69,7 +101,33 @@ public class JDialogCombobox extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
-
+        String seleccion = (String) this.jComboBoxStrings.getSelectedItem();
+        Twitter twitter = TwitterFactory.getSingleton();
+        if (seleccion != null) {
+            switch (seleccion) {
+                case "Añadir cuenta":
+                    new Login(false).setVisible(true);
+                    dispose();
+                    break;
+                case "Cambiar cuenta":
+                    new Login(true).setVisible(true);
+                    dispose();
+                    break;
+                case "Ir al perfil":
+                    new User(this, true, TwitterFactory.getSingleton()).setVisible(true);
+                case "Responder":
+                    String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
+                    GestionClienteTwitter.responderTwit(twitter, respuesta,
+                            this.id);
+                    break;
+                case "Retweet":
+                    GestionClienteTwitter.retwitear(twitter, this.id);
+                    break;
+                case "Favorito":
+                    GestionClienteTwitter.hacerFavorito(twitter, this.id);
+                    break;
+            }
+        }
         this.dispose();
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
@@ -79,4 +137,5 @@ public class JDialogCombobox extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> jComboBoxStrings;
     private javax.swing.JPanel jPanelHeader;
     // End of variables declaration//GEN-END:variables
+
 }

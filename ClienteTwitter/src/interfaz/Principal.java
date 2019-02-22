@@ -92,26 +92,13 @@ public class Principal extends javax.swing.JDialog {
                 public void realizarAccion(Component component) {
                     // new User((Dialog) component, true, twitter).setVisible(true);
                     String[] objeto = new String[]{"Añadir cuenta", "Cambiar cuenta", "Ir al perfil"};
-                    String objetoSeleccionado = (String) JOptionPane.showInputDialog(component, "", "", JOptionPane.INFORMATION_MESSAGE, null, objeto, objeto[0]);
-                    if (objetoSeleccionado != null) {
-                        switch (objetoSeleccionado) {
-                            case "Añadir cuenta":
-                                new Login(false).setVisible(true);
-                                dispose();
-                                break;
-                            case "Cambiar cuenta":
-                                new Login(true).setVisible(true);
-                                dispose();
-                                break;
-                            case "Ir al perfil":
-                                new User((Dialog) component, true, twitter).setVisible(true);
-                        }
+                    new JDialogCombobox(Principal.this, true,objeto).setVisible(true);
+                    
+                        
                         //añadir cuenta, volver al login principal, solo el login
 
                         //cambiar cuenta boton en on
                         //ir al perfil, abrir el dialogo comentado
-                    }
-
                 }
             });
 
@@ -122,29 +109,8 @@ public class Principal extends javax.swing.JDialog {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
 
                     Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
-
-                    String accion = (String) JOptionPane.showInputDialog(
-                            e.getComponent().getParent(),
-                            "Seleccione opcion",
-                            "Selector de acciones sobre tweet",
-                            JOptionPane.QUESTION_MESSAGE, null,
-                            new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
-
-                    if (accion != null) {
-                        switch (accion) {
-                            case "Responder":
-                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
-                                GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                        tweetTL.getId());
-                                break;
-                            case "Retweet":
-                                GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
-                                break;
-                            case "Favorito":
-                                GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
-                                break;
-                        }
-                    }
+                    String[] opciones = new String[]{"Responder", "Retweet", "Favorito"};
+                    new JDialogCombobox(Principal.this, true, opciones,tweetTL.getId()).setVisible(true);
 
                 }
             });
