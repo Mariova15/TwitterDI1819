@@ -20,7 +20,7 @@ public class JDialogCombobox extends javax.swing.JDialog {
      */
     private long id;
 
-    private JDialogCombobox(java.awt.Dialog parent, boolean modal) {
+    public JDialogCombobox(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
         initComponents();
         //parent.dispose();//cerramos al padre una vez entrado
