@@ -17,12 +17,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import modelo.Usuario;
 import twitter4j.Location;
 import twitter4j.PagableResponseList;
+import twitter4j.Paging;
 import twitter4j.Query;
 import twitter4j.QueryResult;
 import twitter4j.RateLimitStatus;
@@ -455,6 +458,96 @@ public class GestionClienteTwitter {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
+    }
+    
+    // Este método saca toda la lista de followers del usuario pasado por el screenName.
+    public static List<Usuario> listadoFollowersUsuariodeterminado(Twitter twitter, String screenName) {
+        List<User> followers = new ArrayList<User>();
+        List<Usuario> followersCambio = new ArrayList<Usuario>();
+        PagableResponseList<User> page;
+        long cursor = -1;
+
+        try {
+            while (cursor != 0) {
+                page = twitter.getFollowersList(screenName, cursor, 200);
+                followers.addAll(page);
+                cursor = page.getNextCursor();
+                GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
+            }
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+       
+        for (User follower : followers) {
+            followersCambio.add(new Usuario(follower.getScreenName(), follower.getName()));
+        }
+
+        return followersCambio;
+    }
+
+    // Este método saca toda la lista de follows del usuario pasado por el screenName. 
+    public static List<Usuario> listadoFollowsUsuariodeterminado(Twitter twitter, String screenName) {
+        List<User> friends = new ArrayList<User>();
+        List<Usuario> followersCambio = new ArrayList<Usuario>();
+        PagableResponseList<User> page;
+        long cursor = -1;
+
+        try {
+            while (cursor != 0) {
+                page = twitter.getFriendsList(screenName, cursor, 200);
+                friends.addAll(page);
+                cursor = page.getNextCursor();
+                GestionClienteTwitter.handleRateLimit(page.getRateLimitStatus());
+            }
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+       
+        for (User follower : friends) {
+            followersCambio.add(new Usuario(follower.getScreenName(), follower.getName()));
+        }
+
+        return followersCambio;
+    }
+    
+    // Este método saca 3200 tweets (de momento es todo lo que consigo sacar por la limitaciones de la API) del usuario que le metas como ScreenName
+    public static List<Status> listarTodoTimeLineUsuario(Twitter twitter, String screenName, Date fechaComienzo, Date fechaFin) {
+        List<Status> statuses = new ArrayList<>();
+        List<Status> statusesFecha = new ArrayList<>();
+        int pageno = 1;
+        while (true) {
+            try {
+                System.out.println("getting tweets");
+                int size = statuses.size(); // actual tweets count we got
+                Paging page = new Paging(pageno, 200);
+                statuses.addAll(twitter.getUserTimeline(screenName, page));
+                System.out.println("total got : " + statuses.size());
+                if (statuses.size() == size) {
+                    break;
+                } // we did not get new tweets so we have done the job
+                pageno++;
+                Thread.sleep(1000); // 900 rqt / 15 mn <=> 1 rqt/s
+            } catch (TwitterException e) {
+                System.out.println(e.getErrorMessage());
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        //System.out.println(fechaComienzo);
+        //System.out.println(fechaFin);
+        
+        //System.out.println(statuses.get(0).getCreatedAt());
+        //System.out.println(statuses.get(statuses.size() - 1).getCreatedAt());
+        for (Status status : statuses) {
+            // Devuelve la fecha (formatear con sdf)
+            if (status.getCreatedAt().getTime() >= fechaFin.getTime() && status.getCreatedAt().getTime() <= fechaComienzo.getTime()) {
+                statusesFecha.add(status);
+            }
+        }
+
+        return statusesFecha;
     }
 
 }
