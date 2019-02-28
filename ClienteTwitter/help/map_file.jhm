@@ -1,0 +1,6 @@
+<map version="1.0">
+   <mapID target="aplicacion" url="html/main.html" />
+   <mapID target="ventana_login" url="html/login.html" />
+   <mapID target="ventana_principal" url="html/principal.html" />
+   <mapID target="ventana_informes" url="html/informes.html" />
+</map>

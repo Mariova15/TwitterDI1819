@@ -17,6 +17,7 @@ public class Usuario implements Serializable {
     private String screenName, name;
     private List<Usuario> listaFollowers;
     private List<Usuario> listaFollows;
+    private List<Tweet> listaTweets;
 
     public Usuario(String screenName, String name) {
         this.screenName = screenName;
@@ -27,6 +28,11 @@ public class Usuario implements Serializable {
         this.screenName = screenName;
         this.listaFollowers = listaFollowers;
         this.listaFollows = listaFollows;
+    }
+
+    public Usuario(String screenName, List<Tweet> listaTweets) {
+        this.screenName = screenName;
+        this.listaTweets = listaTweets;
     }
 
     public Usuario() {
@@ -64,9 +70,17 @@ public class Usuario implements Serializable {
         this.listaFollows = listaFollows;
     }
 
+    public List<Tweet> getListaTweets() {
+        return listaTweets;
+    }
+
+    public void setListaTweets(List<Tweet> listaTweets) {
+        this.listaTweets = listaTweets;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{ screenName=" + screenName + ", name=" + name + '}';
+        return "Usuario: " + screenName + " @" + name;
     }
 
 }

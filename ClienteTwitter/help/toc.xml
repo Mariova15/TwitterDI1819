@@ -1,0 +1,7 @@
+ <toc version="1.0">
+   <tocitem text="TTCSASM" target="aplicacion">
+	  <tocitem text="Ventana login" target="ventana_login"/>
+      <tocitem text="Ventana principal" target="ventana_principal"/>
+      <tocitem text="Ventana informes" target="ventana_informes"/>
+   </tocitem>
+</toc>

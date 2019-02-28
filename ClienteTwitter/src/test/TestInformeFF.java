@@ -76,7 +76,7 @@ public class TestInformeFF {
             List<Usuario> listaFollowers = GestionClienteTwitter.listadoFollowersUsuariodeterminado(twitter, twitter.getScreenName());
             List<Usuario> listaFollows = GestionClienteTwitter.listadoFollowsUsuariodeterminado(twitter, twitter.getScreenName());
             Usuario usuario = new Usuario(twitter.getScreenName(), listaFollowers, listaFollows);
-            
+            // Comprobación: muestra listaFollows por consola
             for (Usuario listaFollow : usuario.getListaFollows()) {
                 System.out.println(listaFollow.getName());
             }
@@ -88,7 +88,8 @@ public class TestInformeFF {
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
             //Creamos el map para los parámetros
             Map parametros = new HashMap();
-            parametros.put("NOM_PANTALLA", twitter.getScreenName());       // Si no metemos esta línea el map va sin parametros (vacío)
+            // Si no metemos la línea siguiente el map va sin parametros (vacío)
+            parametros.put("NOM_PANTALLA", twitter.getScreenName());        // ¿¿NOM_PANTALLA existe en jasper??
             JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaFF.jasper", parametros, dataSource);
             JasperExportManager.exportReportToPdfFile(print, "informes/informe_twitter_listaFF.pdf");
         } catch (Throwable e) {

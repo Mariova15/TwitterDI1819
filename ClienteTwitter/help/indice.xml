@@ -1,0 +1,5 @@
+<index version="1.0">
+	  <indexitem text="Ventana login" target="ventana_login"/>
+      <indexitem text="Ventana principal" target="ventana_principal"/>
+      <indexitem text="Ventana informes" target="ventana_informes"/>
+</index>
