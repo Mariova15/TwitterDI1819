@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import modelo.Tweet;
 import modelo.Usuario;
 import twitter4j.Location;
 import twitter4j.PagableResponseList;
@@ -252,7 +253,7 @@ public class GestionClienteTwitter {
         }
         return usuariosEncontrados;
     }
-    
+
     public static User buscarPrimerUsuario(Twitter twitter, String usuario) {
         ResponseList<User> usuariosEncontrados = null;
         try {
@@ -352,13 +353,13 @@ public class GestionClienteTwitter {
     public static void listarTendenciasDisponibles(Twitter twitter) {
         try {
             for (Location availableTrend : twitter.getAvailableTrends()) {
-                
+
             }
         } catch (TwitterException ex) {
             Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Método que devuelve una lista de los últimos 20 twits de las personas que
      * sigue el usuario.
@@ -459,8 +460,14 @@ public class GestionClienteTwitter {
         }
         return response;
     }
-    
-    // Este método saca toda la lista de followers del usuario pasado por el screenName.
+
+    /**
+     * Método que devuelve todos los seguidores de un usuario.
+     *
+     * @param twitter con la info del usuario que usa la aplicación.
+     * @param screenName del usuario del que se quiere buscar los seguidores.
+     * @return
+     */
     public static List<Usuario> listadoFollowersUsuariodeterminado(Twitter twitter, String screenName) {
         List<User> followers = new ArrayList<User>();
         List<Usuario> followersCambio = new ArrayList<Usuario>();
@@ -477,7 +484,7 @@ public class GestionClienteTwitter {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-       
+
         for (User follower : followers) {
             followersCambio.add(new Usuario(follower.getScreenName(), follower.getName()));
         }
@@ -485,7 +492,13 @@ public class GestionClienteTwitter {
         return followersCambio;
     }
 
-    // Este método saca toda la lista de follows del usuario pasado por el screenName. 
+    /**
+     * Método que devuelve todos los seguidos de un usuario.
+     *
+     * @param twitter con la info del usuario que usa la aplicación.
+     * @param screenName del usuario del que se quiere buscar los seguidos.
+     * @return
+     */
     public static List<Usuario> listadoFollowsUsuariodeterminado(Twitter twitter, String screenName) {
         List<User> friends = new ArrayList<User>();
         List<Usuario> followersCambio = new ArrayList<Usuario>();
@@ -502,18 +515,29 @@ public class GestionClienteTwitter {
         } catch (TwitterException e) {
             e.printStackTrace();
         }
-       
+
         for (User follower : friends) {
             followersCambio.add(new Usuario(follower.getScreenName(), follower.getName()));
         }
 
         return followersCambio;
     }
-    
-    // Este método saca 3200 tweets (de momento es todo lo que consigo sacar por la limitaciones de la API) del usuario que le metas como ScreenName
-    public static List<Status> listarTodoTimeLineUsuario(Twitter twitter, String screenName, Date fechaComienzo, Date fechaFin) {
+
+    /**
+     * Método que devuelve una lista de objetos Tweet con el name, screenName,
+     * fecha de publicación y texto del mismo.
+     *
+     * @param twitter con la info del usuario que usa la aplicación.
+     * @param screenName del usuario del que se quiere buscar el timeline.
+     * @param fechaComienzo
+     * @param fechaFin
+     * @return lista de objetos Tweet con el name, screenName, fecha de
+     * publicación y texto del mismo.
+     */
+    public static List<Tweet> listarTodoTimeLineUsuario(Twitter twitter, String screenName, Date fechaComienzo, Date fechaFin) {
         List<Status> statuses = new ArrayList<>();
         List<Status> statusesFecha = new ArrayList<>();
+        List<Tweet> listaTweets = new ArrayList<>();
         int pageno = 1;
         while (true) {
             try {
@@ -535,19 +559,18 @@ public class GestionClienteTwitter {
 
         }
 
-        //System.out.println(fechaComienzo);
-        //System.out.println(fechaFin);
-        
-        //System.out.println(statuses.get(0).getCreatedAt());
-        //System.out.println(statuses.get(statuses.size() - 1).getCreatedAt());
         for (Status status : statuses) {
-            // Devuelve la fecha (formatear con sdf)
             if (status.getCreatedAt().getTime() >= fechaFin.getTime() && status.getCreatedAt().getTime() <= fechaComienzo.getTime()) {
                 statusesFecha.add(status);
             }
         }
 
-        return statusesFecha;
+        for (Status status : statusesFecha) {
+            listaTweets.add(new Tweet(status.getUser().getName(), status.getUser().getScreenName(),
+                    status.getCreatedAt(), status.getText()));
+        }
+
+        return listaTweets;
     }
 
 }

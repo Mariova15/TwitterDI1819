@@ -18,11 +18,13 @@ public class Tweet {
     private Date fechaPublicacion;
     private String texto;
 
-    public Tweet(String texto) {
-        this.fechaPublicacion = new Date();     // CAMBIAR: así coge la fecha de hoy (no nos preocupamos del formato)
+    public Tweet(String nombre, String nombrePantalla, Date fechaPublicacion, String texto) {
+        this.nombre = nombre;
+        this.nombrePantalla = nombrePantalla;
+        this.fechaPublicacion = fechaPublicacion;
         this.texto = texto;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
