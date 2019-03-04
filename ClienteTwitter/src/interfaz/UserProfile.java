@@ -25,7 +25,7 @@ import twitter4j.TwitterException;
  *
  * @author Mario
  */
-public class User extends javax.swing.JDialog {
+public class UserProfile extends javax.swing.JDialog {
 
     //Atributos
     private Twitter twitter;
@@ -34,7 +34,7 @@ public class User extends javax.swing.JDialog {
     /**
      * Creates new form User
      */
-    public User(java.awt.Dialog parent, boolean modal, final Twitter twitter) {
+    public UserProfile(java.awt.Dialog parent, boolean modal, final Twitter twitter) {
         super(parent, modal);
         initComponents();
         ponLaAyuda();
@@ -144,7 +144,7 @@ public class User extends javax.swing.JDialog {
             }
 
         } catch (TwitterException | IllegalStateException | IOException ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -235,7 +235,7 @@ public class User extends javax.swing.JDialog {
         jScrollPaneHomeTL.setBackground(new java.awt.Color(255, 255, 255));
 
         jListHomeTL.setModel(statuses);
-        jListHomeTL.setCellRenderer(new Tweet(twitter));
+        jListHomeTL.setCellRenderer(new Tweet());
         jScrollPaneHomeTL.setViewportView(jListHomeTL);
 
         javax.swing.GroupLayout jPanelTLLayout = new javax.swing.GroupLayout(jPanelTL);

@@ -121,7 +121,7 @@ public class JDialogCombobox extends javax.swing.JDialog {
                     dispose();
                     break;
                 case "Ir al perfil":
-                    new User(this, true, TwitterFactory.getSingleton()).setVisible(true);
+                    new UserProfile(this, true, TwitterFactory.getSingleton()).setVisible(true);
                     break;
                 case "Responder":
                     String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
@@ -134,10 +134,10 @@ public class JDialogCombobox extends javax.swing.JDialog {
                 case "Favorito":
                     GestionClienteTwitter.hacerFavorito(twitter, this.id);
                     break;
-                case "seguir":
+                case "Seguir":
                     this.seguirUsuario(twitter);
                     break;
-                case "dejar de seguir":
+                case "Dejar de seguir":
                     this.dejarSeguirUsuario(twitter);
                     break;
             }

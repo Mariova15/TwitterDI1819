@@ -350,16 +350,6 @@ public class GestionClienteTwitter {
         return listaModeloTT;
     }
 
-    public static void listarTendenciasDisponibles(Twitter twitter) {
-        try {
-            for (Location availableTrend : twitter.getAvailableTrends()) {
-
-            }
-        } catch (TwitterException ex) {
-            Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     /**
      * Método que devuelve una lista de los últimos 20 twits de las personas que
      * sigue el usuario.

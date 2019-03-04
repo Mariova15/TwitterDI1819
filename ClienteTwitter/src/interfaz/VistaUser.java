@@ -15,23 +15,21 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import twitter4j.Status;
 import twitter4j.Twitter;
+import twitter4j.User;
 import utils.Fecha;
 
 /**
  *
  * @author Mario
  */
-public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object> {
-
+public class VistaUser extends javax.swing.JPanel implements ListCellRenderer<Object> {
 
     /**
      * Creates new form Tweet
      */
-    public Tweet() {
+    public VistaUser() {
         initComponents();
-       // ponLaAyuda();
     }
 
     /**
@@ -83,9 +81,13 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         jPanelBackground = new javax.swing.JPanel();
         cLabelAvatar = new jlabelcircular.CLabel();
         jLabelTTScreenName = new jlabeltt.JLabelTT();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextAreaTexto = new javax.swing.JTextArea();
         jLabelDate = new javax.swing.JLabel();
+        jLabelFollowers = new javax.swing.JLabel();
+        jLabelTweets1 = new javax.swing.JLabel();
+        jLabelFollows = new javax.swing.JLabel();
+        jLabelFollowsCount = new javax.swing.JLabel();
+        jLabelFollowersCount = new javax.swing.JLabel();
+        jLabelTweetsCount = new javax.swing.JLabel();
 
         jPanelBackground.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -96,13 +98,25 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         jLabelTTScreenName.setText("ScreenName");
         jLabelTTScreenName.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
-        jTextAreaTexto.setColumns(20);
-        jTextAreaTexto.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
-        jTextAreaTexto.setLineWrap(true);
-        jTextAreaTexto.setRows(5);
-        jScrollPane1.setViewportView(jTextAreaTexto);
-
         jLabelDate.setText("Date");
+
+        jLabelFollowers.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelFollowers.setText("Followers");
+
+        jLabelTweets1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelTweets1.setText("Tweets");
+
+        jLabelFollows.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelFollows.setText("Follows");
+
+        jLabelFollowsCount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelFollowsCount.setText("Follows");
+
+        jLabelFollowersCount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelFollowersCount.setText("Followers");
+
+        jLabelTweetsCount.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabelTweetsCount.setText("Tcount");
 
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
         jPanelBackground.setLayout(jPanelBackgroundLayout);
@@ -113,27 +127,45 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
                 .addComponent(cLabelAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                         .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelDate)
-                        .addGap(0, 170, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelDate))
+                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                        .addComponent(jLabelTweetsCount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelFollowersCount)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelFollowsCount))
+                    .addGroup(jPanelBackgroundLayout.createSequentialGroup()
+                        .addComponent(jLabelTweets1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelFollowers)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelFollows)))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
         jPanelBackgroundLayout.setVerticalGroup(
             jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanelBackgroundLayout.createSequentialGroup()
                         .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelTTScreenName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelDate))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelTweets1)
+                            .addComponent(jLabelFollowers)
+                            .addComponent(jLabelFollows))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelBackgroundLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelTweetsCount)
+                            .addComponent(jLabelFollowersCount)
+                            .addComponent(jLabelFollowsCount)))
                     .addComponent(cLabelAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -144,7 +176,7 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelBackground, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelBackground, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -152,33 +184,39 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private jlabelcircular.CLabel cLabelAvatar;
     private javax.swing.JLabel jLabelDate;
+    private javax.swing.JLabel jLabelFollowers;
+    private javax.swing.JLabel jLabelFollowersCount;
+    private javax.swing.JLabel jLabelFollows;
+    private javax.swing.JLabel jLabelFollowsCount;
     private jlabeltt.JLabelTT jLabelTTScreenName;
+    private javax.swing.JLabel jLabelTweets1;
+    private javax.swing.JLabel jLabelTweetsCount;
     private javax.swing.JPanel jPanelBackground;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextAreaTexto;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public Component getListCellRendererComponent(JList<? extends Object> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         try {
-            Status status = (Status) value;
-            jLabelTTScreenName.setText("@" + status.getUser().getScreenName());
+            User user = (User) value;
+            jLabelTTScreenName.setText("@" + user.getScreenName());
 
             Image image;
 
-            image = ImageIO.read(new URL(status.getUser().getBiggerProfileImageURL())).getScaledInstance(cLabelAvatar.getWidth(),
+            image = ImageIO.read(new URL(user.getBiggerProfileImageURL())).getScaledInstance(cLabelAvatar.getWidth(),
                     cLabelAvatar.getHeight(), Image.SCALE_SMOOTH);
             cLabelAvatar.setIcon(new ImageIcon(image));
 
-            jTextAreaTexto.setText(status.getText());
-
-            jLabelDate.setText(Fecha.timeFormat(status.getCreatedAt()));
-
+            jLabelDate.setText(Fecha.timeFormat(user.getCreatedAt()));
+            
+            jLabelFollowersCount.setText(user.getFollowersCount()+"");
+            jLabelFollowsCount.setText(user.getFriendsCount()+"");
+            jLabelTweetsCount.setText(user.getStatusesCount()+"");
+            
             return this;
         } catch (MalformedURLException ex) {
-            Logger.getLogger(Tweet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Tweet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(VistaUser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return this;
     }

@@ -58,9 +58,11 @@ public class Login extends javax.swing.JFrame {
                     jComboBoxSesiones.setVisible(true);
                     //combo se oculta o aparece segun opcion
                     jCheckBoxRemember.setVisible(false);
+                    //botonDelete.setVisible(true);
                 } else {
                     jComboBoxSesiones.setVisible(false);
                     jCheckBoxRemember.setVisible(true);
+                    //botonDelete.setVisible(false);
                 }
             }
         });

@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import logica.GestionClienteTwitter;
 import twitter4j.AccountSettings;
 import twitter4j.FilterQuery;
 import twitter4j.Location;
@@ -140,30 +141,23 @@ public class Test {
             /*System.out.println(GestionClienteTwitter.listadoFollowers(twitter).size());
             System.out.println(GestionClienteTwitter.listadoFollows(twitter).size());*/
             //String temp = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in dapibus erat. Mauris iaculis pulvinar eros. Donec euismod ante a orci mattis, eget suscipit mi porttitor. Integer erat sapien, laoreet sed purus nec, feugiat commodo lorem. Nulla nunc leo, ultrices sit amet quam eu di";
-            ResponseList<Status> homeTimeline = twitter.getHomeTimeline(new Paging(1));
-            
+            /*ResponseList<Status> homeTimeline = twitter.getHomeTimeline(new Paging(1));
             for (Status status : homeTimeline) {
-                System.out.println(status.getUser().getScreenName());
+            System.out.println(status.getUser().getScreenName());
             }
             System.out.println("-------------------------------------");
-            
             Desktop.getDesktop().browse(new URI(request.getAuthorizationURL()));
             System.out.println("Introduce el pin: "); //se introduce el pin
             String pin = new Scanner(System.in).nextLine();
-            
             access = twitter.getOAuthAccessToken(request, pin);
-            
             twitter.setOAuthAccessToken(access);
             System.out.println(access.getScreenName());
             System.out.println(access.getToken());
             System.out.println(access.getTokenSecret());
-            
             ResponseList<Status> pruebaTL = twitter.getHomeTimeline(new Paging(1));
-            
             for (Status status : pruebaTL) {
-                System.out.println(status.getUser().getScreenName());
-            }
-                        
+            System.out.println(status.getUser().getScreenName());
+            }*/
             /*ResponseList<User> searchUsers = GestionClienteTwitter.buscarUsuario(twitter, "akillatem");
             for (User searchUser : searchUsers) {
             System.out.println(searchUser.toString());
@@ -176,11 +170,18 @@ public class Test {
             for (Trend trend : placeTrends.getTrends()) {
             System.out.println(trend.getName());
             }*/
+            
+            
+            for (User user : GestionClienteTwitter.buscarUsuario(twitter, "dinocazares")) {
+                user.get400x400ProfileImageURL();
+                user.getScreenName();
+                user.getCreatedAt();
+                user.getFollowersCount();
+                user.getFriendsCount();
+                user.getStatusesCount();
+            }
+            
         } catch (TwitterException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
             Logger.getLogger(Test.class.getName()).log(Level.SEVERE, null, ex);
         }
 

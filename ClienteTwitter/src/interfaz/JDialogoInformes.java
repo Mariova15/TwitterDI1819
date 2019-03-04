@@ -230,11 +230,11 @@ public class JDialogoInformes extends javax.swing.JDialog {
 
         try {
             //Obtenemos la lista a mostrar
-            List<User> listaFollows = new ArrayList<>();
-            List<User> listaFollowers = new ArrayList<>();
+            List<UserProfile> listaFollows = new ArrayList<>();
+            List<UserProfile> listaFollowers = new ArrayList<>();
 
 //Falta meterlo en la lista que vamos a mandar al Ireport
-            List<User> listas = new ArrayList<>();
+            List<UserProfile> listas = new ArrayList<>();
 //La encapsulamos en el objeto adecuado
             JRDataSource dataSource = new JRBeanCollectionDataSource(listas);
 
@@ -294,11 +294,11 @@ public class JDialogoInformes extends javax.swing.JDialog {
 
         try {
             //Obtenemos la lista a mostrar
-            List<User> listaFollows = new ArrayList<>();
-            List<User> listaFollowers = new ArrayList<>();
+            List<UserProfile> listaFollows = new ArrayList<>();
+            List<UserProfile> listaFollowers = new ArrayList<>();
 
 //Falta meterlo en la lista que vamos a mandar al Ireport
-            List<User> listas = new ArrayList<>();
+            List<UserProfile> listas = new ArrayList<>();
 //La encapsulamos en el objeto adecuado
             JRDataSource dataSource = new JRBeanCollectionDataSource(listas);
 

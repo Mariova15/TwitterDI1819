@@ -20,21 +20,22 @@ import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  *
  * @author Shaila
  */
-public class VistasBusqueda extends javax.swing.JDialog {
+public class VistasBusquedaUser extends javax.swing.JDialog {
 
     private Twitter twitter;
-    private DefaultListModel statuses = new DefaultListModel();
-    private String busqueda;
+    private DefaultListModel users = new DefaultListModel();
+    private String user;
 
     /**
      * Creates new form User
      */
-    public VistasBusqueda(java.awt.Dialog parent, boolean modal, final Twitter twitter, final String busqueda) {
+    public VistasBusquedaUser(java.awt.Dialog parent, boolean modal, final Twitter twitter, final String user) {
         super(parent, modal);
         initComponents();
         //parent.dispose();//cerramos al padre una vez entrado
@@ -43,9 +44,9 @@ public class VistasBusqueda extends javax.swing.JDialog {
         setTitle("TTCSASM");
         ponLaAyuda();
         this.twitter = twitter;
-        this.busqueda = busqueda;
+        this.user = user;
         
-        jLabelBusqueda.setText(busqueda);
+        jLabelBusqueda.setText(user);
         
          pintarTimeLine(twitter);
          
@@ -55,7 +56,7 @@ public class VistasBusqueda extends javax.swing.JDialog {
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                     
-                    Status tweetTL = (Status) statuses.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+                    Status tweetTL = (Status) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
 
                     String accion = (String) JOptionPane.showInputDialog(
                             e.getComponent().getParent(),
@@ -110,8 +111,8 @@ public class VistasBusqueda extends javax.swing.JDialog {
 
         jScrollPaneHomeTL.setBackground(new java.awt.Color(255, 255, 255));
 
-        jListContenidoBúsqueda.setModel(statuses);
-        jListContenidoBúsqueda.setCellRenderer(new Tweet());
+        jListContenidoBúsqueda.setModel(users);
+        jListContenidoBúsqueda.setCellRenderer(new VistaUser());
         jScrollPaneHomeTL.setViewportView(jListContenidoBúsqueda);
 
         jLabelBusqueda.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -135,8 +136,8 @@ public class VistasBusqueda extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jLabelBusqueda)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPaneHomeTL, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelBackgroundLayout = new javax.swing.GroupLayout(jPanelBackground);
@@ -200,8 +201,8 @@ public class VistasBusqueda extends javax.swing.JDialog {
     }
     private void pintarTimeLine(Twitter twitter) {
 
-        for (Status status : GestionClienteTwitter.buscarTopic(twitter, busqueda)) {
-            statuses.addElement(status);
+        for (User userannadir : GestionClienteTwitter.buscarUsuario(twitter, user)) {
+            users.addElement(userannadir);
         }
     }
 
