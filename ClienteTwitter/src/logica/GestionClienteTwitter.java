@@ -403,18 +403,17 @@ public class GestionClienteTwitter {
      */
     public static void descargarUserIMG(Twitter twitter, String screenName) {
         try {
-
-            File dirUser = new File("src" + File.separator + "imgs"
+            File dirUser = new File("imgs"
                     + File.separator + "users" + File.separator + screenName);
 
             dirUser.mkdirs();
 
-            FileOutputStream fos = new FileOutputStream("src" + File.separator + "imgs"
+            FileOutputStream fos = new FileOutputStream("imgs"
                     + File.separator + "users" + File.separator + screenName + File.separator + screenName + "-profile.png");
             fos.write(GestionClienteTwitter.descargaRecursos(
                     twitter.showUser(twitter.getId()).get400x400ProfileImageURL()));
             fos.close();
-            fos = new FileOutputStream("src" + File.separator + "imgs"
+            fos = new FileOutputStream("imgs"
                     + File.separator + "users" + File.separator + screenName + File.separator + screenName + "-banner.png");
             fos.write(GestionClienteTwitter.descargaRecursos(
                     twitter.showUser(twitter.getId()).getProfileBanner1500x500URL()));

@@ -39,8 +39,7 @@ import twitter4j.User;
 
 public class Principal extends javax.swing.JDialog {
 
-    private static final String RUTA_ICON = ".." + File.separator + "imgs"
-            + File.separator + "favicon-96x96.png";
+    private static final String RUTA_ICON ="/imgs/favicon-96x96.png";
 
     private Twitter twitter;
     private DefaultListModel statuses = new DefaultListModel();

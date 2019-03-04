@@ -46,18 +46,18 @@ public class User extends javax.swing.JDialog {
         try {
             pintarTimeLine(twitter);
 
-            File profile = new File(".." + File.separator + "imgs"
+            File profile = new File("imgs"
                     + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
 
             if (profile.exists()) {
-                File userBannerFile = new File("src" + File.separator + "imgs"
+                File userBannerFile = new File("imgs"
                         + File.separator + "users" + File.separator + twitter.showUser(twitter.getId()).getScreenName() + File.separator
                         + twitter.showUser(twitter.getId()).getScreenName() + "-banner.png");
                 Image userBannerImage = ImageIO.read(userBannerFile).getScaledInstance(jLabelBanner.getWidth(),
                         jLabelBanner.getHeight(), Image.SCALE_SMOOTH);
                 jLabelBanner.setIcon(new ImageIcon(userBannerImage));
 
-                File userProfileFile = new File("src" + File.separator + "imgs"
+                File userProfileFile = new File("imgs"
                         + File.separator + "users" + File.separator + twitter.showUser(twitter.getId()).getScreenName() + File.separator
                         + twitter.showUser(twitter.getId()).getScreenName() + "-profile.png");
                 Image userProfileImage = ImageIO.read(userProfileFile).getScaledInstance(jLabelUserImg.getWidth(),

@@ -26,7 +26,7 @@ import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 /**
- * 
+ *
  * @author adan
  */
 public class Autentificacion {
@@ -57,8 +57,7 @@ public class Autentificacion {
     }
 
     /**
-     * crea una nueva conexion
-     * null si el usuario cancela
+     * crea una nueva conexion null si el usuario cancela
      *
      * @param twitter
      * @param request
@@ -70,11 +69,14 @@ public class Autentificacion {
     public Twitter nuevaConexion(Boolean activarGuardado)
             throws TwitterException, CifradoExcepcion, IOException, URISyntaxException {
         final Twitter twitter = TwitterFactory.getSingleton();
-        if (request == null)
-        this.request = twitter.getOAuthRequestToken();
+        if (request == null) {
+            this.request = twitter.getOAuthRequestToken();
+        }
         Desktop.getDesktop().browse(new URI(this.request.getAuthorizationURL()));
         String pin = JOptionPane.showInputDialog("introduce pin");
-        if(pin==null) return null;
+        if (pin == null) {
+            return null;
+        }
         final AccessToken access = twitter.getOAuthAccessToken(this.request, pin);
 
         if (activarGuardado) {
@@ -87,9 +89,9 @@ public class Autentificacion {
                         GestionClienteTwitter.descargarUserIMG(twitter, access.getScreenName());
                     }
                 }).start();
-                
+
             }
-            guardarConexion(access,access.getScreenName());
+            guardarConexion(access, access.getScreenName());
         }
         return twitter;
 
@@ -97,12 +99,13 @@ public class Autentificacion {
 
     /**
      * guarda la conexion pasada por parametro
+     *
      * @param access
      * @throws logica.Excepciones.CifradoExcepcion
      * @throws FileNotFoundException
      * @throws IOException
      */
-    private void guardarConexion(AccessToken access,String screenName)
+    private void guardarConexion(AccessToken access, String screenName)
             throws CifradoExcepcion, FileNotFoundException, IOException {
 
         if (access == null) {
@@ -130,21 +133,24 @@ public class Autentificacion {
             throws CifradoExcepcion, FileNotFoundException, IOException {
         this.borrarConexion(this.configuracion.getClave("ultima_sesion"));
     }
-    
+
     /**
      * borra la conexión con el screenName que se le meta por parametro
+     *
      * @param screenName
-     * @throws IOException 
+     * @throws IOException
      */
-    public void borrarConexion (String screenName) throws IOException{
-        File sesiones = new File("sesiones"+File.separator+screenName);
-        if(sesiones.exists()) sesiones.delete();
-        File imagenes = new File("src"+File.separator+"imgs"+File.separator+
-                "users"+File.separator+screenName);
-        
-        if (imagenes.exists()){
+    public void borrarConexion(String screenName) throws IOException {
+        File sesiones = new File("sesiones" + File.separator + screenName);
+        if (sesiones.exists()) {
+            sesiones.delete();
+        }
+        File imagenes = new File("src" + File.separator + "imgs" + File.separator
+                + "users" + File.separator + screenName);
+
+        if (imagenes.exists()) {
             //no os creais que soy un genio lo encontré por internet
-           // Path path = imagenes.toPath();
+            // Path path = imagenes.toPath();
             //TODO: Cambiar a 1.7
             /*Files.walk(path)
             .sorted(Comparator.reverseOrder())
@@ -155,9 +161,9 @@ public class Autentificacion {
             }
             imagenes.delete();
         }
-        
+
         String userConfiguracion = this.configuracion.getClave("ultima_sesion");
-        if(screenName.equals(userConfiguracion)){
+        if (screenName.equals(userConfiguracion)) {
             this.configuracion.setClave("ultima_sesion", "");
         }
     }
@@ -184,7 +190,7 @@ public class Autentificacion {
             errorSesion();
         }
 
-        cargarSesion(twitter,screenName);
+        cargarSesion(twitter, screenName);
         return twitter;
     }
 
@@ -197,18 +203,18 @@ public class Autentificacion {
      * @throws logica.Excepciones.CifradoExcepcion
      *
      */
-    public void cargarSesion(Twitter twitter,String screenName)
+    public void cargarSesion(Twitter twitter, String screenName)
             throws FileNotFoundException, IOException, CifradoExcepcion, Excepciones.SesionExcepcion {
-        File file = new File ("sesiones"+File.separator+screenName);
+        File file = new File("sesiones" + File.separator + screenName);
         AccessToken accessToken = getAccessToken(file);
         twitter.setOAuthAccessToken(accessToken);
 
-        guardarConexion(accessToken,screenName);
+        guardarConexion(accessToken, screenName);
     }
 
-    public void cargarSesion(AccessToken accessToken, Twitter twitter,String screenName) throws CifradoExcepcion, IOException {
+    public void cargarSesion(AccessToken accessToken, Twitter twitter, String screenName) throws CifradoExcepcion, IOException {
         twitter.setOAuthAccessToken(accessToken);
-        guardarConexion(accessToken,screenName);
+        guardarConexion(accessToken, screenName);
     }
 
     public List<AccessToken> getAllConexiones() throws IOException, FileNotFoundException, Excepciones.SesionExcepcion {
@@ -245,19 +251,27 @@ public class Autentificacion {
         this.configuracion.setClave("ultima_sesion", "");
         throw new Excepciones.SesionExcepcion();
     }
-    
-    public void cargarSesionesComboBox (JComboBox combo) throws FileNotFoundException{
+
+    public void cargarSesionesComboBox(JComboBox combo) throws FileNotFoundException {
         DefaultComboBoxModel<String> modelo = new DefaultComboBoxModel<>();
-        File[] ficheros = new File("sesiones").listFiles();
-        for (File fichero : ficheros) {
-            modelo.addElement(fichero.getName());
-            combo.setModel(modelo);
-        }
-    }
-    
-    public boolean comprobarUsuarios(){
         File sesiones = new File("sesiones");
-        return sesiones.list().length>0;
+        sesiones.mkdirs();
+        File[] ficheros = sesiones.listFiles();
+        if (ficheros != null) {
+            for (File fichero : ficheros) {
+                modelo.addElement(fichero.getName());
+            }
+        }
+        combo.setModel(modelo);
+
     }
-     
+
+    public boolean comprobarUsuarios() {
+        File sesiones = new File("sesiones");
+        sesiones.mkdirs();
+        if(sesiones.list()==null)
+            return false;
+        return sesiones.list().length > 0;
+    }
+
 }

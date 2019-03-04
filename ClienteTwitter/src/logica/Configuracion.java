@@ -26,7 +26,10 @@ public class Configuracion {
 
     public Configuracion() {
         this.configuracion=new Properties();
+        
         try {
+            File archivoConfiguracion = new File(UBICACION);
+        if (!archivoConfiguracion.exists()) archivoConfiguracion.createNewFile();
             this.configuracion.load(new FileInputStream(new File(UBICACION)));
         } catch (IOException ex) {
             Logger.getLogger(Configuracion.class.getName()).log(Level.SEVERE, null, ex);

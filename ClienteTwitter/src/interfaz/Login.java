@@ -27,10 +27,8 @@ import twitter4j.TwitterFactory;
 public class Login extends javax.swing.JFrame {
 
     Autentificacion auto = Autentificacion.getInstance();
-    private static final String RUTA_LOGO = ".." + File.separator + "imgs"
-            + File.separator + "logo.png";
-    private static final String RUTA_ICON = ".." + File.separator + "imgs"
-            + File.separator + "favicon-96x96.png";
+    private static final String RUTA_LOGO = "/imgs/logo.png";
+    private static final String RUTA_ICON = "/imgs/favicon-96x96.png";
 
     /**
      * Creates new form Logg
@@ -111,10 +109,8 @@ public class Login extends javax.swing.JFrame {
         if (auto.comprobarUsuarios()) {
             this.jswitchRecordar.setVisible(true);
             //combo se oculta o aparece segun opcion
-            this.jCheckBoxRemember.setVisible(true);
         } else {
             this.jswitchRecordar.setVisible(false);
-            this.jCheckBoxRemember.setVisible(false);
         }
     }
 
