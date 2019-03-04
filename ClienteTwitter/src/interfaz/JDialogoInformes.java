@@ -1,11 +1,9 @@
 package interfaz;
 
-import java.awt.Dialog;
 import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JOptionPane;
@@ -52,6 +50,7 @@ public class JDialogoInformes extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCalendar1 = new com.toedter.calendar.JCalendar();
         jPanelHeader = new javax.swing.JPanel();
         jPanelHeader1 = new javax.swing.JPanel();
         jButtonInforme3 = new javax.swing.JButton();
@@ -63,6 +62,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jLabelSeleccionarInforme1 = new javax.swing.JLabel();
         jLabelSeleccionarInforme2 = new javax.swing.JLabel();
         jTextFieldUsuario = new javax.swing.JTextField();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jLabelSeleccionarInforme3 = new javax.swing.JLabel();
         jButtonSalir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -128,9 +130,15 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jPanelHeader1.add(jLabelSeleccionarInforme1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 90, 180, 20));
 
         jLabelSeleccionarInforme2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabelSeleccionarInforme2.setText("Seleccione dos fechas:");
-        jPanelHeader1.add(jLabelSeleccionarInforme2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 180, 20));
+        jLabelSeleccionarInforme2.setText("y");
+        jPanelHeader1.add(jLabelSeleccionarInforme2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 20, 20));
         jPanelHeader1.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 210, -1));
+        jPanelHeader1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        jPanelHeader1.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, -1, -1));
+
+        jLabelSeleccionarInforme3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabelSeleccionarInforme3.setText("Seleccione dos fechas:");
+        jPanelHeader1.add(jLabelSeleccionarInforme3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 180, 20));
 
         jPanelHeader.add(jPanelHeader1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 650, 300));
 
@@ -272,10 +280,14 @@ public class JDialogoInformes extends javax.swing.JDialog {
     private javax.swing.JButton jButtonInforme3;
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JButton jButtonSeleccionarCarpeta1;
+    private com.toedter.calendar.JCalendar jCalendar1;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabelSeleccionarCarpeta1;
     private javax.swing.JLabel jLabelSeleccionarInforme;
     private javax.swing.JLabel jLabelSeleccionarInforme1;
     private javax.swing.JLabel jLabelSeleccionarInforme2;
+    private javax.swing.JLabel jLabelSeleccionarInforme3;
     private javax.swing.JPanel jPanelHeader;
     private javax.swing.JPanel jPanelHeader1;
     private javax.swing.JTextField jTextFieldUsuario;
