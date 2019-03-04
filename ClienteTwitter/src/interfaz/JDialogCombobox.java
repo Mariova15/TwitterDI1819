@@ -19,6 +19,7 @@ public class JDialogCombobox extends javax.swing.JDialog {
      * Creates new form JDialogConfirmacionTweet
      */
     private long id;
+    private String[] usuariosSiguen, usuariosNoSiguen;
 
     public JDialogCombobox(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
@@ -37,6 +38,12 @@ public class JDialogCombobox extends javax.swing.JDialog {
     JDialogCombobox(Principal aThis, boolean b, String[] opciones, long id) {
         this(aThis, b, opciones);
         this.id = id;
+    }
+
+    JDialogCombobox(Principal aThis, boolean b, String[] opciones, long id, String[] usuariosSiguen, String[] usuariosNoSiguen) {
+        this(aThis, b, opciones, id);
+        this.usuariosSiguen = usuariosSiguen;
+        this.usuariosNoSiguen = usuariosNoSiguen;
     }
 
     private void rellenarCombo(String[] objeto) {
@@ -115,6 +122,7 @@ public class JDialogCombobox extends javax.swing.JDialog {
                     break;
                 case "Ir al perfil":
                     new User(this, true, TwitterFactory.getSingleton()).setVisible(true);
+                    break;
                 case "Responder":
                     String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
                     GestionClienteTwitter.responderTwit(twitter, respuesta,
@@ -126,10 +134,55 @@ public class JDialogCombobox extends javax.swing.JDialog {
                 case "Favorito":
                     GestionClienteTwitter.hacerFavorito(twitter, this.id);
                     break;
+                case "seguir":
+                    this.seguirUsuario(twitter);
+                    break;
+                case "dejar de seguir":
+                    this.dejarSeguirUsuario(twitter);
+                    break;
             }
         }
         this.dispose();
     }//GEN-LAST:event_jButtonAceptarActionPerformed
+
+    /**
+     * selecciona de una lista al usuario que quieres dejar de seguir o seguir
+     * @param seguir
+     * @return 
+     */
+    private String seleccionarUsuario(boolean seguir) {
+        String[] usuariosLista = (seguir) ? this.usuariosNoSiguen:this.usuariosSiguen;
+        String eleccion = seguir ? "seguir" : "dejar de seguir";
+        String usuarioSeleccionado = (String) JOptionPane.showInputDialog(this, "a quien quieres " + eleccion,
+                "seleccionar usuario", JOptionPane.QUESTION_MESSAGE,
+                null, usuariosLista, usuariosLista[0]);
+
+        return usuarioSeleccionado;
+    }
+
+    /**
+     * sigue al usuario que seleccionas de la lista
+     * @param twitter 
+     */
+    private void seguirUsuario(Twitter twitter) {
+        String usuarioDejar = this.seleccionarUsuario(true);
+        if (usuarioDejar != null) {
+            long idUsuarioDejar = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioDejar).getId();
+            GestionClienteTwitter.seguirUsuario(twitter, idUsuarioDejar);
+        }
+    }
+
+    /**
+     * deja de seguir al usuario que seleccionas de la lista
+     * @param twitter 
+     */
+    private void dejarSeguirUsuario(Twitter twitter) {
+        String usuarioSeguir = this.seleccionarUsuario(false);
+        if (usuarioSeguir != null) {
+            long idUsuarioSeguir = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioSeguir).getId();
+            GestionClienteTwitter.dejarDeSeguirUsuario(twitter, idUsuarioSeguir);
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -58,8 +58,11 @@ public class Login extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 if (jswitchRecordar.isOnOff()) {
                     jComboBoxSesiones.setVisible(true);
+                    //combo se oculta o aparece segun opcion
+                    jCheckBoxRemember.setVisible(false);
                 } else {
                     jComboBoxSesiones.setVisible(false);
+                    jCheckBoxRemember.setVisible(true);
                 }
             }
         });
@@ -107,8 +110,11 @@ public class Login extends javax.swing.JFrame {
     private void comprobarUsuarios() {
         if (auto.comprobarUsuarios()) {
             this.jswitchRecordar.setVisible(true);
+            //combo se oculta o aparece segun opcion
+            this.jCheckBoxRemember.setVisible(true);
         } else {
             this.jswitchRecordar.setVisible(false);
+            this.jCheckBoxRemember.setVisible(false);
         }
     }
 

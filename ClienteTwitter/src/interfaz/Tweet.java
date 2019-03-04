@@ -32,7 +32,8 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
      */
     public Tweet(Twitter twitter) {
         initComponents();
-        ponLaAyuda();
+       // ponLaAyuda();
+       //no tiene sentido ponerlo aqui y ademas rompe
         this.twitter = twitter;
     }
 
@@ -60,6 +61,7 @@ public class Tweet extends javax.swing.JPanel implements ListCellRenderer<Object
              */
             //hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
             //Al pulsar F1 salta la ayuda
+            
             hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
