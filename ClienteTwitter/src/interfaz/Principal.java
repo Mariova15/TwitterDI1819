@@ -9,11 +9,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
 import javax.imageio.ImageIO;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -47,7 +52,7 @@ public class Principal extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
-
+        ponLaAyuda();
         this.twitter = twitter;
 
         pintarTimeLine(twitter);
@@ -114,18 +119,17 @@ public class Principal extends javax.swing.JDialog {
                         //aun no está hecho
                         //no tiene funcionalidad aun
                         String[] usersTweet = getUsersTweet(tweet);
-                        if (sigueAlguno(tweet, tweetTL.getUser(),usersTweet)) {
-                            if (sigueTodos(tweet, tweetTL.getUser(),usersTweet)) {
+                        if (sigueAlguno(tweet, tweetTL.getUser(), usersTweet)) {
+                            if (sigueTodos(tweet, tweetTL.getUser(), usersTweet)) {
                                 opciones = new String[]{"Responder", "Retweet", "Favorito", "dejar de seguir"};
                             } else {
                                 opciones = new String[]{"Responder", "Retweet", "Favorito", "seguir", "dejar de seguir"};
                             }
-                            
 
                         } else {
                             opciones = new String[]{"Responder", "Retweet", "Favorito", "seguir"};
                         }
-                        
+
                         new JDialogCombobox(Principal.this, true, opciones, tweetTL.getId()).setVisible(true);
                     } catch (TwitterException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,7 +150,7 @@ public class Principal extends javax.swing.JDialog {
                     return null;
                 }
 
-                private boolean sigueAlguno(String tweet, User user,String[] usersTweet) throws TwitterException {
+                private boolean sigueAlguno(String tweet, User user, String[] usersTweet) throws TwitterException {
                     if (usersTweet != null) {
                         for (String string : usersTweet) {
                             if (twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
@@ -160,7 +164,7 @@ public class Principal extends javax.swing.JDialog {
                     return false;
                 }
 
-                private boolean sigueTodos(String tweet, User user,String[] usersTweet) throws TwitterException {
+                private boolean sigueTodos(String tweet, User user, String[] usersTweet) throws TwitterException {
                     if (usersTweet != null) {
                         for (String string : usersTweet) {
                             if (!twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
@@ -243,9 +247,8 @@ public class Principal extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuGenerarInformes = new javax.swing.JMenu();
         jMenuItemGenerarInformes = new javax.swing.JMenuItem();
-        jMenuSalir = new javax.swing.JMenu();
-        jMenuItemSalirAplicacion = new javax.swing.JMenuItem();
         jMenuItemAyuda = new javax.swing.JMenuItem();
+        jMenuItemSalirAplicacion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(244, 244, 244));
@@ -453,14 +456,14 @@ public class Principal extends javax.swing.JDialog {
         });
         jMenuGenerarInformes.add(jMenuItemGenerarInformes);
 
-        jMenuBar1.add(jMenuGenerarInformes);
-
-        jMenuSalir.setText("Ayuda");
-        jMenuSalir.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItemAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        jMenuItemAyuda.setText("Ayuda");
+        jMenuItemAyuda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuSalirActionPerformed(evt);
+                jMenuItemAyudaActionPerformed(evt);
             }
         });
+        jMenuGenerarInformes.add(jMenuItemAyuda);
 
         jMenuItemSalirAplicacion.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
         jMenuItemSalirAplicacion.setText("Salir Aplicacion");
@@ -469,18 +472,9 @@ public class Principal extends javax.swing.JDialog {
                 jMenuItemSalirAplicacionActionPerformed(evt);
             }
         });
-        jMenuSalir.add(jMenuItemSalirAplicacion);
+        jMenuGenerarInformes.add(jMenuItemSalirAplicacion);
 
-        jMenuItemAyuda.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-        jMenuItemAyuda.setText("Ayuda");
-        jMenuItemAyuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemAyudaActionPerformed(evt);
-            }
-        });
-        jMenuSalir.add(jMenuItemAyuda);
-
-        jMenuBar1.add(jMenuSalir);
+        jMenuBar1.add(jMenuGenerarInformes);
 
         setJMenuBar(jMenuBar1);
 
@@ -541,13 +535,49 @@ public class Principal extends javax.swing.JDialog {
         System.exit(0);//Este usarlo para salir porque el dispose me deja una pantalla.
     }//GEN-LAST:event_jMenuItemSalirAplicacionActionPerformed
 
+    /**
+     * Método que incorpora la ayuda en nuestro proyecto.
+     */
+    private void ponLaAyuda() {
+        try {
+            //Carga el fichero de ayuda
+            File fichero = new File("help" + File.separator + "help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
+
+            //Si metemos la carpeta help en src tenemos que quitar lo anterior y poner
+            /**
+             * URL ayuda = getClass().getResource("ruta"); File
+             * ficheroAyudaEnJar = new File(ayuda.toURI());
+             */
+            //Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            /**
+             * Pone ayuda a item de menu al pulsarlo y a F1 en ventana ppal y
+             * secundaria.
+             */
+            hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
+   
+            
+            //Al pulsar F1 salta la ayuda
+            hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (HelpSetException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
     private void jMenuItemAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAyudaActionPerformed
 
+
     }//GEN-LAST:event_jMenuItemAyudaActionPerformed
-
-    private void jMenuSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSalirActionPerformed
-
-    }//GEN-LAST:event_jMenuSalirActionPerformed
 
     private void pintarTimeLine(Twitter twitter) {
 
@@ -595,7 +625,6 @@ public class Principal extends javax.swing.JDialog {
     private javax.swing.JMenuItem jMenuItemAyuda;
     private javax.swing.JMenuItem jMenuItemGenerarInformes;
     private javax.swing.JMenuItem jMenuItemSalirAplicacion;
-    private javax.swing.JMenu jMenuSalir;
     private javax.swing.JPanel jPanelAcciones;
     private javax.swing.JPanel jPanelBackground;
     private javax.swing.JPanel jPanelHeader;

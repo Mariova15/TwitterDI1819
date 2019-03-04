@@ -13,13 +13,19 @@ import javax.help.HelpSet;
  *
  * @author sergio
  */
-public class JavaHelp extends javax.swing.JFrame {
+public class JavaHelp extends javax.swing.JDialog {
 
     /**
      * Creates new form MainWindow
      */
-    public JavaHelp() {
+    public JavaHelp(java.awt.Dialog parent, boolean modal) {
+        super(parent, modal);
+
         initComponents();
+        //parent.dispose();//cerramos al padre una vez entrado
+        setLocationRelativeTo(null);
+        //Establecer el título de la aplicación
+        setTitle("TTCSASM");
         ponLaAyuda();
     }
 
@@ -61,6 +67,11 @@ public class JavaHelp extends javax.swing.JFrame {
         });
 
         jButtonLogin.setText("Login");
+        jButtonLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLoginActionPerformed(evt);
+            }
+        });
 
         jButtonInformes.setText("Informes");
         jButtonInformes.addActionListener(new java.awt.event.ActionListener() {
@@ -90,7 +101,7 @@ public class JavaHelp extends javax.swing.JFrame {
                     .addComponent(jButtonPrincipal)
                     .addComponent(jButtonLogin)
                     .addComponent(jButtonInformes))
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         jMenu2.setText("Archivo");
@@ -127,9 +138,6 @@ public class JavaHelp extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ayudaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaMenuItemActionPerformed
-    }//GEN-LAST:event_ayudaMenuItemActionPerformed
-
     private void jButtonPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPrincipalActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonPrincipalActionPerformed
@@ -138,19 +146,23 @@ public class JavaHelp extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonInformesActionPerformed
 
-    private void ponLaAyuda() 
-    {
-        try 
-        {
+    private void ayudaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaMenuItemActionPerformed
+
+    }//GEN-LAST:event_ayudaMenuItemActionPerformed
+
+    private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonLoginActionPerformed
+
+    private void ponLaAyuda() {
+        try {
             // Carga el fichero de ayuda
-            File fichero = new File("help"+File.separator+"help_set.hs");
+            File fichero = new File("help" + File.separator + "help_set.hs");
             URL hsURL = fichero.toURI().toURL();
-            
+
             //ClassLoader cl = JavaHelp.class.getClassLoader();
             //URL hsURL = HelpSet.findHelpSet(cl,"help/help_set.hs");
-            
             //HelpSet hs = new HelpSet(null, hsURL);
-
             // Crea el HelpSet y el HelpBroker
             HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
             HelpBroker hb = helpset.createHelpBroker();
@@ -158,58 +170,20 @@ public class JavaHelp extends javax.swing.JFrame {
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
             hb.enableHelpOnButton(ayudaMenuItem, "ventana_principal", helpset);
-            hb.enableHelpKey(getRootPane(),"ventana_principal",helpset);
-            hb.enableHelpKey(jButtonLogin,"ventana_login",helpset);
-            hb.enableHelpKey(jButtonPrincipal,"ventana_principal",helpset);
-            hb.enableHelpKey(jButtonInformes,"ventana_informes",helpset);
+            hb.enableHelpKey(getRootPane(), "ventana_principal", helpset);
+            hb.enableHelpKey(jButtonLogin, "ventana_login", helpset);
+            hb.enableHelpKey(jButtonPrincipal, "ventana_principal", helpset);
+            hb.enableHelpKey(jButtonInformes, "ventana_informes", helpset);
+            
             hb.enableHelpOnButton(jButtonLogin, "ventana_login", helpset);
             hb.enableHelpOnButton(jButtonPrincipal, "ventana_principal", helpset);
-            hb.enableHelpOnButton(jButtonInformes,"ventana_informes",helpset);
-            
-        } 
-        catch (Exception e) 
-        {
+            hb.enableHelpOnButton(jButtonInformes, "ventana_informes", helpset);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JavaHelp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JavaHelp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JavaHelp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JavaHelp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JavaHelp().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ayudaMenuItem;
     private javax.swing.JButton jButtonInformes;

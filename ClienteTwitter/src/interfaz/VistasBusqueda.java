@@ -9,6 +9,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
+import javax.help.HelpSetException;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -38,7 +41,7 @@ public class VistasBusqueda extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
-        
+        ponLaAyuda();
         this.twitter = twitter;
         this.busqueda = busqueda;
         
@@ -157,7 +160,44 @@ public class VistasBusqueda extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    /**
+     * Método que incorpora la ayuda en nuestro proyecto.
+     */
+    private void ponLaAyuda() {
+        try {
+            //Carga el fichero de ayuda
+            File fichero = new File("help" + File.separator + "help_set.hs");
+            URL hsURL = fichero.toURI().toURL();
 
+            //Si metemos la carpeta help en src tenemos que quitar lo anterior y poner
+            /**
+             * URL ayuda = getClass().getResource("ruta"); File
+             * ficheroAyudaEnJar = new File(ayuda.toURI());
+             */
+            //Crea el HelpSet y el HelpBroker
+            HelpSet helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+            HelpBroker hb = helpset.createHelpBroker();
+
+            /**
+             * Pone ayuda a item de menu al pulsarlo y a F1 en ventana ppal y
+             * secundaria.
+             */
+            //hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
+   
+            
+            //Al pulsar F1 salta la ayuda
+            hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
+            // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+            // principal y secundaria.
+
+
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (HelpSetException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
     private void pintarTimeLine(Twitter twitter) {
 
         for (Status status : GestionClienteTwitter.buscarTopic(twitter, busqueda)) {
