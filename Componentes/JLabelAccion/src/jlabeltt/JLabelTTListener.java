@@ -5,12 +5,15 @@
  */
 package jlabeltt;
 
+import java.awt.Component;
+import twitter4j.Twitter;
+
 /**
  *
  * @author Mario
  */
 public interface JLabelTTListener {
     
-    public void realizarAccion(String text);
+    public void realizarAccion(Component component,Twitter twitter);
     
 }

@@ -29,6 +29,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import jlabelcircular.CLabelListener;
+import jlabeltt.JLabelTTListener;
 import logica.GestionClienteTwitter;
 import twitter4j.Location;
 import twitter4j.ResponseList;
@@ -62,8 +63,8 @@ public class Principal extends javax.swing.JDialog {
         try {
             jLabelScName.setText("@" + twitter.users().showUser(twitter.getId()).getScreenName());
             jLabelName.setText(twitter.users().showUser(twitter.getId()).getName());
-            jLabelFollowersCount.setText(twitter.users().showUser(twitter.getId()).getFollowersCount()+"");
-            jLabelFollowsCount.setText(twitter.users().showUser(twitter.getId()).getFriendsCount()+"");
+            jLabelFollowersCount.setText(twitter.users().showUser(twitter.getId()).getFollowersCount() + "");
+            jLabelFollowsCount.setText(twitter.users().showUser(twitter.getId()).getFriendsCount() + "");
 
             File profile = new File(".." + File.separator + "imgs"
                     + File.separator + "user" + File.separator + twitter.showUser(twitter.getId()).getScreenName());
@@ -107,6 +108,28 @@ public class Principal extends javax.swing.JDialog {
                     //añadir cuenta, volver al login principal, solo el login
                     //cambiar cuenta boton en on
                     //ir al perfil, abrir el dialogo comentado
+                }
+            });
+
+            jLabelFollowsCount.setComponent(this);
+            jLabelFollowsCount.setTwitter(twitter);
+            jLabelFollowsCount.setjLabelAccionListener(new JLabelTTListener() {
+                @Override
+                public void realizarAccion(Component component, Twitter twitter) {
+                    VistasBusquedaUser vistaFollows = new VistasBusquedaUser(
+                            (Dialog) component, true, twitter, "seguidos", GestionClienteTwitter.listadoFollows(twitter));
+                    vistaFollows.setVisible(true);
+                }
+            });
+            
+            jLabelFollowersCount.setComponent(this);
+            jLabelFollowersCount.setTwitter(twitter);
+            jLabelFollowersCount.setjLabelAccionListener(new JLabelTTListener() {
+                @Override
+                public void realizarAccion(Component component, Twitter twitter) {
+                    VistasBusquedaUser vistaFollowers = new VistasBusquedaUser(
+                            (Dialog) component, true, twitter, "segidores", GestionClienteTwitter.listadoFollowers(twitter));
+                    vistaFollowers.setVisible(true);
                 }
             });
 

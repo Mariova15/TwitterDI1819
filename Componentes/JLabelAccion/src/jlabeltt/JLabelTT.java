@@ -5,11 +5,13 @@
  */
 package jlabeltt;
 
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.Serializable;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import twitter4j.Twitter;
 
 /**
  *
@@ -18,16 +20,18 @@ import javax.swing.JOptionPane;
 public class JLabelTT extends JLabel implements Serializable {
 
     private JLabelTTListener jLabelAccionListener;
+    private Component component;
+    private Twitter twitter;
     
     public JLabelTT() {
         
-        final String text = this.getText();
+        //final String text = this.getText();
         
         this.addMouseListener(new MouseAdapter() {
          @Override
             public void mouseClicked(MouseEvent me) {
                 if (jLabelAccionListener != null) {
-                    jLabelAccionListener.realizarAccion(text);
+                    jLabelAccionListener.realizarAccion(component, twitter);
                 }
             }
         });
@@ -41,5 +45,22 @@ public class JLabelTT extends JLabel implements Serializable {
         this.jLabelAccionListener = jLabelAccionListener;
     }
     
+    public Component getComponent() {
+        return component;
+    }
+
+    public Twitter getTwitter() {
+        return twitter;
+    }
+
+    public void setTwitter(Twitter twitter) {
+        this.twitter = twitter;
+    }
+    
+    
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
         
 }

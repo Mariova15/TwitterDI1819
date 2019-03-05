@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.help.HelpBroker;
@@ -20,6 +23,7 @@ import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.User;
 
 /**
  *
@@ -44,44 +48,139 @@ public class VistasBusqueda extends javax.swing.JDialog {
         ponLaAyuda();
         this.twitter = twitter;
         this.busqueda = busqueda;
-        
+
         jLabelBusqueda.setText(busqueda);
-        
-         pintarTimeLine(twitter);
-         
-         //Falta programar acciones
-         jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
+
+        pintarTimeLine(twitter);
+
+        //Falta programar acciones
+        jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
                     super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
                     
                     Status tweetTL = (Status) statuses.elementAt(jListContenidoBúsqueda.getSelectedIndex());
-
-                    String accion = (String) JOptionPane.showInputDialog(
-                            e.getComponent().getParent(),
-                            "Seleccione opcion",
-                            "Selector de acciones sobre tweet",
-                            JOptionPane.QUESTION_MESSAGE, null,
-                            new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
+                    String tweet = tweetTL.getText();
+                    String[] opciones = null;
                     
-                    if (accion != null) {
-                        switch(accion){
-                            case "Responder":
-                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
-                                GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                        tweetTL.getId() );
-                                break;                            
-                            case "Retweet":
-                                GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
-                                break;
-                            case "Favorito":
-                                GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
-                                break;
-                        }
+                    String[] usersTweet = getUsersTweet(tweet, tweetTL.getUser().getScreenName());
+                    String[] usuariosSiguen = this.getUsuariosSiguen(usersTweet, tweetTL.getUser());
+                    String[] usuariosNoSiguen = this.getUsuariosNoSiguen(usersTweet, tweetTL.getUser());
+                    opciones = getOpciones(usuariosSiguen, usersTweet);
+                    
+                    //new JDialogCombobox(VistasBusqueda.this, true, opciones, tweetTL.getId(), usuariosSiguen, usuariosNoSiguen).setVisible(true);
+                } catch (TwitterException ex) {
+                    Logger.getLogger(VistasBusqueda.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+            /**
+             * saca una lista de opciones segun las dos listas pasadas por
+             * parametro
+             *
+             * @param usuariosSiguen
+             * @param usersTweet
+             * @return
+             */
+            private String[] getOpciones(String[] usuariosSiguen, String[] usersTweet) {
+                String[] opciones;
+                if (usuariosSiguen.length > 0) {
+                    if (usuariosSiguen.length == usersTweet.length) {
+                        opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
+                    } else {
+                        opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir", "Dejar de seguir"};
                     }
 
+                } else if (usersTweet.length > 1) {
+                    opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir"};
+                } else {
+                    opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
                 }
-            });
+                return opciones;
+            }
+
+            /**
+             * consigue los usuarios en un tweet
+             *
+             * @param tweet
+             * @param userTweet
+             * @return
+             */
+            private String[] getUsersTweet(String tweet, String userTweet) {
+                if (tweet.contains("@")) {
+                    String[] tweetPartido = tweet.split("@");
+                    List<String> usuarios = new ArrayList<>();
+
+                    for (int i = 1; i < tweetPartido.length; i++) {
+                        String split = tweetPartido[i];
+                        String arroba = null;
+                        if (split.contains(":")) {
+                            arroba = tweetPartido[i].split(":")[0];
+                        } else if (split.contains(" ")) {
+                            arroba = tweetPartido[i].split(" ")[0];
+                        } else {
+                            arroba = split;
+                        }
+
+                        if (arroba != null) {
+                            usuarios.add(arroba.trim());
+                        }
+                    }
+                    usuarios.add(userTweet);
+                    return usuarios.toArray(new String[usuarios.size()]);
+                }
+                return new String[]{userTweet};
+            }
+
+            /**
+             * devuelve una lista con los usuarios que le siguen
+             *
+             * @param usersTweet
+             * @param user
+             * @return
+             * @throws TwitterException
+             */
+            private String[] getUsuariosSiguen(String[] usersTweet, User user) throws TwitterException {
+                List<String> usuarios = new ArrayList<String>();
+                if (usersTweet != null && user != null) {
+                    for (String string : usersTweet) {
+                        if (!user.getScreenName().equals(string)) {
+                            if (twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
+
+                                usuarios.add(string);
+                            }
+                        }
+
+                    }
+                    usuarios.add(user.getScreenName());
+                }
+
+                return usuarios.toArray(new String[usuarios.size()]);
+            }
+
+            /**
+             * consigue una lista con los usuarios que no le siguen (usa el
+             * metodo anterior asi que es algo lento)
+             *
+             * @param usersTweet
+             * @param user
+             * @return
+             * @throws TwitterException
+             */
+            private String[] getUsuariosNoSiguen(String[] usersTweet, User user) throws TwitterException {
+                if (usersTweet != null) {
+
+                    ArrayList<String> usuarios = new ArrayList<String>(Arrays.asList(usersTweet));
+                    String[] usuariosSiguen = this.getUsuariosSiguen(usersTweet, user);
+                    List<String> siguiendo = Arrays.asList(usuariosSiguen);
+                    usuarios.removeAll(siguiendo);
+                    return usuarios.toArray(new String[usuarios.size()]);
+                }
+                return new String[0];
+            }
+        });
 
     }
 
@@ -183,13 +282,10 @@ public class VistasBusqueda extends javax.swing.JDialog {
              * secundaria.
              */
             //hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
-   
-            
             //Al pulsar F1 salta la ayuda
             hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
-
 
         } catch (MalformedURLException ex) {
             System.out.println(ex.getMessage());
@@ -198,6 +294,7 @@ public class VistasBusqueda extends javax.swing.JDialog {
         }
 
     }
+
     private void pintarTimeLine(Twitter twitter) {
 
         for (Status status : GestionClienteTwitter.buscarTopic(twitter, busqueda)) {

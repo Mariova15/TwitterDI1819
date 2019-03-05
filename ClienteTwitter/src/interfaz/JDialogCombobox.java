@@ -147,11 +147,12 @@ public class JDialogCombobox extends javax.swing.JDialog {
 
     /**
      * selecciona de una lista al usuario que quieres dejar de seguir o seguir
+     *
      * @param seguir
-     * @return 
+     * @return
      */
     private String seleccionarUsuario(boolean seguir) {
-        String[] usuariosLista = (seguir) ? this.usuariosNoSiguen:this.usuariosSiguen;
+        String[] usuariosLista = (seguir) ? this.usuariosNoSiguen : this.usuariosSiguen;
         String eleccion = seguir ? "seguir" : "dejar de seguir";
         String usuarioSeleccionado = (String) JOptionPane.showInputDialog(this, "a quien quieres " + eleccion,
                 "seleccionar usuario", JOptionPane.QUESTION_MESSAGE,
@@ -162,7 +163,8 @@ public class JDialogCombobox extends javax.swing.JDialog {
 
     /**
      * sigue al usuario que seleccionas de la lista
-     * @param twitter 
+     *
+     * @param twitter
      */
     private void seguirUsuario(Twitter twitter) {
         String usuarioDejar = this.seleccionarUsuario(true);
@@ -174,7 +176,8 @@ public class JDialogCombobox extends javax.swing.JDialog {
 
     /**
      * deja de seguir al usuario que seleccionas de la lista
-     * @param twitter 
+     *
+     * @param twitter
      */
     private void dejarSeguirUsuario(Twitter twitter) {
         String usuarioSeguir = this.seleccionarUsuario(false);

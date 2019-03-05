@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.help.HelpBroker;
@@ -31,6 +32,7 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
     private Twitter twitter;
     private DefaultListModel users = new DefaultListModel();
     private String user;
+    List<User> listaUsuarios;
 
     /**
      * Creates new form User
@@ -45,44 +47,70 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
         ponLaAyuda();
         this.twitter = twitter;
         this.user = user;
-        
+
         jLabelBusqueda.setText(user);
-        
-         pintarTimeLine(twitter);
-         
-         //Falta programar acciones
-         jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-                    
-                    Status tweetTL = (Status) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
 
-                    String accion = (String) JOptionPane.showInputDialog(
-                            e.getComponent().getParent(),
-                            "Seleccione opcion",
-                            "Selector de acciones sobre tweet",
-                            JOptionPane.QUESTION_MESSAGE, null,
-                            new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
-                    
-                    if (accion != null) {
-                        switch(accion){
-                            case "Responder":
-                                String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
-                                GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                        tweetTL.getId() );
-                                break;                            
-                            case "Retweet":
-                                GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
-                                break;
-                            case "Favorito":
-                                GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
-                                break;
-                        }
+        pintarTimeLine(twitter);
+
+        //Falta programar acciones
+        jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+
+                User tweetTL = (User) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+               
+            }
+        });
+
+    }
+
+    public VistasBusquedaUser(java.awt.Dialog parent, boolean modal, final Twitter twitter, String cadenaTitulo, List<User> listaUsuarios) {
+        super(parent, modal);
+        initComponents();
+        //parent.dispose();//cerramos al padre una vez entrado
+        setLocationRelativeTo(null);
+        //Establecer el título de la aplicación
+        setTitle("TTCSASM");
+        this.twitter = twitter;
+        this.listaUsuarios = listaUsuarios;
+        pintarUsuarios();
+
+        jLabelBusqueda.setText("Usuarios " + cadenaTitulo);
+
+        //Falta programar acciones
+        jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+
+                Status tweetTL = (Status) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+
+                String accion = (String) JOptionPane.showInputDialog(
+                        e.getComponent().getParent(),
+                        "Seleccione opcion",
+                        "Selector de acciones sobre tweet",
+                        JOptionPane.QUESTION_MESSAGE, null,
+                        new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
+
+                if (accion != null) {
+                    switch (accion) {
+                        case "Responder":
+                            String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
+                            GestionClienteTwitter.responderTwit(twitter, respuesta,
+                                    tweetTL.getId());
+                            break;
+                        case "Retweet":
+                            GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
+                            break;
+                        case "Favorito":
+                            GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
+                            break;
                     }
-
                 }
-            });
+
+            }
+        });
 
     }
 
@@ -184,13 +212,10 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
              * secundaria.
              */
             //hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
-   
-            
             //Al pulsar F1 salta la ayuda
             hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
             // principal y secundaria.
-
 
         } catch (MalformedURLException ex) {
             System.out.println(ex.getMessage());
@@ -199,9 +224,16 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
         }
 
     }
+
     private void pintarTimeLine(Twitter twitter) {
 
         for (User userannadir : GestionClienteTwitter.buscarUsuario(twitter, user)) {
+            users.addElement(userannadir);
+        }
+    }
+    
+    private void pintarUsuarios() {
+        for (User userannadir : listaUsuarios) {
             users.addElement(userannadir);
         }
     }
