@@ -13,6 +13,8 @@ import javax.help.HelpSet;
 import javax.help.HelpSetException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import logica.GestionClienteTwitter;
+import modelo.Usuario;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -51,9 +53,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
 
         jLabelSeleccionarInformes.setVisible(false);
         jLabelSeleccionarFechas.setVisible(false);
-        jDateChooser1.setVisible(false);
+        jDateChooserFechaComienzo.setVisible(false);
         jLabelSeleccionarFecha.setVisible(false);
-        jDateChooser2.setVisible(false);
+        jDateChooserFechaFin.setVisible(false);
         jLabelSeleccionarUsuario.setVisible(false);
         jTextFieldUsuario.setVisible(false);
 
@@ -80,8 +82,8 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jLabelSeleccionarInformes = new javax.swing.JLabel();
         jLabelSeleccionarFecha = new javax.swing.JLabel();
         jTextFieldUsuario = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        jDateChooserFechaComienzo = new com.toedter.calendar.JDateChooser();
+        jDateChooserFechaFin = new com.toedter.calendar.JDateChooser();
         jLabelSeleccionarFechas = new javax.swing.JLabel();
         jButtonSalir = new javax.swing.JButton();
 
@@ -151,8 +153,8 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jLabelSeleccionarFecha.setText("y");
         jPanelHeader1.add(jLabelSeleccionarFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, 20, 20));
         jPanelHeader1.add(jTextFieldUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 210, -1));
-        jPanelHeader1.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
-        jPanelHeader1.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, -1, -1));
+        jPanelHeader1.add(jDateChooserFechaComienzo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        jPanelHeader1.add(jDateChooserFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, -1, -1));
 
         jLabelSeleccionarFechas.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabelSeleccionarFechas.setText("Seleccione dos fechas entre:");
@@ -216,7 +218,6 @@ public class JDialogoInformes extends javax.swing.JDialog {
              * secundaria.
              */
             //hb.enableHelpOnButton(jMenuItemAyuda, "aplicacion", helpset);
-
             //Al pulsar F1 salta la ayuda
             hb.enableHelpKey(getRootPane(), "aplicacion", helpset);
             // Pone ayuda a item de menu al pulsarlo y a F1 en ventana
@@ -232,29 +233,29 @@ public class JDialogoInformes extends javax.swing.JDialog {
     private void jButtonInforme3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme3ActionPerformed
 
         try {
-            //Obtenemos la lista a mostrar
-            List<UserProfile> listaFollows = new ArrayList<>();
-            List<UserProfile> listaFollowers = new ArrayList<>();
+            // Creación de informe a partir de listas
+            //String screenName = jTextFieldUsuario.getText();     // Necesario si no se pasa explícitamente en el método
+            List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuario(twitter, jTextFieldUsuario.getText());
+            Usuario usuario = new Usuario(jTextFieldUsuario.getText(), listaTweets);
 
-//Falta meterlo en la lista que vamos a mandar al Ireport
-            List<UserProfile> listas = new ArrayList<>();
-//La encapsulamos en el objeto adecuado
-            JRDataSource dataSource = new JRBeanCollectionDataSource(listas);
+            List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+            listaUsuarios.add(usuario);
 
-//Creamos el map para los parámetros, en este caso va vacío.
+            //La encapsulamos en el objeto adecuado
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
+            //Creamos el map para los parámetros
             Map parametros = new HashMap();
-            JasperPrint print = JasperFillManager.fillReport(
-                    "informe3.jasper", parametros, dataSource);
-
-            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.
-                    getAbsolutePath() + File.separator + "Informe3.pdf");
-
-        } catch (JRException ex) {
-            System.out.println(ex.getMessage());
+            // Si no metemos la línea siguiente el map va sin parametros (vacío)
+            //parametros.put(Object key, Object value);
+            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
+            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
+            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe3.pdf");
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         this.dispose();
         JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
-                "Informe 3.", JOptionPane.INFORMATION_MESSAGE);
+                "Informe 3", JOptionPane.INFORMATION_MESSAGE);
         //Confirmación informe
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
@@ -274,7 +275,7 @@ public class JDialogoInformes extends javax.swing.JDialog {
                 carpetaInformes.mkdir();
                 seleccionUnidadGuardarInforme = carpetaInformes.getAbsolutePath();
             } else {
-//Poner que seleccione la carpeta
+                //Poner que seleccione la carpeta
                 seleccionUnidadGuardarInforme = carpetaInformes.getAbsolutePath();
             }
         }
@@ -283,9 +284,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jButtonInforme3.setEnabled(true);
         jLabelSeleccionarInformes.setVisible(true);
         jLabelSeleccionarFechas.setVisible(true);
-        jDateChooser1.setVisible(true);
+        jDateChooserFechaComienzo.setVisible(true);
         jLabelSeleccionarFecha.setVisible(true);
-        jDateChooser2.setVisible(true);
+        jDateChooserFechaFin.setVisible(true);
         jLabelSeleccionarUsuario.setVisible(true);
         jTextFieldUsuario.setVisible(true);
         jLabelSeleccionarCarpeta.setEnabled(false);
@@ -296,29 +297,27 @@ public class JDialogoInformes extends javax.swing.JDialog {
     private void jButtonInforme2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme2ActionPerformed
 
         try {
-            //Obtenemos la lista a mostrar
-            List<UserProfile> listaFollows = new ArrayList<>();
-            List<UserProfile> listaFollowers = new ArrayList<>();
+            // Creación de informe a partir de listas
+            List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuarioEntreFechas(twitter, twitter.getScreenName(), jDateChooserFechaComienzo.getDate(), jDateChooserFechaFin.getDate());
+            Usuario usuario = new Usuario(twitter.getScreenName(), listaTweets);
 
-//Falta meterlo en la lista que vamos a mandar al Ireport
-            List<UserProfile> listas = new ArrayList<>();
-//La encapsulamos en el objeto adecuado
-            JRDataSource dataSource = new JRBeanCollectionDataSource(listas);
+            List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+            listaUsuarios.add(usuario);
 
-//Creamos el map para los parámetros, en este caso va vacío.
+            //La encapsulamos en el objeto adecuado
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
+            //Creamos el map para los parámetros
             Map parametros = new HashMap();
-            JasperPrint print = JasperFillManager.fillReport(
-                    "informe2.jasper", parametros, dataSource);
 
-            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.
-                    getAbsolutePath() + File.separator + "Informe2.pdf");
-
-        } catch (JRException ex) {
-            System.out.println(ex.getMessage());
+            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
+            JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
+            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe2.pdf");
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         this.dispose();
         JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
-                "Informe 2.", JOptionPane.INFORMATION_MESSAGE);
+                "Informe 2", JOptionPane.INFORMATION_MESSAGE);
 
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
@@ -326,6 +325,35 @@ public class JDialogoInformes extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonInforme2ActionPerformed
 
     private void jButtonInforme1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme1ActionPerformed
+
+        try {
+            // Creación de informe a partir de listas
+            List<Usuario> listaFollowers = GestionClienteTwitter.listadoFollowersUsuariodeterminado(twitter, twitter.getScreenName());
+            List<Usuario> listaFollows = GestionClienteTwitter.listadoFollowsUsuariodeterminado(twitter, twitter.getScreenName());
+            Usuario usuario = new Usuario(twitter.getScreenName(), listaFollowers, listaFollows);
+            // Comprobación: muestra listaFollows por consola
+            for (Usuario listaFollow : usuario.getListaFollows()) {
+                System.out.println(listaFollow.getName());
+            }
+
+            List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+            listaUsuarios.add(usuario);
+
+            //La encapsulamos en el objeto adecuado
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
+            //Creamos el map para los parámetros
+            Map parametros = new HashMap();
+            // Si no metemos la línea siguiente el map va sin parametros (vacío)
+            //parametros.put("NOM_PANTALLA", twitter.getScreenName());        // ¿¿NOM_PANTALLA existe en jasper??
+            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaFF.jasper", parametros, dataSource);
+            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaFF.pdf");
+            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe1.pdf");
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        this.dispose();
+        JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+                "Informe 1", JOptionPane.INFORMATION_MESSAGE);
 
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
@@ -344,8 +372,8 @@ public class JDialogoInformes extends javax.swing.JDialog {
     private javax.swing.JButton jButtonSalir;
     private javax.swing.JButton jButtonSeleccionarCarpeta;
     private com.toedter.calendar.JCalendar jCalendar1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooserFechaComienzo;
+    private com.toedter.calendar.JDateChooser jDateChooserFechaFin;
     private javax.swing.JLabel jLabelSeleccionarCarpeta;
     private javax.swing.JLabel jLabelSeleccionarFecha;
     private javax.swing.JLabel jLabelSeleccionarFechas;
