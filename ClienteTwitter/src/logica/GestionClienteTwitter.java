@@ -523,7 +523,7 @@ public class GestionClienteTwitter {
      * @return lista de objetos Tweet con el name, screenName, fecha de
      * publicación y texto del mismo.
      */
-    public static List<Tweet> listarTodoTimeLineUsuario(Twitter twitter, String screenName, Date fechaComienzo, Date fechaFin) {
+    public static List<Tweet> listarTodoTimeLineUsuarioEntreFechas(Twitter twitter, String screenName, Date fechaComienzo, Date fechaFin) {
         List<Status> statuses = new ArrayList<>();
         List<Status> statusesFecha = new ArrayList<>();
         List<Tweet> listaTweets = new ArrayList<>();
@@ -555,6 +555,45 @@ public class GestionClienteTwitter {
         }
 
         for (Status status : statusesFecha) {
+            listaTweets.add(new Tweet(status.getUser().getName(), status.getUser().getScreenName(),
+                    status.getCreatedAt(), status.getText()));
+        }
+
+        return listaTweets;
+    }
+
+    /**
+     * Método que devuelve una lista de objetos Tweet con el name, screenName,
+     *
+     * @param twitter con la info del usuario que usa la aplicación.
+     * @param screenName del usuario del que se quiere buscar el timeline.
+     * @return lista de objetos Tweet con el name, screenName
+     */
+    public static List<Tweet> listarTodoTimeLineUsuario(Twitter twitter, String screenName) {
+        List<Status> statuses = new ArrayList<>();
+        List<Tweet> listaTweets = new ArrayList<>();
+        int pageno = 1;
+        while (true) {
+            try {
+                System.out.println("getting tweets");
+                int size = statuses.size(); // actual tweets count we got
+                Paging page = new Paging(pageno, 200);
+                statuses.addAll(twitter.getUserTimeline(screenName, page));
+                System.out.println("total got : " + statuses.size());
+                if (statuses.size() == size) {
+                    break;
+                } // we did not get new tweets so we have done the job
+                pageno++;
+                Thread.sleep(1000); // 900 rqt / 15 mn <=> 1 rqt/s
+            } catch (TwitterException e) {
+                System.out.println(e.getErrorMessage());
+            } catch (InterruptedException ex) {
+                Logger.getLogger(GestionClienteTwitter.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        for (Status status : statuses) {
             listaTweets.add(new Tweet(status.getUser().getName(), status.getUser().getScreenName(),
                     status.getCreatedAt(), status.getText()));
         }

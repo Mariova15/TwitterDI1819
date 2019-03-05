@@ -605,7 +605,7 @@ public class Principal extends javax.swing.JDialog {
 
     private void jMenuItemGenerarInformesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGenerarInformesActionPerformed
 
-        JDialogoInformes dialogoInformes = new JDialogoInformes(this, true);
+        JDialogoInformes dialogoInformes = new JDialogoInformes(this, true, twitter);
         dialogoInformes.setLocationRelativeTo(null);
         dialogoInformes.setVisible(true);
     }//GEN-LAST:event_jMenuItemGenerarInformesActionPerformed

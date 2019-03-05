@@ -19,6 +19,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import twitter4j.Twitter;
 
 /**
  *
@@ -29,16 +30,18 @@ public class JDialogoInformes extends javax.swing.JDialog {
     static String seleccionUnidadGuardarInforme;
     private Connection connection;
     private File carpetaInformes;
+    private Twitter twitter;
     /**
      * Creates new form JDialogConfirmacionTweet
      */
     private long id;
 
-    public JDialogoInformes(java.awt.Dialog parent, boolean modal) {
+    public JDialogoInformes(java.awt.Dialog parent, boolean modal, Twitter twitter) {
         super(parent, modal);
         initComponents();
         //parent.dispose();//cerramos al padre una vez entrado
         setLocationRelativeTo(null);
+        this.twitter = twitter;
         //Establecer el título de la aplicación
         setTitle("TTCSASM");
         ponLaAyuda();
