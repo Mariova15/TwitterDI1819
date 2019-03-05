@@ -41,7 +41,7 @@
 					<textElement>
 						<font size="34" isBold="true"/>
 					</textElement>
-					<text><![CDATA[INFORME 2]]></text>
+					<text><![CDATA[INFORME 1]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="392" y="30" width="141" height="33" forecolor="#FFFFFF" uuid="ecafa745-f90f-4711-b66e-fdfc210f12dc"/>
@@ -121,7 +121,7 @@
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="0" y="0" width="100" height="13" uuid="aed57d72-6ef6-47eb-992f-c98b00f7ab4f"/>
+				<reportElement x="0" y="0" width="143" height="13" uuid="aed57d72-6ef6-47eb-992f-c98b00f7ab4f"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>

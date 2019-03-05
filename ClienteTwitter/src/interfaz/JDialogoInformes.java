@@ -247,8 +247,8 @@ public class JDialogoInformes extends javax.swing.JDialog {
             Map parametros = new HashMap();
             // Si no metemos la línea siguiente el map va sin parametros (vacío)
             //parametros.put(Object key, Object value);
-            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
-            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
+            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaTUE.jasper", parametros, dataSource);
+            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaTUE.pdf");
             JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe3.pdf");
         } catch (Throwable e) {
             e.printStackTrace();
@@ -310,7 +310,7 @@ public class JDialogoInformes extends javax.swing.JDialog {
             Map parametros = new HashMap();
 
             JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
-            JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
+            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
             JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe2.pdf");
         } catch (Throwable e) {
             e.printStackTrace();

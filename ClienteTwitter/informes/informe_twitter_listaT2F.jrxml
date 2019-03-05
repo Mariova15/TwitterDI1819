@@ -38,7 +38,7 @@
 					<textElement>
 						<font size="34" isBold="true"/>
 					</textElement>
-					<text><![CDATA[INFORME 1]]></text>
+					<text><![CDATA[INFORME 2]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="354" y="30" width="179" height="33" forecolor="#FFFFFF" uuid="ecafa745-f90f-4711-b66e-fdfc210f12dc"/>
@@ -88,7 +88,7 @@
 				<reportElement x="0" y="0" width="555" height="1" uuid="2352c715-52d6-40ad-af23-6dccda68db72"/>
 			</line>
 			<subreport>
-				<reportElement x="0" y="1" width="555" height="142" uuid="d1d75dca-cb5a-4ffd-9768-7c0f7255ee01"/>
+				<reportElement x="0" y="1" width="555" height="142" uuid="846fce90-79df-4f02-9c19-d2f9a2d9fe57"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{listaTweets})]]></dataSourceExpression>
 				<subreportExpression><![CDATA["informe_twitter_subreportlistatweets.jasper"]]></subreportExpression>
 			</subreport>
@@ -106,7 +106,7 @@
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="0" y="0" width="100" height="13" uuid="aed57d72-6ef6-47eb-992f-c98b00f7ab4f"/>
+				<reportElement x="0" y="0" width="143" height="13" uuid="aed57d72-6ef6-47eb-992f-c98b00f7ab4f"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<line>
