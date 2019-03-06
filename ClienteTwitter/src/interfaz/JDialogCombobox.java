@@ -20,6 +20,7 @@ public class JDialogCombobox extends javax.swing.JDialog {
      */
     private long id;
     private String[] usuariosSiguen, usuariosNoSiguen;
+    private String user;
 
     public JDialogCombobox(java.awt.Dialog parent, boolean modal) {
         super(parent, modal);
@@ -30,17 +31,23 @@ public class JDialogCombobox extends javax.swing.JDialog {
         setTitle("TTCSASM");
     }
 
-    JDialogCombobox(Dialog parent, boolean b, String[] objeto) {
+    public JDialogCombobox(Dialog parent, boolean b, String[] objeto) {
         this(parent, b);
         this.rellenarCombo(objeto);
     }
+    
+    public JDialogCombobox (Dialog parent, boolean b, String opcion,String user){
+        this(parent,b);
+        this.user=user;
+        this.rellenarCombo(new String[]{opcion});
+    }
 
-    JDialogCombobox(Principal aThis, boolean b, String[] opciones, long id) {
+    public JDialogCombobox(Dialog aThis, boolean b, String[] opciones, long id) {
         this(aThis, b, opciones);
         this.id = id;
     }
 
-    JDialogCombobox(Principal aThis, boolean b, String[] opciones, long id, String[] usuariosSiguen, String[] usuariosNoSiguen) {
+    public JDialogCombobox(Dialog aThis, boolean b, String[] opciones, long id, String[] usuariosSiguen, String[] usuariosNoSiguen) {
         this(aThis, b, opciones, id);
         this.usuariosSiguen = usuariosSiguen;
         this.usuariosNoSiguen = usuariosNoSiguen;
@@ -167,9 +174,13 @@ public class JDialogCombobox extends javax.swing.JDialog {
      * @param twitter
      */
     private void seguirUsuario(Twitter twitter) {
-        String usuarioDejar = this.seleccionarUsuario(true);
-        if (usuarioDejar != null) {
-            long idUsuarioDejar = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioDejar).getId();
+        String usuarioSeguir=null;
+        if(user!=null)
+            usuarioSeguir=this.user;
+        else
+            usuarioSeguir = this.seleccionarUsuario(true);
+        if (usuarioSeguir != null) {
+            long idUsuarioDejar = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioSeguir).getId();
             GestionClienteTwitter.seguirUsuario(twitter, idUsuarioDejar);
         }
     }
@@ -180,9 +191,13 @@ public class JDialogCombobox extends javax.swing.JDialog {
      * @param twitter
      */
     private void dejarSeguirUsuario(Twitter twitter) {
-        String usuarioSeguir = this.seleccionarUsuario(false);
-        if (usuarioSeguir != null) {
-            long idUsuarioSeguir = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioSeguir).getId();
+        String usuarioDejarSeguir=null;
+        if(user!=null)
+            usuarioDejarSeguir=this.user;
+        else
+            usuarioDejarSeguir = this.seleccionarUsuario(true);
+        if (usuarioDejarSeguir != null) {
+            long idUsuarioSeguir = GestionClienteTwitter.buscarPrimerUsuario(twitter, usuarioDejarSeguir).getId();
             GestionClienteTwitter.dejarDeSeguirUsuario(twitter, idUsuarioSeguir);
         }
     }

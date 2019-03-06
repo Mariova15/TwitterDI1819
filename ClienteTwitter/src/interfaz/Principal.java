@@ -140,126 +140,16 @@ public class Principal extends javax.swing.JDialog {
                         super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
 
                         Status tweetTL = (Status) statuses.elementAt(jListTL.getSelectedIndex());
-                        String tweet = tweetTL.getText();
-                        String[] opciones = null;
-                        //aun no está hecho
-                        //no tiene funcionalidad aun
-                        String[] usersTweet = getUsersTweet(tweet, tweetTL.getUser().getScreenName());
-                        String[] usuariosSiguen = this.getUsuariosSiguen(usersTweet, tweetTL.getUser());
-                        String[] usuariosNoSiguen = this.getUsuariosNoSiguen(usersTweet, tweetTL.getUser());
-                        opciones = getOpciones(usuariosSiguen, usersTweet);
-
-                        new JDialogCombobox(Principal.this, true, opciones, tweetTL.getId(), usuariosSiguen, usuariosNoSiguen).setVisible(true);
+                        
+                        GestionClienteTwitter.mostrarOpcionesTweet(tweetTL, Principal.this);
+                        
                     } catch (TwitterException ex) {
                         Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
                 }
 
-                /**
-                 * saca una lista de opciones segun las dos listas pasadas por
-                 * parametro
-                 *
-                 * @param usuariosSiguen
-                 * @param usersTweet
-                 * @return
-                 */
-                private String[] getOpciones(String[] usuariosSiguen, String[] usersTweet) {
-                    String[] opciones;
-                    if (usuariosSiguen.length > 0) {
-                        if (usuariosSiguen.length == usersTweet.length) {
-                            opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
-                        } else {
-                            opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir", "Dejar de seguir"};
-                        }
-
-                    } else if (usersTweet.length > 1) {
-                        opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir"};
-                    } else {
-                        opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
-                    }
-                    return opciones;
-                }
-
-                /**
-                 * consigue los usuarios en un tweet
-                 *
-                 * @param tweet
-                 * @param userTweet
-                 * @return
-                 */
-                private String[] getUsersTweet(String tweet, String userTweet) {
-                    if (tweet.contains("@")) {
-                        String[] tweetPartido = tweet.split("@");
-                        List<String> usuarios = new ArrayList<>();
-
-                        for (int i = 1; i < tweetPartido.length; i++) {
-                            String split = tweetPartido[i];
-                            String arroba = null;
-                            if (split.contains(":")) {
-                                arroba = tweetPartido[i].split(":")[0];
-                            } else if (split.contains(" ")) {
-                                arroba = tweetPartido[i].split(" ")[0];
-                            } else {
-                                arroba = split;
-                            }
-
-                            if (arroba != null) {
-                                usuarios.add(arroba.trim());
-                            }
-                        }
-                        usuarios.add(userTweet);
-                        return usuarios.toArray(new String[usuarios.size()]);
-                    }
-                    return new String[]{userTweet};
-                }
-
-                /**
-                 * devuelve una lista con los usuarios que le siguen
-                 *
-                 * @param usersTweet
-                 * @param user
-                 * @return
-                 * @throws TwitterException
-                 */
-                private String[] getUsuariosSiguen(String[] usersTweet, User user) throws TwitterException {
-                    List<String> usuarios = new ArrayList<String>();
-                    if (usersTweet != null && user != null) {
-                        for (String string : usersTweet) {
-                            if (!user.getScreenName().equals(string)) {
-                                if (twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
-
-                                    usuarios.add(string);
-                                }
-                            }
-
-                        }
-                        usuarios.add(user.getScreenName());
-                    }
-
-                    return usuarios.toArray(new String[usuarios.size()]);
-                }
-
-                /**
-                 * consigue una lista con los usuarios que no le siguen (usa el
-                 * metodo anterior asi que es algo lento)
-                 *
-                 * @param usersTweet
-                 * @param user
-                 * @return
-                 * @throws TwitterException
-                 */
-                private String[] getUsuariosNoSiguen(String[] usersTweet, User user) throws TwitterException {
-                    if (usersTweet != null) {
-
-                        ArrayList<String> usuarios = new ArrayList<String>(Arrays.asList(usersTweet));
-                        String[] usuariosSiguen = this.getUsuariosSiguen(usersTweet, user);
-                        List<String> siguiendo = Arrays.asList(usuariosSiguen);
-                        usuarios.removeAll(siguiendo);
-                        return usuarios.toArray(new String[usuarios.size()]);
-                    }
-                    return new String[0];
-                }
+                
             });
 
             final ResponseList<Location> availableTrends = twitter.getAvailableTrends();

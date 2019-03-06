@@ -21,6 +21,7 @@ import logica.GestionClienteTwitter;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 /**
@@ -56,10 +57,28 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
         jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-
-                User tweetTL = (User) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+                try {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    
+                    User tweetTL = (User) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+                    String opcion = this.opciones(tweetTL);
+                    new JDialogCombobox(VistasBusquedaUser.this, rootPaneCheckingEnabled, opcion,tweetTL.getScreenName()).setVisible(true);
+                    
+                } catch (TwitterException ex) {
+                    JOptionPane.showMessageDialog(VistasBusquedaUser.this, "ha ocurrido un error:\n"+ex.getMessage());
+                }
+                
                
+            }
+            
+            private String opciones(User tUser) throws TwitterException{
+                String opcion = new String();
+                Twitter twitter = TwitterFactory.getSingleton();
+                if (twitter.showFriendship(twitter.getScreenName(), tUser.getScreenName()).isSourceFollowingTarget())
+                    opcion="dejar de seguir";
+                else
+                    opcion="seguir";
+                return opcion;
             }
         });
 

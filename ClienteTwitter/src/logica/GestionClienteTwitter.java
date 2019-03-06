@@ -5,6 +5,9 @@
  */
 package logica;
 
+import interfaz.JDialogCombobox;
+import interfaz.Principal;
+import java.awt.Dialog;
 import static java.awt.image.ImageObserver.WIDTH;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +19,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +42,7 @@ import twitter4j.Trend;
 import twitter4j.Trends;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import twitter4j.User;
 
 /**
@@ -599,6 +604,141 @@ public class GestionClienteTwitter {
         }
 
         return listaTweets;
+    }
+    
+    /**
+     * lanza un dialogo con las opciones del tweet clickeado
+     * @param tweetTL
+     * @param tweet
+     * @param dialogo
+     * @throws TwitterException 
+     */
+    public static void mostrarOpcionesTweet(Status tweetTL, Dialog dialogo) throws TwitterException {
+        String[] opciones = null;
+        Twitter twitter = TwitterFactory.getSingleton();
+        String tweet = tweetTL.getText();
+        //aun no está hecho
+        //no tiene funcionalidad aun
+        String[] usersTweet = getUsersTweet(tweet, tweetTL.getUser().getScreenName());
+        String[] usuariosSiguen = getUsuariosSiguen(usersTweet, tweetTL.getUser(), twitter);
+        String[] usuariosNoSiguen = getUsuariosNoSiguen(usersTweet, tweetTL.getUser(), twitter);
+        opciones = getOpciones(usuariosSiguen, usersTweet);
+
+        new JDialogCombobox(dialogo, true, opciones, tweetTL.getId(), usuariosSiguen, usuariosNoSiguen).setVisible(true);
+    }
+
+    /**
+     * saca una lista de opciones segun las dos listas pasadas por parametro
+     *
+     * @param usuariosSiguen
+     * @param usersTweet
+     * @return
+     */
+    private static String[] getOpciones(String[] usuariosSiguen, String[] usersTweet) {
+        String[] opciones;
+        if (usuariosSiguen.length > 0) {
+            if (usuariosSiguen.length == usersTweet.length) {
+                opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
+            } else {
+                opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir", "Dejar de seguir"};
+            }
+
+        } else if (usersTweet.length > 1) {
+            opciones = new String[]{"Responder", "Retweet", "Favorito", "Seguir"};
+        } else {
+            opciones = new String[]{"Responder", "Retweet", "Favorito", "Dejar de seguir"};
+        }
+        return opciones;
+    }
+
+    /**
+     * consigue los usuarios en un tweet
+     *
+     * @param tweet
+     * @param userTweet
+     * @return
+     */
+    private static String[] getUsersTweet(String tweet, String userTweet) {
+        if (tweet.contains("@")) {
+            String[] tweetPartido = tweet.split("@");
+            List<String> usuarios = new ArrayList<>();
+
+            for (int i = 1; i < tweetPartido.length; i++) {
+                String split = tweetPartido[i];
+                String arroba = null;
+                if (split.contains(":")) {
+                    arroba = tweetPartido[i].split(":")[0];
+                } else if (split.contains(" ")) {
+                    arroba = tweetPartido[i].split(" ")[0];
+                } else {
+                    arroba = split;
+                }
+
+                if (arroba != null) {
+                    usuarios.add(arroba.trim());
+                }
+            }
+            usuarios.add(userTweet);
+            return usuarios.toArray(new String[usuarios.size()]);
+        }
+        return new String[]{userTweet};
+    }
+
+    /**
+     * devuelve una lista con los usuarios que le siguen
+     *
+     * @param usersTweet
+     * @param user
+     * @return
+     * @throws TwitterException
+     */
+    private static String[] getUsuariosSiguen(String[] usersTweet, User user, Twitter twitter) throws TwitterException {
+        List<String> usuarios = new ArrayList<String>();
+        if (usersTweet != null && user != null) {
+            for (String string : usersTweet) {
+                if (!user.getScreenName().equals(string)) {
+                    if (twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
+
+                        usuarios.add(string);
+                    }
+                }
+
+            }
+            usuarios.add(user.getScreenName());
+        }
+
+        return usuarios.toArray(new String[usuarios.size()]);
+    }
+
+    /**
+     * consigue una lista con los usuarios que no le siguen (usa el metodo
+     * anterior asi que es algo lento)
+     *
+     * @param usersTweet
+     * @param user
+     * @return
+     * @throws TwitterException
+     */
+    private static String[] getUsuariosNoSiguen(String[] usersTweet, User user, Twitter twitter) throws TwitterException {
+        //TODO: cambiar
+        if (usersTweet != null) {
+
+            List<String> usuarios = new ArrayList<String>();
+            if (usersTweet != null && user != null) {
+                for (String string : usersTweet) {
+                    if (!user.getScreenName().equals(string)) {
+                        if (!twitter.showFriendship(twitter.getScreenName(), string).isSourceFollowingTarget()) {
+                            usuarios.add(string);
+                        }
+                    }
+
+                }
+                usuarios.add(user.getScreenName());
+            }
+
+            return usuarios.toArray(new String[usuarios.size()]);
+        }
+        return new String[0];
     }
 
 }
