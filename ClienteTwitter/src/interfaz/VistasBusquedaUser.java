@@ -75,9 +75,9 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
                 String opcion = new String();
                 Twitter twitter = TwitterFactory.getSingleton();
                 if (twitter.showFriendship(twitter.getScreenName(), tUser.getScreenName()).isSourceFollowingTarget())
-                    opcion="dejar de seguir";
+                    opcion="Dejar de seguir";
                 else
-                    opcion="seguir";
+                    opcion="Seguir";
                 return opcion;
             }
         });
@@ -101,33 +101,28 @@ public class VistasBusquedaUser extends javax.swing.JDialog {
         jListContenidoBúsqueda.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
-
-                Status tweetTL = (Status) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
-
-                String accion = (String) JOptionPane.showInputDialog(
-                        e.getComponent().getParent(),
-                        "Seleccione opcion",
-                        "Selector de acciones sobre tweet",
-                        JOptionPane.QUESTION_MESSAGE, null,
-                        new Object[]{"Responder", "Retweet", "Favorito"}, "opcion 2");
-
-                if (accion != null) {
-                    switch (accion) {
-                        case "Responder":
-                            String respuesta = JOptionPane.showInputDialog("Escribe tu respuesta");
-                            GestionClienteTwitter.responderTwit(twitter, respuesta,
-                                    tweetTL.getId());
-                            break;
-                        case "Retweet":
-                            GestionClienteTwitter.retwitear(twitter, tweetTL.getId());
-                            break;
-                        case "Favorito":
-                            GestionClienteTwitter.hacerFavorito(twitter, tweetTL.getId());
-                            break;
-                    }
+                try {
+                    super.mouseClicked(e); //To change body of generated methods, choose Tools | Templates.
+                    
+                    User tweetTL = (User) users.elementAt(jListContenidoBúsqueda.getSelectedIndex());
+                    String opcion = this.opciones(tweetTL);
+                    new JDialogCombobox(VistasBusquedaUser.this, rootPaneCheckingEnabled, opcion,tweetTL.getScreenName()).setVisible(true);
+                    
+                } catch (TwitterException ex) {
+                    JOptionPane.showMessageDialog(VistasBusquedaUser.this, "ha ocurrido un error:\n"+ex.getMessage());
                 }
-
+                
+               
+            }
+            
+            private String opciones(User tUser) throws TwitterException{
+                String opcion = new String();
+                Twitter twitter = TwitterFactory.getSingleton();
+                if (twitter.showFriendship(twitter.getScreenName(), tUser.getScreenName()).isSourceFollowingTarget())
+                    opcion="Dejar de seguir";
+                else
+                    opcion="Seguir";
+                return opcion;
             }
         });
 
