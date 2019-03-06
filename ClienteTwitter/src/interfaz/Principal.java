@@ -104,7 +104,6 @@ public class Principal extends javax.swing.JDialog {
                     // new User((Dialog) component, true, twitter).setVisible(true);
                     String[] objeto = new String[]{"Añadir cuenta", "Cambiar cuenta", "Ir al perfil"};
                     new JDialogCombobox(Principal.this, true, objeto).setVisible(true);
-
                     //añadir cuenta, volver al login principal, solo el login
                     //cambiar cuenta boton en on
                     //ir al perfil, abrir el dialogo comentado

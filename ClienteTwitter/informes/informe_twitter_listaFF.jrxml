@@ -55,10 +55,6 @@
 	</title>
 	<pageHeader>
 		<band height="86" splitType="Stretch">
-			<image isLazy="true">
-				<reportElement x="0" y="2" width="249" height="84" uuid="411bb8d0-8613-4a33-affd-fcdd049ffc5c"/>
-				<imageExpression><![CDATA["logo.png"]]></imageExpression>
-			</image>
 			<textField>
 				<reportElement x="270" y="13" width="285" height="19" uuid="f3ed5ae9-ed27-486a-8924-01e3b9b2c268"/>
 				<textElement>

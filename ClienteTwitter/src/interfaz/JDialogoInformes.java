@@ -237,6 +237,10 @@ public class JDialogoInformes extends javax.swing.JDialog {
             //String screenName = jTextFieldUsuario.getText();     // Necesario si no se pasa explícitamente en el método
             List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuario(twitter, jTextFieldUsuario.getText());
             Usuario usuario = new Usuario(jTextFieldUsuario.getText(), listaTweets);
+            
+            for (modelo.Tweet listaTweet : listaTweets) {
+                System.out.println(listaTweet.getTexto());
+            }
 
             List<Usuario> listaUsuarios = new ArrayList<Usuario>();
             listaUsuarios.add(usuario);
@@ -253,9 +257,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        this.dispose();
-        JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
-                "Informe 3", JOptionPane.INFORMATION_MESSAGE);
+        //this.dispose();
+        /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+        "Informe 3", JOptionPane.INFORMATION_MESSAGE);*/
         //Confirmación informe
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
@@ -315,9 +319,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        this.dispose();
-        JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
-                "Informe 2", JOptionPane.INFORMATION_MESSAGE);
+        //this.dispose();
+        /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+        "Informe 2", JOptionPane.INFORMATION_MESSAGE);*/
 
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
@@ -351,9 +355,9 @@ public class JDialogoInformes extends javax.swing.JDialog {
         } catch (Throwable e) {
             e.printStackTrace();
         }
-        this.dispose();
-        JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
-                "Informe 1", JOptionPane.INFORMATION_MESSAGE);
+        //this.dispose();
+        /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+        "Informe 1", JOptionPane.INFORMATION_MESSAGE);*/
 
         JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
         confirmacionInforme.setVisible(true);
