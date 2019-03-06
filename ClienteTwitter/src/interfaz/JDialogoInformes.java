@@ -232,38 +232,43 @@ public class JDialogoInformes extends javax.swing.JDialog {
     }
     private void jButtonInforme3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme3ActionPerformed
 
-        try {
-            // Creación de informe a partir de listas
-            //String screenName = jTextFieldUsuario.getText();     // Necesario si no se pasa explícitamente en el método
-            List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuario(twitter, jTextFieldUsuario.getText());
-            Usuario usuario = new Usuario(jTextFieldUsuario.getText(), listaTweets);
-            
-            for (modelo.Tweet listaTweet : listaTweets) {
-                System.out.println(listaTweet.getTexto());
+        if (jTextFieldUsuario.getText().equals("")) {
+            JDialogNoSeleccionUsuario noSeleccionUsuario = new JDialogNoSeleccionUsuario(this, true);
+            noSeleccionUsuario.setVisible(true);
+        } else {
+
+            try {
+                //Creación de informe a partir de listas
+                //String screenName = jTextFieldUsuario.getText(); //Necesario si no se pasa explícitamente en el método
+                List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuario(twitter, jTextFieldUsuario.getText());
+                Usuario usuario = new Usuario(jTextFieldUsuario.getText(), listaTweets);
+
+                for (modelo.Tweet listaTweet : listaTweets) {
+                    listaTweet.getTexto();
+                }
+
+                List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+                listaUsuarios.add(usuario);
+
+                //La encapsulamos en el objeto adecuado
+                JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
+                //Creamos el map para los parámetros
+                Map parametros = new HashMap();
+                // Si no metemos la línea siguiente el map va sin parametros (vacío)
+                //parametros.put(Object key, Object value);
+                JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaTUE.jasper", parametros, dataSource);
+                //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaTUE.pdf");
+                JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe3.pdf");
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
-
-            List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-            listaUsuarios.add(usuario);
-
-            //La encapsulamos en el objeto adecuado
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
-            //Creamos el map para los parámetros
-            Map parametros = new HashMap();
-            // Si no metemos la línea siguiente el map va sin parametros (vacío)
-            //parametros.put(Object key, Object value);
-            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaTUE.jasper", parametros, dataSource);
-            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaTUE.pdf");
-            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe3.pdf");
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        //this.dispose();
-        /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+            //this.dispose();
+            /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
         "Informe 3", JOptionPane.INFORMATION_MESSAGE);*/
-        //Confirmación informe
-        JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
-        confirmacionInforme.setVisible(true);
-
+            //Confirmación informe
+            JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
+            confirmacionInforme.setVisible(true);
+        }
     }//GEN-LAST:event_jButtonInforme3ActionPerformed
 
     private void jButtonSeleccionarCarpetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarCarpetaActionPerformed
@@ -296,36 +301,48 @@ public class JDialogoInformes extends javax.swing.JDialog {
         jLabelSeleccionarCarpeta.setEnabled(false);
         jButtonSeleccionarCarpeta.setEnabled(false);
 
+
     }//GEN-LAST:event_jButtonSeleccionarCarpetaActionPerformed
 
     private void jButtonInforme2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme2ActionPerformed
 
-        try {
-            // Creación de informe a partir de listas
-            List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuarioEntreFechas(twitter, twitter.getScreenName(), jDateChooserFechaComienzo.getDate(), jDateChooserFechaFin.getDate());
-            Usuario usuario = new Usuario(twitter.getScreenName(), listaTweets);
+         if (jDateChooserFechaComienzo.getDate() == null || jDateChooserFechaFin == null) {
 
-            List<Usuario> listaUsuarios = new ArrayList<Usuario>();
-            listaUsuarios.add(usuario);
+            JDialogNoSeleccionFechas noSeleccionFechas = new JDialogNoSeleccionFechas(this, true);
+            noSeleccionFechas.setVisible(true);
 
-            //La encapsulamos en el objeto adecuado
-            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
-            //Creamos el map para los parámetros
-            Map parametros = new HashMap();
+        } else if (jDateChooserFechaComienzo.getDate().compareTo(jDateChooserFechaFin.getDate()) == 1) {
 
-            JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
-            //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
-            JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe2.pdf");
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        //this.dispose();
-        /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
+            JDialogNoSeleccionFechasOrdenCorrecto noSeleccionFechas = new JDialogNoSeleccionFechasOrdenCorrecto(this, true);
+            noSeleccionFechas.setVisible(true);
+
+        } else {
+            try {
+                // Creación de informe a partir de listas
+                List<modelo.Tweet> listaTweets = GestionClienteTwitter.listarTodoTimeLineUsuarioEntreFechas(twitter, twitter.getScreenName(), jDateChooserFechaComienzo.getDate(), jDateChooserFechaFin.getDate());
+                Usuario usuario = new Usuario(twitter.getScreenName(), listaTweets);
+
+                List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+                listaUsuarios.add(usuario);
+
+                //La encapsulamos en el objeto adecuado
+                JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(listaUsuarios);
+                //Creamos el map para los parámetros
+                Map parametros = new HashMap();
+
+                JasperPrint print = JasperFillManager.fillReport("informes/informe_twitter_listaT2F.jasper", parametros, dataSource);
+                //JasperExportManager.exportReportToPdfFile(print, "informes/informe_test_twitter_listaT2F.pdf");
+                JasperExportManager.exportReportToPdfFile(print, carpetaInformes.getAbsolutePath() + File.separator + "Informe2.pdf");
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            //this.dispose();
+            /*JOptionPane.showMessageDialog(this, "Se ha generado el informe satisfactoriamente.",
         "Informe 2", JOptionPane.INFORMATION_MESSAGE);*/
 
-        JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
-        confirmacionInforme.setVisible(true);
-
+            JDialogConfirmacionInforme confirmacionInforme = new JDialogConfirmacionInforme(this, true);
+            confirmacionInforme.setVisible(true);
+        }
     }//GEN-LAST:event_jButtonInforme2ActionPerformed
 
     private void jButtonInforme1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInforme1ActionPerformed
